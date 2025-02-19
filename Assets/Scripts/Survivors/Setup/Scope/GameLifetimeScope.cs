@@ -1,7 +1,9 @@
 
+using Survivors.Setup.MonoBehaviours;
+using Survivors.Setup.Scope.Messages;
+using Survivors.Setup.Scope.Messages.GlobalMessages;
 using Survivors.Setup.ScriptableObjects;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
 using VContainer;
 using VContainer.Unity;
 using VitalRouter;
@@ -12,10 +14,15 @@ namespace Survivors.Setup.Scope
 	public class GameLifetimeScope : LifetimeScope
 	{
 		[SerializeField] private GameScenesReferences gameScenesReferences;
+		[SerializeField] private CurtainBehaviour curtainBehaviour;
+		[SerializeField] private Transform cinemachineTarget;
 		
 		protected override void Configure(IContainerBuilder builder)
 		{
 			builder.RegisterInstance(gameScenesReferences);
+			builder.RegisterInstance(curtainBehaviour);
+			builder.RegisterInstance(cinemachineTarget);
+			
 			
 			builder.RegisterVitalRouter(routingBuilder =>
 			{
@@ -25,13 +32,11 @@ namespace Survivors.Setup.Scope
 			builder.RegisterBuildCallback( container =>
 			{
 				var publisher = container.Resolve<ICommandPublisher>();
-				publisher.PublishAsync( new LoadSceneCommand { Scene = gameScenesReferences.mainMenuScene });
+				
+				publisher.PublishAsync( new MainMenuStateCommand());
 			});
 		}
 	}
 
-	public struct LoadSceneCommand : ICommand
-	{
-		public AssetReference Scene;
-	}
+
 }

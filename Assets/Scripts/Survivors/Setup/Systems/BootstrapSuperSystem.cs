@@ -1,18 +1,19 @@
 using Latios;
 using Latios.Systems;
+using Latios.Transforms.Systems;
+using Survivors.Play.Systems;
 using Unity.Entities;
 
 namespace Survivors.Setup.Systems
 {
-	[UpdateInGroup(typeof(LatiosWorldSyncGroup), OrderFirst = true)]
-	[UpdateAfter(typeof(MergeBlackboardsSystem))]
+
+	[UpdateAfter(typeof(TransformSuperSystem))]
 	public partial class BootstrapSuperSystem : RootSuperSystem
 	{
 
 		protected override void CreateSystems()
 		{
-			GetOrCreateAndAddUnmanagedSystem<MainMenuSystem>();
-			GetOrCreateAndAddManagedSystem<MainMenuManagedSystem>();
+			GetOrCreateAndAddManagedSystem<PlayerSuperSystem>();
 		}
 	}
 }

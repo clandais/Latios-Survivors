@@ -3,6 +3,7 @@ using Latios.Authoring;
 using Latios.Calligraphics;
 using Latios.Kinemation;
 using Latios.Kinemation.Authoring;
+using Latios.Mimic;
 using Latios.Myri;
 using Latios.Psyshock.Authoring;
 using Latios.Transforms;
@@ -17,11 +18,12 @@ namespace Survivors.Setup
 	{
 		public void InitializeBakingForAllWorlds(ref CustomBakingBootstrapContext context)
 		{
-			//Latios.Authoring.CoreBakingBootstrap.ForceRemoveLinkedEntityGroupsOfLength1(ref context);
-			TransformsBakingBootstrap.InstallLatiosTransformsBakers(ref context);
-			PsyshockBakingBootstrap.InstallUnityColliderBakers(ref context);
-			KinemationBakingBootstrap.InstallKinemation(ref context);
-			//Latios.Mimic.Authoring.MimicBakingBootstrap.InstallMecanimAddon(ref context);
+			Latios.Authoring.CoreBakingBootstrap.ForceRemoveLinkedEntityGroupsOfLength1(ref context);
+			Latios.Transforms.Authoring.TransformsBakingBootstrap.InstallLatiosTransformsBakers(ref context);
+			Latios.Psyshock.Authoring.PsyshockBakingBootstrap.InstallUnityColliderBakers(ref context);
+			Latios.Kinemation.Authoring.KinemationBakingBootstrap.InstallKinemation(ref context);
+
+			Latios.Mimic.Authoring.MimicBakingBootstrap.InstallMecanimAddon(ref context);
 		}
 	}
 
@@ -30,16 +32,15 @@ namespace Survivors.Setup
 	{
 		public World InitializeOrModify(World defaultEditorWorld)
 		{
-			var world = new LatiosWorld(defaultEditorWorld.Name, defaultEditorWorld.Flags);
+			var world                        = new LatiosWorld(defaultEditorWorld.Name, defaultEditorWorld.Flags);
+			world.zeroToleranceForExceptions = true;
 
 			var systems = DefaultWorldInitialization.GetAllSystemTypeIndices(WorldSystemFilterFlags.Default, true);
-			BootstrapTools.InjectUnitySystems(systems, world, world.simulationSystemGroup);
+			BootstrapTools.InjectSystems(systems, world, world.simulationSystemGroup);
 
-			TransformsBootstrap.InstallTransforms(world, world.simulationSystemGroup);
-			KinemationBootstrap.InstallKinemation(world);
-			CalligraphicsBootstrap.InstallCalligraphics(world);
-
-			BootstrapTools.InjectUserSystems(systems, world, world.simulationSystemGroup);
+			Latios.Transforms.TransformsBootstrap.InstallTransforms(world, world.simulationSystemGroup);
+			Latios.Kinemation.KinemationBootstrap.InstallKinemation(world);
+			Latios.Calligraphics.CalligraphicsBootstrap.InstallCalligraphics(world);
 
 			return world;
 		}
@@ -50,23 +51,22 @@ namespace Survivors.Setup
 	{
 		public bool Initialize(string defaultWorldName)
 		{
-			var world = new LatiosWorld(defaultWorldName);
+			var world                             = new LatiosWorld(defaultWorldName);
 			World.DefaultGameObjectInjectionWorld = world;
-			world.useExplicitSystemOrdering = true;
+			world.useExplicitSystemOrdering       = true;
+			world.zeroToleranceForExceptions      = true;
 
 			var systems = DefaultWorldInitialization.GetAllSystemTypeIndices(WorldSystemFilterFlags.Default);
 
 			BootstrapTools.InjectUnitySystems(systems, world, world.simulationSystemGroup);
 
-
 			CoreBootstrap.InstallSceneManager(world);
-
-			TransformsBootstrap.InstallTransforms(world, world.simulationSystemGroup);
-			MyriBootstrap.InstallMyri(world);
-			KinemationBootstrap.InstallKinemation(world);
-			//Latios.Mimic.MimicBootstrap.InstallMecanimAddon(world);
-			CalligraphicsBootstrap.InstallCalligraphics(world);
-			CalligraphicsBootstrap.InstallCalligraphicsAnimations(world);
+			Latios.Transforms.TransformsBootstrap.InstallTransforms(world, world.simulationSystemGroup);
+			Latios.Myri.MyriBootstrap.InstallMyri(world);
+			Latios.Kinemation.KinemationBootstrap.InstallKinemation(world);
+			Latios.Mimic.MimicBootstrap.InstallMecanimAddon(world);
+			Latios.Calligraphics.CalligraphicsBootstrap.InstallCalligraphics(world);
+			Latios.Calligraphics.CalligraphicsBootstrap.InstallCalligraphicsAnimations(world);
 
 			BootstrapTools.InjectRootSuperSystems(systems, world, world.simulationSystemGroup);
 
