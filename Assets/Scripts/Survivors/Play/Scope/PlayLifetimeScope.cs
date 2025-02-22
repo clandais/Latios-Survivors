@@ -1,26 +1,44 @@
+using Survivors.Play.MonoBehaviours;
 using Survivors.Play.Systems;
-using Survivors.Setup.Scope.Messages.GlobalMessages;
+using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 using VitalRouter;
+using VitalRouter.VContainer;
 
 namespace Survivors.Play.Scope
 {
 	public class PlayLifetimeScope : LifetimeScope
 	{
-		
-		
+		[SerializeField] private PlayStateMenu _playStateMenu;
+
 		protected override void Configure(IContainerBuilder builder)
 		{
 
+			builder.RegisterInstance(_playStateMenu);
+
+			builder.UseEntryPoints(cfg =>
+			{
+				cfg.Add<PlayLifetimeContoller>();
+				cfg.OnException(Debug.LogException);
+			});
+
+			builder.RegisterVitalRouter(routingBuilder =>
+			{
+
+				routingBuilder.Map<PlayStateRouter>();
+			});
 
 			builder.RegisterSystemFromDefaultWorld<CinemachineTargetUpdater>();
-			
-			builder.RegisterBuildCallback( container =>
+			builder.RegisterBuildCallback(container =>
 			{
-				var publisher = container.Resolve<ICommandPublisher>();
-				publisher.PublishAsync(new TriggerCurtainFade() { FromAlpha = 1f, ToAlpha = 0f, Duration = 1f});
+				var publisher       = Parent.Container.Resolve<ICommandPublisher>();
+				var playStateRouter = container.Resolve<PlayStateRouter>();
+				playStateRouter.ParentPublisher = publisher;
+
 			});
+
+
 		}
 	}
 }

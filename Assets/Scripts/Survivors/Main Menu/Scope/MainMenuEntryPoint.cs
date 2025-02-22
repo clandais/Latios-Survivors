@@ -1,5 +1,6 @@
 using System;
 using System.Threading;
+using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using R3;
 using Survivors.Setup.MonoBehaviours;
@@ -12,7 +13,7 @@ using VitalRouter;
 
 namespace Survivors.Main_Menu.Scope
 {
-	public class MainMenuEntryPoint : IStartable, IDisposable
+	public class MainMenuEntryPoint : IStartable, IAsyncStartable, IDisposable
 	{
 		[Inject] private MainMenuBehaviour _mainMenuBehaviour;
 		[Inject] private ICommandPublisher _commandPublisher;
@@ -21,32 +22,35 @@ namespace Survivors.Main_Menu.Scope
 		
 		public void Start()
 		{
-			var dbb = Disposable.CreateBuilder();
-			_mainMenuBehaviour.StartButton.OnClickAsObservable().Subscribe(OnStartButtonClicked)
-				.AddTo(ref dbb);
+
+			DisposableBuilder d = Disposable.CreateBuilder();
 			
-			_disposable = dbb.Build();
-		}
-		
-		
-		void OnStartButtonClicked(Unit _)
-		{
-			_mainMenuBehaviour.StartButton.interactable = false;
-			NotifyStartButtonClicked().Forget();
-		}
-		
-		async UniTask NotifyStartButtonClicked()
-		{
-			// Wait for the command to be processed
-			await _commandPublisher.PublishAsync(new StartButtonClickedCommand());
+			_mainMenuBehaviour.StartButtonClicked.AsObservable()
+				.SubscribeAwait(OnStartButtonClicked)
+				.AddTo(ref d);
 			
-			// Unload the current scene
-			await _commandPublisher.PublishAsync(new PlayStateCommand());
+
+			_disposable = d.Build();
+			
 		}
+		
+		public async UniTask StartAsync(CancellationToken cancellation = new CancellationToken())
+		{
+			await _commandPublisher.PublishAsync(new TriggerCurtainFade { FromAlpha = 1f, ToAlpha = 0f, Duration = 1f}, cancellation);
+		}
+		
+		
+		async ValueTask OnStartButtonClicked(Unit _, CancellationToken cancellation)
+		{
+			await _commandPublisher.PublishAsync(new StartButtonClickedCommand(), cancellation);
+		}
+		
 
 		public void Dispose()
 		{
-			_disposable?.Dispose();
+			_disposable.Dispose();
 		}
+
+
 	}
 }

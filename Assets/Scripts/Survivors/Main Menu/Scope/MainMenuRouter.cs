@@ -1,3 +1,4 @@
+using System;
 using Cysharp.Threading.Tasks;
 using Survivors.Setup.Scope.Messages.GlobalMessages;
 using VContainer;
@@ -11,14 +12,22 @@ namespace Survivors.Main_Menu.Scope
 	}
 
 	[Routes]
-	public partial class MainMenuRouter
+	public partial class MainMenuRouter : IDisposable
 	{
-		[Inject] private ICommandPublisher _commandPublisher;
+		[Inject]
+		private ICommandPublisher _parentPublisher; 
 
 		[Route]
 		private async UniTask On(StartButtonClickedCommand _)
 		{
-			await _commandPublisher.PublishAsync(new TriggerCurtainFade { FromAlpha = 0f, ToAlpha = 1f, Duration = 1f });
+			await UniTask.CompletedTask;
+			await _parentPublisher.PublishAsync(new TriggerCurtainFade { FromAlpha = 0f, ToAlpha = 1f, Duration = 1f });
+			_parentPublisher.PublishAsync(new PlayStateCommand()).AsUniTask().Forget();
+		}
+
+		public void Dispose()
+		{
+			UnmapRoutes();
 		}
 	}
 }

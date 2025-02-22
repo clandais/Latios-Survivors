@@ -1,8 +1,10 @@
 
 using Survivors.Setup.MonoBehaviours;
+using Survivors.Setup.Scope.Interceptors;
 using Survivors.Setup.Scope.Messages;
 using Survivors.Setup.Scope.Messages.GlobalMessages;
 using Survivors.Setup.ScriptableObjects;
+using Survivors.Setup.Systems;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
@@ -26,8 +28,16 @@ namespace Survivors.Setup.Scope
 			
 			builder.RegisterVitalRouter(routingBuilder =>
 			{
+				routingBuilder.Isolated = true;
+				routingBuilder.Filters
+					.Add<ExceptionHandling>()
+					.Add<LoggingInterceptor>();
+				
 				routingBuilder.Map<GlobalRouter>();
 			});
+
+
+
 			
 			builder.RegisterBuildCallback( container =>
 			{

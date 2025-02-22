@@ -1,0 +1,17 @@
+{
+    "name": "Survivors.Interceptors",
+    "rootNamespace": "Survivors",
+    "references": [
+        "GUID:77aea589fe3f34fa883d9f7e26eee12e",
+        "GUID:9efec2bb3a28f6240a1d6150e5bc001d"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -29,10 +29,12 @@ namespace Survivors.Play.Systems
 			var actions = _playerStateInput.Player;
 
 			float2 movement = actions.Move.ReadValue<Vector2>();
+			bool isSprinting = actions.Sprint.ReadValue<float>() > 0.1f;
 			
 			var inputState = new PlayerInputState
 			{
-				Direction = movement
+				Direction = movement,
+				IsSprinting = isSprinting
 			};
 
 			foreach (var playerInputState in SystemAPI.Query<RefRW<PlayerInputState>>().WithAll<PlayerTag>())

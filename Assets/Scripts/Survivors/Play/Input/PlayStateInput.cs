@@ -73,9 +73,7 @@ namespace Survivors.Play.Input
     ///     #endregion
     /// }
     /// </code>
-    /// </exam
-    /// 5
-    /// ple>
+    /// </example>
     public partial class @PlayStateInput: IInputActionCollection2, IDisposable
     {
         /// <summary>
@@ -171,7 +169,7 @@ namespace Survivors.Play.Input
                     ""name"": ""Sprint"",
                     ""type"": ""Button"",
                     ""id"": ""93fe15b8-a5c8-4bd5-90d2-6fb180ad8dd6"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false

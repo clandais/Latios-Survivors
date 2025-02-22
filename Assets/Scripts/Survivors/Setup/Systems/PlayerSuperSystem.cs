@@ -1,20 +1,29 @@
 using Latios;
-using Latios.Transforms.Systems;
 using Survivors.Play.Systems;
+using Survivors.Setup.Components;
 using Unity.Entities;
-using UnityEngine;
 
 namespace Survivors.Setup.Systems
 {
-	
+
 	public partial class PlayerSuperSystem : SuperSystem
 	{
+		private EntityQuery _pauseQuery;
 
 		protected override void CreateSystems()
 		{
 			GetOrCreateAndAddManagedSystem<CinemachineTargetUpdater>();
 			GetOrCreateAndAddManagedSystem<PlayerInputReadSystem>();
-			GetOrCreateAndAddUnmanagedSystem<PlayerControllerSystem>();
+			GetOrCreateAndAddUnmanagedSystem<PlayerDesiredMotionSystem>();
+			GetOrCreateAndAddUnmanagedSystem<PlayerAnimationSystem>();
+
+			_pauseQuery = Fluent.WithAnyEnabled<PauseRequestedTag>(true).Build();
+		}
+
+		public override bool ShouldUpdateSystem()
+		{
+
+			return _pauseQuery.IsEmptyIgnoreFilter;
 		}
 	}
 }

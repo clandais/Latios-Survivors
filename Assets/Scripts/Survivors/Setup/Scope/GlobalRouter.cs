@@ -2,10 +2,9 @@ using System;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using Survivors.Setup.MonoBehaviours;
-using Survivors.Setup.Scope.Interceptors;
-using Survivors.Setup.Scope.Messages;
 using Survivors.Setup.Scope.Messages.GlobalMessages;
 using Survivors.Setup.ScriptableObjects;
+using Survivors.Setup.Systems;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
@@ -18,50 +17,84 @@ namespace Survivors.Setup.Scope
 {
 
 	[Routes]
-	[Filter(typeof(LoggingInterceptor))]
-	[Filter(typeof(GameStateInterceptor))]
 	public partial class GlobalRouter : IDisposable
 	{
+
+
 		[Inject] private CurtainBehaviour _curtainBehaviour;
 		[Inject] private GameScenesReferences _gameScenesReferences;
-		
-		private AsyncOperationHandle<SceneInstance> _mainMenuScene;
-		private AsyncOperationHandle<SceneInstance> _playScene;
-		
-		[Route]
-		async UniTask On(MainMenuStateCommand _)
-		{
-			var handle = Addressables.LoadSceneAsync(_gameScenesReferences.mainMenuScene, LoadSceneMode.Additive);
-			await handle.Task;
-			
-			_mainMenuScene = handle;
-		}
-		
-		
-		[Route]
-		private async UniTask On(PlayStateCommand ç)
-		{
-			await Addressables.UnloadSceneAsync(_mainMenuScene);
-			var handle = Addressables.LoadSceneAsync(_gameScenesReferences.playScene, LoadSceneMode.Additive);
-			await handle.Task;
-			
-			_playScene = handle;
-		}
+
+		private readonly Dictionary<string, AsyncOperationHandle<SceneInstance>> _handles = new();
 		
 
-		[Route]
-		async UniTask On(TriggerCurtainFade cmd)
+		private async UniTask DisposeScene(string assetGuid)
 		{
-			await _curtainBehaviour.FadeAlpha( cmd.FromAlpha, cmd.ToAlpha, cmd.Duration);
+			if (_handles.ContainsKey(assetGuid))
+			{
+				var h = _handles[assetGuid];
+
+				if (h.IsValid())
+					Addressables.Release(h);
+
+				var handle = Addressables.UnloadSceneAsync(_handles[assetGuid]);
+				await handle.Task;
+				_handles.Remove(assetGuid);
+			}
 		}
+
+
+		[Route]
+		private async UniTask On(MainMenuStateCommand _)
+		{
+
+			await DisposeScene(_gameScenesReferences.playScene.AssetGUID);
+
+			if (_handles.ContainsKey(_gameScenesReferences.mainMenuScene.AssetGUID))
+			{
+				Debug.LogWarning("MainMenuScene is already loaded");
+				return;
+			}
+
+			{
+
+				var handle = Addressables.LoadSceneAsync(_gameScenesReferences.mainMenuScene, LoadSceneMode.Additive);
+				_handles.Add(_gameScenesReferences.mainMenuScene.AssetGUID, handle);
+
+				await handle.Task;
+			}
+		}
+
+		[Route]
+		private async UniTask On(PlayStateCommand _)
+		{
+
+			await DisposeScene(_gameScenesReferences.mainMenuScene.AssetGUID);
+
+			if (_handles.ContainsKey(_gameScenesReferences.playScene.AssetGUID))
+			{
+				Debug.LogWarning("PlayScene is already loaded");
+				return;
+			}
+
+			{
+				var handle = Addressables.LoadSceneAsync(_gameScenesReferences.playScene, LoadSceneMode.Additive);
+				_handles.Add(_gameScenesReferences.playScene.AssetGUID, handle);
+
+				await handle.Task;
+			}
+		}
+
+
+		[Route]
+		private async UniTask On(TriggerCurtainFade cmd)
+		{
+			await _curtainBehaviour.FadeAlpha(cmd.FromAlpha, cmd.ToAlpha, cmd.Duration);
+		}
+
 
 		public void Dispose()
 		{
-			if (_mainMenuScene.IsValid())
-				_mainMenuScene.Release();
-			
-			if (_playScene.IsValid())
-				_playScene.Release();
+
 		}
 	}
 }
