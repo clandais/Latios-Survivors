@@ -1,8 +1,5 @@
-using Latios;
 using Latios.Kinemation;
 using Latios.Mimic.Addons.Mecanim;
-using Latios.Transforms;
-using Survivors.Play.Authoring;
 using Survivors.Play.Components;
 using Unity.Burst;
 using Unity.Collections;
@@ -16,53 +13,37 @@ namespace Survivors.Play.Systems
 	public partial struct PlayerAnimationSystem : ISystem
 	{
 
-		private EntityQuery _query;
-		private float _perviousDeltaTime;
-		
+
 		[BurstCompile]
 		public void OnCreate(ref SystemState state)
 		{
-			state.Fluent()
-				.With<PlayerTag>()
-				.With<PlayerInputState>()
-				.Build();
+			state.RequireForUpdate<PlayerTag>();
 		}
 
 
 		[BurstCompile]
 		public void OnUpdate(ref SystemState state)
 		{
-
-			float t = (float)SystemAPI.Time.ElapsedTime;
-			float deltaTime = SystemAPI.Time.DeltaTime;
-			
-			state.Dependency = new AnimationJob
-				{
-					Et = t,
-					DeltaTime = deltaTime
-				}
+			state.Dependency = new AnimationJob()
 				.ScheduleParallel(state.Dependency);
-			
-			_perviousDeltaTime = deltaTime;
+
 		}
-		
+
 		[WithAll(typeof(PlayerTag))]
 		[BurstCompile]
-		private partial struct AnimationJob  : IJobEntity
+		private partial struct AnimationJob : IJobEntity
 		{
-			[ReadOnly] public float Et;
-			[ReadOnly] public float DeltaTime;
 
 			[BurstCompile]
 			public void Execute(
-				OptimizedSkeletonAspect skeleton, 
-				MecanimAspect mecanimAspect, 
-				ref PlayerVelocity playerVelocity)
+				OptimizedSkeletonAspect skeleton,
+				MecanimAspect mecanimAspect,
+				ref PlayerMotion motion)
 			{
-				
-				mecanimAspect.SetFloat("Velocity", math.length(playerVelocity.Value));
+
+				mecanimAspect.SetFloat("Velocity", math.length(motion.Velocity));
 			}
 		}
 	}
-	
+
 }

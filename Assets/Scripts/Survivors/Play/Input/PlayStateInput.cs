@@ -115,7 +115,7 @@ namespace Survivors.Play.Input
                     ""name"": ""Attack"",
                     ""type"": ""Button"",
                     ""id"": ""4d74e47f-648e-431e-baac-80c04411eef9"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
@@ -124,7 +124,7 @@ namespace Survivors.Play.Input
                     ""name"": ""Interact"",
                     ""type"": ""Button"",
                     ""id"": ""caf27c6f-48c1-4992-9988-cac280c73628"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": ""Hold"",
                     ""initialStateCheck"": false
@@ -133,7 +133,7 @@ namespace Survivors.Play.Input
                     ""name"": ""Crouch"",
                     ""type"": ""Button"",
                     ""id"": ""908244a4-2318-4f60-ac3c-739c4c72eeda"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
@@ -142,7 +142,7 @@ namespace Survivors.Play.Input
                     ""name"": ""Jump"",
                     ""type"": ""Button"",
                     ""id"": ""1191a4e9-8d4c-4098-9aac-3f827768ec61"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
@@ -160,7 +160,7 @@ namespace Survivors.Play.Input
                     ""name"": ""Next"",
                     ""type"": ""Button"",
                     ""id"": ""1c5df4fa-6323-4c6c-ba52-a54ea8576523"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
@@ -173,6 +173,15 @@ namespace Survivors.Play.Input
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Mouse Moved"",
+                    ""type"": ""Value"",
+                    ""id"": ""169cccb6-1ddb-408b-b21e-d975d207592c"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -560,6 +569,17 @@ namespace Survivors.Play.Input
                     ""action"": ""Crouch"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""08eb5da8-a953-4d3f-a3f2-9eec1a8b6f1e"",
+                    ""path"": ""<Pointer>/position"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";KB and Mouse"",
+                    ""action"": ""Mouse Moved"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -594,6 +614,7 @@ namespace Survivors.Play.Input
             m_Player_Previous = m_Player.FindAction("Previous", throwIfNotFound: true);
             m_Player_Next = m_Player.FindAction("Next", throwIfNotFound: true);
             m_Player_Sprint = m_Player.FindAction("Sprint", throwIfNotFound: true);
+            m_Player_MouseMoved = m_Player.FindAction("Mouse Moved", throwIfNotFound: true);
         }
 
         ~@PlayStateInput()
@@ -683,6 +704,7 @@ namespace Survivors.Play.Input
         private readonly InputAction m_Player_Previous;
         private readonly InputAction m_Player_Next;
         private readonly InputAction m_Player_Sprint;
+        private readonly InputAction m_Player_MouseMoved;
         /// <summary>
         /// Provides access to input actions defined in input action map "Player".
         /// </summary>
@@ -730,6 +752,10 @@ namespace Survivors.Play.Input
             /// Provides access to the underlying input action "Player/Sprint".
             /// </summary>
             public InputAction @Sprint => m_Wrapper.m_Player_Sprint;
+            /// <summary>
+            /// Provides access to the underlying input action "Player/MouseMoved".
+            /// </summary>
+            public InputAction @MouseMoved => m_Wrapper.m_Player_MouseMoved;
             /// <summary>
             /// Provides access to the underlying input action map instance.
             /// </summary>
@@ -783,6 +809,9 @@ namespace Survivors.Play.Input
                 @Sprint.started += instance.OnSprint;
                 @Sprint.performed += instance.OnSprint;
                 @Sprint.canceled += instance.OnSprint;
+                @MouseMoved.started += instance.OnMouseMoved;
+                @MouseMoved.performed += instance.OnMouseMoved;
+                @MouseMoved.canceled += instance.OnMouseMoved;
             }
 
             /// <summary>
@@ -821,6 +850,9 @@ namespace Survivors.Play.Input
                 @Sprint.started -= instance.OnSprint;
                 @Sprint.performed -= instance.OnSprint;
                 @Sprint.canceled -= instance.OnSprint;
+                @MouseMoved.started -= instance.OnMouseMoved;
+                @MouseMoved.performed -= instance.OnMouseMoved;
+                @MouseMoved.canceled -= instance.OnMouseMoved;
             }
 
             /// <summary>
@@ -937,6 +969,13 @@ namespace Survivors.Play.Input
             /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
             /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
             void OnSprint(InputAction.CallbackContext context);
+            /// <summary>
+            /// Method invoked when associated input action "Mouse Moved" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+            /// </summary>
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+            /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+            void OnMouseMoved(InputAction.CallbackContext context);
         }
     }
 }

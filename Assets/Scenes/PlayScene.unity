@@ -149,7 +149,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _SceneAsset: {fileID: 102900000, guid: b56bfd5e047d7c44b8c24a513d840c7c, type: 3}
-  _HierarchyColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+  _HierarchyColor: {r: 0.3679244, g: 0.5425985, b: 1, a: 1}
   AutoLoadScene: 1
   _SceneGUID:
     Value:
@@ -202,7 +202,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _SceneAsset: {fileID: 102900000, guid: 5c84aaa4d640f354c8b5b443796cedb0, type: 3}
-  _HierarchyColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+  _HierarchyColor: {r: 0.46855342, g: 1, b: 0.52169424, a: 1}
   AutoLoadScene: 1
   _SceneGUID:
     Value:

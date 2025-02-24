@@ -1,26 +1,24 @@
 using Latios;
 using Latios.Mimic.Addons.Mecanim;
 using Latios.Transforms;
-using Survivors.Play.Authoring;
 using Survivors.Play.Components;
+using Survivors.Play.Utilities;
 using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
-using UnityEngine;
 
 namespace Survivors.Play.Systems
 {
 	[RequireMatchingQueriesForUpdate]
 	[BurstCompile]
-	public partial struct PlayerDesiredMotionSystem :  ISystem
+	public partial struct PlayerDesiredMotionSystem : ISystem
 	{
-		private EntityQuery _query;
-		
+
 		[BurstCompile]
 		public void OnCreate(ref SystemState state)
 		{
-			_query = state.Fluent().With<PlayerTag>().With<PlayerInputState>().Build();
+			state.RequireForUpdate<PlayerTag>();
 		}
 
 		[BurstCompile]
@@ -36,49 +34,35 @@ namespace Survivors.Play.Systems
 
 		}
 	}
-	
-	
+
+
 	[BurstCompile]
-	partial struct PlayerDesiredMotionJob : IJobEntity
+	internal partial struct PlayerDesiredMotionJob : IJobEntity
 	{
 		[ReadOnly] public float DeltaTime;
-		
+
 		[BurstCompile]
 		public void Execute(
 			TransformAspect transformAspect,
-			MecanimAspect mecanimAspect,
-			in PlayerInputState inputState, 
-			in PlayerVelocityChange playerVelocityChange,
+			in PlayerInputState inputState,
 			in PlayerSpeedSettings speedSettings,
-			
-			ref PlayerVelocity playerVelocity,
-			ref PlayerDesiredMotion desiredMotion)
+			ref PlayerMotion motion)
 		{
 			float2 dir = inputState.Direction;
-			
+
 			float desiredSpeed = inputState.IsSprinting ? speedSettings.RunSpeed : speedSettings.WalkSpeed;
-			
-			desiredMotion.DesiredVelocity = new float3(dir.x, 0, dir.y) * desiredSpeed;
-			
-			playerVelocity.LastValue = playerVelocity.Value;
-			playerVelocity.Value = MoveTowards(playerVelocity.Value, desiredMotion.DesiredVelocity, playerVelocityChange.Value * DeltaTime);
-			
-			transformAspect.worldPosition += playerVelocity.Value * DeltaTime;
-		}
-		
-		
-		
-		[BurstCompile]
-		float3 MoveTowards(float3 current, float3 target, float maxDistanceDelta)
-		{
-			float num1 = target.x - current.x;
-			float num2 = target.y - current.y;
-			float num3 = target.z - current.z;
-			float d = (float) ((double) num1 * (double) num1 + (double) num2 * (double) num2 + (double) num3 * (double) num3);
-			if ((double) d == 0.0 || (double) maxDistanceDelta >= 0.0 && (double) d <= (double) maxDistanceDelta * (double) maxDistanceDelta)
-				return target;
-			float num4 = (float) math.sqrt((double) d);
-			return new Vector3(current.x + num1 / num4 * maxDistanceDelta, current.y + num2 / num4 * maxDistanceDelta, current.z + num3 / num4 * maxDistanceDelta);
+
+			motion.DesiredVelocity = new float3(dir.x, 0, dir.y) * desiredSpeed;
+
+			motion.Velocity = motion.Velocity.MoveTowards(motion.DesiredVelocity, speedSettings.VelocityChange * DeltaTime);
+
+			float3     position     = transformAspect.worldPosition;
+			float2     aim          = inputState.MousePosition;
+			float3     lookDir      = new float3(aim.x, 0, aim.y) - position;
+			quaternion lookRotation = quaternion.LookRotation(lookDir, math.up());
+			motion.DesiredRotation = lookRotation;
+			motion.Rotation = transformAspect.worldRotation.RotateTowards(motion.DesiredRotation, 90 * DeltaTime);
+
 		}
 	}
 }

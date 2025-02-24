@@ -1,5 +1,8 @@
 using Latios;
 using Latios.Authoring;
+using Latios.Calligraphics;
+using Latios.Kinemation;
+using Latios.Transforms;
 using Unity.Entities;
 using UnityEngine.Scripting;
 
@@ -19,24 +22,27 @@ namespace Survivors.BootStrap
 		}
 	}
 
+#if UNITY_EDITOR
 	[Preserve]
 	public class LatiosEditorBootstrap : ICustomEditorBootstrap
 	{
 		public World InitializeOrModify(World defaultEditorWorld)
 		{
-			var world                        = new LatiosWorld(defaultEditorWorld.Name, defaultEditorWorld.Flags);
+			var world                        = new LatiosWorld("Latios Editor World", defaultEditorWorld.Flags);
 			world.zeroToleranceForExceptions = true;
 
 			var systems = DefaultWorldInitialization.GetAllSystemTypeIndices(WorldSystemFilterFlags.Default, true);
 			BootstrapTools.InjectSystems(systems, world, world.simulationSystemGroup);
 
-			Latios.Transforms.TransformsBootstrap.InstallTransforms(world, world.simulationSystemGroup);
-			Latios.Kinemation.KinemationBootstrap.InstallKinemation(world);
-			Latios.Calligraphics.CalligraphicsBootstrap.InstallCalligraphics(world);
+			TransformsBootstrap.InstallTransforms(world, world.simulationSystemGroup);
+			KinemationBootstrap.InstallKinemation(world);
+			
+			CalligraphicsBootstrap.InstallCalligraphics(world);
 
 			return world;
 		}
 	}
+#endif
 
 	[Preserve]
 	public class LatiosBootstrap : ICustomBootstrap

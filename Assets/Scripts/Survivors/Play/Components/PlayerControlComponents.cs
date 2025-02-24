@@ -10,27 +10,22 @@ namespace Survivors.Play.Components
 	{
 		public float2 Direction;
 		public bool IsSprinting;
+		public float2 MousePosition;
 	}
 	
-	public struct PlayerDesiredMotion : IComponentData
+	public struct PlayerMotion : IComponentData
 	{
 		public float3 DesiredVelocity;
+		public quaternion DesiredRotation;
+		public float3 Velocity;
+		public quaternion Rotation;
 	}
 	
 	public struct PlayerSpeedSettings : IComponentData
 	{
 		public float WalkSpeed;
 		public float RunSpeed;
+		public float VelocityChange;
 	}
 	
-	public struct PlayerVelocityChange : IComponentData
-	{
-		public float Value;
-	}
-	
-	public struct PlayerVelocity : IComponentData
-	{
-		public float3 LastValue;
-		public float3 Value;
-	}
 }

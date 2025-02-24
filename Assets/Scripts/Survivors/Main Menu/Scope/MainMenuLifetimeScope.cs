@@ -1,3 +1,4 @@
+using Latios;
 using Survivors.BootStrap;
 using Survivors.Setup;
 using Survivors.Setup.MonoBehaviours;
@@ -22,7 +23,6 @@ namespace Survivors.Main_Menu.Scope
 		{
 			builder.RegisterInstance(mainMenuBehaviour);
 
-			
 			World.DefaultGameObjectInjectionWorld?.Dispose();
 			
 			if (new LatiosBootstrap().Initialize("LatiosWorld"))
@@ -33,7 +33,6 @@ namespace Survivors.Main_Menu.Scope
 			{
 				Debug.LogError("Latios failed to initialize");
 			}
-
 
 			builder.RegisterSystemFromDefaultWorld<GlobalInputReadSystem>();
 			
