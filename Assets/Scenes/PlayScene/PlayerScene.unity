@@ -119,18 +119,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!114 &1678768407
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 919132147477038148}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe8523ab8f2049d28423d424c6a8b67f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1678768408
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -144,8 +132,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   walkSpeed: 4
-  runSpeed: 10
-  velocityChange: 18
+  runSpeed: 12
+  velocityChange: 15
 --- !u!1 &87352080337511739
 GameObject:
   m_ObjectHideFlags: 0
@@ -453,7 +441,6 @@ GameObject:
   - component: {fileID: 543450652021530366}
   - component: {fileID: 5866666020366664836}
   - component: {fileID: 1678768408}
-  - component: {fileID: 1678768407}
   - component: {fileID: 5866666020366664837}
   m_Layer: 0
   m_Name: Hero

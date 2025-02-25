@@ -1,5 +1,7 @@
+
+using Latios;
 using Latios.Kinemation;
-using Latios.Mimic.Addons.Mecanim;
+using Latios.Mecanim;
 using Survivors.Play.Components;
 using Unity.Burst;
 using Unity.Collections;
@@ -41,7 +43,10 @@ namespace Survivors.Play.Systems
 				ref PlayerMotion motion)
 			{
 
-				mecanimAspect.SetFloat("Velocity", math.length(motion.Velocity));
+				var rotation = motion.Rotation;
+				var rotatedVelocity = math.rotate(rotation, motion.Velocity);
+				mecanimAspect.SetFloat("VelocityY", rotatedVelocity.z);
+				mecanimAspect.SetFloat("VelocityX", rotatedVelocity.x);
 			}
 		}
 	}

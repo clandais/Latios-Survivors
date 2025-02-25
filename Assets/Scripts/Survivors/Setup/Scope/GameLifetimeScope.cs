@@ -1,10 +1,10 @@
-
+using Latios;
 using Survivors.Setup.MonoBehaviours;
 using Survivors.Setup.Scope.Interceptors;
-using Survivors.Setup.Scope.Messages;
 using Survivors.Setup.Scope.Messages.GlobalMessages;
 using Survivors.Setup.ScriptableObjects;
-using Survivors.Setup.Systems;
+using Unity.Entities;
+using UnityEditor;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
@@ -18,32 +18,47 @@ namespace Survivors.Setup.Scope
 		[SerializeField] private GameScenesReferences gameScenesReferences;
 		[SerializeField] private CurtainBehaviour curtainBehaviour;
 		[SerializeField] private Transform cinemachineTarget;
-		
+
+#if UNITY_EDITOR
+
+		protected override void Awake()
+		{
+			base.Awake();
+
+			EditorApplication.playModeStateChanged += state =>
+			{
+				if (state == PlayModeStateChange.ExitingPlayMode)
+				{
+					World.DisposeAllWorlds();
+					UnityEditorTool.RestartEditorWorld();
+				}
+			};
+		}
+#endif
+
 		protected override void Configure(IContainerBuilder builder)
 		{
 			builder.RegisterInstance(gameScenesReferences);
 			builder.RegisterInstance(curtainBehaviour);
 			builder.RegisterInstance(cinemachineTarget);
-			
-			
+
+
 			builder.RegisterVitalRouter(routingBuilder =>
 			{
 				routingBuilder.Isolated = true;
 				routingBuilder.Filters
 					.Add<ExceptionHandling>()
 					.Add<LoggingInterceptor>();
-				
+
 				routingBuilder.Map<GlobalRouter>();
 			});
 
 
-
-			
-			builder.RegisterBuildCallback( container =>
+			builder.RegisterBuildCallback(container =>
 			{
 				var publisher = container.Resolve<ICommandPublisher>();
-				
-				publisher.PublishAsync( new MainMenuStateCommand());
+
+				publisher.PublishAsync(new MainMenuStateCommand());
 			});
 		}
 	}

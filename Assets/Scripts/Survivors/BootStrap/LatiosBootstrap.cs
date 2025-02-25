@@ -1,14 +1,13 @@
+using System;
+using System.Collections.Generic;
 using Latios;
 using Latios.Authoring;
-using Latios.Calligraphics;
-using Latios.Kinemation;
-using Latios.Transforms;
+using Survivors.Play.Authoring.Mecanim;
 using Unity.Entities;
-using UnityEngine.Scripting;
 
 namespace Survivors.BootStrap
 {
-	[Preserve]
+	[UnityEngine.Scripting.Preserve]
 	public class LatiosBakingBootstrap : ICustomBakingBootstrap
 	{
 		public void InitializeBakingForAllWorlds(ref CustomBakingBootstrapContext context)
@@ -17,34 +16,38 @@ namespace Survivors.BootStrap
 			Latios.Transforms.Authoring.TransformsBakingBootstrap.InstallLatiosTransformsBakers(ref context);
 			Latios.Psyshock.Authoring.PsyshockBakingBootstrap.InstallUnityColliderBakers(ref context);
 			Latios.Kinemation.Authoring.KinemationBakingBootstrap.InstallKinemation(ref context);
-
-			Latios.Mimic.Authoring.MimicBakingBootstrap.InstallMecanimAddon(ref context);
+			Latios.Unika.Authoring.UnikaBakingBootstrap.InstallUnikaEntitySerialization(ref context);
+			Latios.Mecanim.Authoring.MecanimBakingBootstrap.InstallMecanimAddon(ref context);
+			 
+			context.bakingSystemTypesToInject.Add(TypeManager.GetSystemTypeIndex<BlendParametersSmartBlobberSystem>());
 		}
 	}
 
 #if UNITY_EDITOR
-	[Preserve]
+	[UnityEngine.Scripting.Preserve]
 	public class LatiosEditorBootstrap : ICustomEditorBootstrap
 	{
-		public World InitializeOrModify(World defaultEditorWorld)
+		public World Initialize(string defaultEditorWorldName)
 		{
-			var world                        = new LatiosWorld("Latios Editor World", defaultEditorWorld.Flags);
+			var world                        = new LatiosWorld(defaultEditorWorldName, WorldFlags.Editor);
+			world.useExplicitSystemOrdering  = true;
 			world.zeroToleranceForExceptions = true;
 
 			var systems = DefaultWorldInitialization.GetAllSystemTypeIndices(WorldSystemFilterFlags.Default, true);
-			BootstrapTools.InjectSystems(systems, world, world.simulationSystemGroup);
+			BootstrapTools.InjectUnitySystems(systems, world, world.simulationSystemGroup);
 
-			TransformsBootstrap.InstallTransforms(world, world.simulationSystemGroup);
-			KinemationBootstrap.InstallKinemation(world);
+			Latios.Transforms.TransformsBootstrap.InstallTransforms(world, world.simulationSystemGroup);
+			Latios.Kinemation.KinemationBootstrap.InstallKinemation(world);
+			Latios.Calligraphics.CalligraphicsBootstrap.InstallCalligraphics(world);
 			
-			CalligraphicsBootstrap.InstallCalligraphics(world);
+			BootstrapTools.InjectRootSuperSystems(systems, world, world.simulationSystemGroup);
 
 			return world;
 		}
 	}
 #endif
 
-	[Preserve]
+	[UnityEngine.Scripting.Preserve]
 	public class LatiosBootstrap : ICustomBootstrap
 	{
 		public bool Initialize(string defaultWorldName)
@@ -62,10 +65,13 @@ namespace Survivors.BootStrap
 			Latios.Transforms.TransformsBootstrap.InstallTransforms(world, world.simulationSystemGroup);
 			Latios.Myri.MyriBootstrap.InstallMyri(world);
 			Latios.Kinemation.KinemationBootstrap.InstallKinemation(world);
-			Latios.Mimic.MimicBootstrap.InstallMecanimAddon(world);
 			Latios.Calligraphics.CalligraphicsBootstrap.InstallCalligraphics(world);
 			Latios.Calligraphics.CalligraphicsBootstrap.InstallCalligraphicsAnimations(world);
-
+			Latios.Unika.UnikaBootstrap.InstallUnikaEntitySerialization(world);
+			//Latios.LifeFX.LifeFXBootstrap.InstallLifeFX(world);
+			
+			Latios.Mecanim.MecanimBootstrap.InstallMecanimAddon(world);
+			
 			BootstrapTools.InjectRootSuperSystems(systems, world, world.simulationSystemGroup);
 
 			world.initializationSystemGroup.SortSystems();
