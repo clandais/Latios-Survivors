@@ -25,7 +25,7 @@ namespace Survivors.Play.Systems
 		[BurstCompile]
 		public void OnUpdate(ref SystemState state)
 		{
-			float dt = SystemAPI.Time.fixedDeltaTime;
+			float dt = SystemAPI.Time.DeltaTime;
 
 			CollisionLayer collisionLayer = state.GetLatiosWorldUnmanaged().sceneBlackboardEntity.GetCollectionComponent<EnvironmentCollisionLayer>().Layer;
 			

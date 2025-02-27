@@ -10,47 +10,46 @@ namespace Survivors.Setup.Systems
 
 	public partial class PlayerSuperSystem : SuperSystem
 	{
-		private EntityQuery _pauseQuery;
-		private EntityQuery _playerQuery;
+		EntityQuery m_pauseQuery;
+		EntityQuery m_playerQuery;
 
 		protected override void CreateSystems()
 		{
 
-			
 			GetOrCreateAndAddManagedSystem<CinemachineTargetUpdater>();
 			GetOrCreateAndAddManagedSystem<PlayerInputReadSystem>();
+			GetOrCreateAndAddManagedSystem<MotionDebugSystem>();
 			GetOrCreateAndAddUnmanagedSystem<PlayerDesiredMotionSystem>();
-			GetOrCreateAndAddUnmanagedSystem<PlayerAnimationSystem>();
+			GetOrCreateAndAddUnmanagedSystem<PlayerFourDirectionsAnimationSystem>();
 
-
-			_pauseQuery = Fluent.WithAnyEnabled<PauseRequestedTag>(true).Build();
-			_playerQuery = Fluent.With<PlayerTag>().Build();
+			m_pauseQuery  = Fluent.WithAnyEnabled<PauseRequestedTag>(true).Build();
+			m_playerQuery = Fluent.With<PlayerTag>().Build();
 		}
 
 		public override bool ShouldUpdateSystem()
 		{
 
-			return _pauseQuery.IsEmptyIgnoreFilter && !_playerQuery.IsEmptyIgnoreFilter;
+			return m_pauseQuery.IsEmptyIgnoreFilter && !m_playerQuery.IsEmptyIgnoreFilter;
 		}
 	}
-	
 
 	public partial class PhysicsSuperSystem : SuperSystem
 	{
-		private EntityQuery _pauseQuery;
+		EntityQuery m_pauseQuery;
+
 		protected override void CreateSystems()
 		{
 			GetOrCreateAndAddUnmanagedSystem<BuildEnvironmentCollisionLayerSystem>();
 			GetOrCreateAndAddUnmanagedSystem<PlayerMovementSystem>();
 			GetOrCreateAndAddUnmanagedSystem<PhysicsDebugSystem>();
-			
-			_pauseQuery = Fluent.WithAnyEnabled<PauseRequestedTag>(true).Build();
+
+			m_pauseQuery = Fluent.WithAnyEnabled<PauseRequestedTag>(true).Build();
 		}
-		
+
 		public override bool ShouldUpdateSystem()
 		{
 
-			return _pauseQuery.IsEmptyIgnoreFilter;
+			return m_pauseQuery.IsEmptyIgnoreFilter;
 		}
 	}
 }

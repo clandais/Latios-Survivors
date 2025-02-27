@@ -43,24 +43,23 @@ namespace Survivors.Play.Systems
 		[BurstCompile]
 		public void Execute(
 			TransformAspect transformAspect,
-			in PlayerInputState inputState,
-			in PlayerSpeedSettings speedSettings,
-			ref PlayerMotion motion)
+			PlayerMotionAspect motionAspect,
+			in PlayerInputState inputState)
 		{
 			float2 dir = inputState.Direction;
 
-			float desiredSpeed = inputState.IsSprinting ? speedSettings.RunSpeed : speedSettings.WalkSpeed;
+			float desiredSpeed = inputState.IsSprinting ? motionAspect.SpeedSettings.RunSpeed : motionAspect.SpeedSettings.WalkSpeed;
 
-			motion.DesiredVelocity = new float3(dir.x, 0, dir.y) * desiredSpeed;
+			motionAspect.DesiredVelocity = new float3(dir.x, 0, dir.y) * desiredSpeed;
 
-			motion.Velocity = motion.Velocity.MoveTowards(motion.DesiredVelocity, speedSettings.VelocityChange * DeltaTime);
+			motionAspect.Velocity = motionAspect.Velocity.MoveTowards(motionAspect.DesiredVelocity, motionAspect.SpeedSettings.VelocityChange * DeltaTime);
 
 			float3     position     = transformAspect.worldPosition;
 			float2     aim          = inputState.MousePosition;
 			float3     lookDir      = new float3(aim.x, 0, aim.y) - position;
 			quaternion lookRotation = quaternion.LookRotation(lookDir, math.up());
-			motion.DesiredRotation = lookRotation;
-			motion.Rotation = transformAspect.worldRotation.RotateTowards(motion.DesiredRotation, 90 * DeltaTime);
+			motionAspect.DesiredRotation = lookRotation;
+			motionAspect.Rotation        = transformAspect.worldRotation.RotateTowards(motionAspect.DesiredRotation, 90 * DeltaTime);
 
 		}
 	}

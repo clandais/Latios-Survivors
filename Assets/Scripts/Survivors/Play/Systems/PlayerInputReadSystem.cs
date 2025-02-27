@@ -31,6 +31,8 @@ namespace Survivors.Play.Systems
 			float2 movement      = actions.Move.ReadValue<Vector2>();
 			bool   isSprinting   = actions.Sprint.ReadValue<float>() > 0.1f;
 			float2 mousePosition = actions.MouseMoved.ReadValue<Vector2>();
+			
+			bool attack = actions.Attack.ReadValue<float>() > 0.9f;
 
 
 			var ray = Camera.main.ScreenPointToRay(new Vector3(mousePosition.x, mousePosition.y, 0));
@@ -53,6 +55,7 @@ namespace Survivors.Play.Systems
 				Direction = movement,
 				IsSprinting = isSprinting,
 				MousePosition = mousePosition,
+				MainAttackTriggered = attack,
 			};
 
 			foreach (var playerInputState in SystemAPI.Query<RefRW<PlayerInputState>>().WithAll<PlayerTag>())

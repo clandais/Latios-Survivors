@@ -34,34 +34,21 @@ ModelImporter:
     animationWrapMode: 0
     extraExposedTransformPaths:
     - Rig
-    - Barbarian_ArmLeft
-    - Barbarian_ArmRight
-    - Barbarian_Body
-    - Barbarian_Head
-    - Barbarian_LegLeft
-    - Barbarian_LegRight
     - Rig/root
     - Rig/root/hips
     - Rig/root/hips/spine
     - Rig/root/hips/spine/chest
-    - Rig/root/hips/spine/chest/Barbarian_Cape
     - Rig/root/hips/spine/chest/upperarm.l
     - Rig/root/hips/spine/chest/upperarm.l/lowerarm.l
     - Rig/root/hips/spine/chest/upperarm.l/lowerarm.l/wrist.l
     - Rig/root/hips/spine/chest/upperarm.l/lowerarm.l/wrist.l/hand.l
     - Rig/root/hips/spine/chest/upperarm.l/lowerarm.l/wrist.l/hand.l/handslot.l
-    - Rig/root/hips/spine/chest/upperarm.l/lowerarm.l/wrist.l/hand.l/handslot.l/Barbarian_Round_Shield
-    - Rig/root/hips/spine/chest/upperarm.l/lowerarm.l/wrist.l/hand.l/handslot.l/1H_Axe_Offhand
     - Rig/root/hips/spine/chest/upperarm.r
     - Rig/root/hips/spine/chest/upperarm.r/lowerarm.r
     - Rig/root/hips/spine/chest/upperarm.r/lowerarm.r/wrist.r
     - Rig/root/hips/spine/chest/upperarm.r/lowerarm.r/wrist.r/hand.r
     - Rig/root/hips/spine/chest/upperarm.r/lowerarm.r/wrist.r/hand.r/handslot.r
-    - Rig/root/hips/spine/chest/upperarm.r/lowerarm.r/wrist.r/hand.r/handslot.r/1H_Axe
-    - Rig/root/hips/spine/chest/upperarm.r/lowerarm.r/wrist.r/hand.r/handslot.r/2H_Axe
-    - Rig/root/hips/spine/chest/upperarm.r/lowerarm.r/wrist.r/hand.r/handslot.r/Mug
     - Rig/root/hips/spine/chest/head
-    - Rig/root/hips/spine/chest/head/Barbarian_Hat
     - Rig/root/hips/upperleg.l
     - Rig/root/hips/upperleg.l/lowerleg.l
     - Rig/root/hips/upperleg.l/lowerleg.l/foot.l
@@ -70,24 +57,6 @@ ModelImporter:
     - Rig/root/hips/upperleg.r/lowerleg.r
     - Rig/root/hips/upperleg.r/lowerleg.r/foot.r
     - Rig/root/hips/upperleg.r/lowerleg.r/foot.r/toes.r
-    - Rig/root/kneeIK.l
-    - Rig/root/control-toe-roll.l
-    - Rig/root/control-toe-roll.l/control-heel-roll.l
-    - Rig/root/control-toe-roll.l/control-heel-roll.l/control-foot-roll.l
-    - Rig/root/control-toe-roll.l/control-heel-roll.l/control-foot-roll.l/heelIK.l
-    - Rig/root/control-toe-roll.l/control-heel-roll.l/control-foot-roll.l/IK-foot.l
-    - Rig/root/control-toe-roll.l/control-heel-roll.l/IK-toe.l
-    - Rig/root/kneeIK.r
-    - Rig/root/control-toe-roll.r
-    - Rig/root/control-toe-roll.r/control-heel-roll.r
-    - Rig/root/control-toe-roll.r/control-heel-roll.r/control-foot-roll.r
-    - Rig/root/control-toe-roll.r/control-heel-roll.r/control-foot-roll.r/heelIK.r
-    - Rig/root/control-toe-roll.r/control-heel-roll.r/control-foot-roll.r/IK-foot.r
-    - Rig/root/control-toe-roll.r/control-heel-roll.r/IK-toe.r
-    - Rig/root/elbowIK.l
-    - Rig/root/handIK.l
-    - Rig/root/elbowIK.r
-    - Rig/root/handIK.r
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
@@ -716,9 +685,9 @@ ModelImporter:
       loopBlendOrientation: 0
       loopBlendPositionY: 0
       loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
+      keepOriginalOrientation: 1
       keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
+      keepOriginalPositionXZ: 1
       heightFromFeet: 0
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
@@ -1000,23 +969,135 @@ ModelImporter:
       level: 0
       cycleOffset: 0
       loop: 0
-      hasAdditiveReferencePose: 0
+      hasAdditiveReferencePose: 1
       loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
       loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
+      keepOriginalOrientation: 1
       keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
+      keepOriginalPositionXZ: 1
       heightFromFeet: 0
       mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      bodyMask: 01000000010000000100000000000000000000000100000001000000010000000100000000000000000000000000000000000000
       curves: []
       events: []
-      transformMask: []
-      maskType: 3
-      maskSource: {instanceID: 0}
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Barbarian_ArmLeft
+        weight: 1
+      - path: Barbarian_ArmRight
+        weight: 1
+      - path: Barbarian_Body
+        weight: 1
+      - path: Barbarian_Head
+        weight: 1
+      - path: Barbarian_LegLeft
+        weight: 1
+      - path: Barbarian_LegRight
+        weight: 1
+      - path: Rig
+        weight: 1
+      - path: Rig/root
+        weight: 1
+      - path: Rig/root/hips
+        weight: 1
+      - path: Rig/root/hips/spine
+        weight: 1
+      - path: Rig/root/hips/spine/chest
+        weight: 1
+      - path: Rig/root/hips/spine/chest/Barbarian_Cape
+        weight: 1
+      - path: Rig/root/hips/spine/chest/upperarm.l
+        weight: 1
+      - path: Rig/root/hips/spine/chest/upperarm.l/lowerarm.l
+        weight: 1
+      - path: Rig/root/hips/spine/chest/upperarm.l/lowerarm.l/wrist.l
+        weight: 1
+      - path: Rig/root/hips/spine/chest/upperarm.l/lowerarm.l/wrist.l/hand.l
+        weight: 1
+      - path: Rig/root/hips/spine/chest/upperarm.l/lowerarm.l/wrist.l/hand.l/handslot.l
+        weight: 1
+      - path: Rig/root/hips/spine/chest/upperarm.l/lowerarm.l/wrist.l/hand.l/handslot.l/Barbarian_Round_Shield
+        weight: 1
+      - path: Rig/root/hips/spine/chest/upperarm.l/lowerarm.l/wrist.l/hand.l/handslot.l/1H_Axe_Offhand
+        weight: 1
+      - path: Rig/root/hips/spine/chest/upperarm.r
+        weight: 1
+      - path: Rig/root/hips/spine/chest/upperarm.r/lowerarm.r
+        weight: 1
+      - path: Rig/root/hips/spine/chest/upperarm.r/lowerarm.r/wrist.r
+        weight: 1
+      - path: Rig/root/hips/spine/chest/upperarm.r/lowerarm.r/wrist.r/hand.r
+        weight: 1
+      - path: Rig/root/hips/spine/chest/upperarm.r/lowerarm.r/wrist.r/hand.r/handslot.r
+        weight: 1
+      - path: Rig/root/hips/spine/chest/upperarm.r/lowerarm.r/wrist.r/hand.r/handslot.r/1H_Axe
+        weight: 1
+      - path: Rig/root/hips/spine/chest/upperarm.r/lowerarm.r/wrist.r/hand.r/handslot.r/2H_Axe
+        weight: 1
+      - path: Rig/root/hips/spine/chest/upperarm.r/lowerarm.r/wrist.r/hand.r/handslot.r/Mug
+        weight: 1
+      - path: Rig/root/hips/spine/chest/head
+        weight: 1
+      - path: Rig/root/hips/spine/chest/head/Barbarian_Hat
+        weight: 1
+      - path: Rig/root/hips/upperleg.l
+        weight: 1
+      - path: Rig/root/hips/upperleg.l/lowerleg.l
+        weight: 1
+      - path: Rig/root/hips/upperleg.l/lowerleg.l/foot.l
+        weight: 1
+      - path: Rig/root/hips/upperleg.l/lowerleg.l/foot.l/toes.l
+        weight: 1
+      - path: Rig/root/hips/upperleg.r
+        weight: 1
+      - path: Rig/root/hips/upperleg.r/lowerleg.r
+        weight: 1
+      - path: Rig/root/hips/upperleg.r/lowerleg.r/foot.r
+        weight: 1
+      - path: Rig/root/hips/upperleg.r/lowerleg.r/foot.r/toes.r
+        weight: 1
+      - path: Rig/root/kneeIK.l
+        weight: 1
+      - path: Rig/root/control-toe-roll.l
+        weight: 1
+      - path: Rig/root/control-toe-roll.l/control-heel-roll.l
+        weight: 1
+      - path: Rig/root/control-toe-roll.l/control-heel-roll.l/control-foot-roll.l
+        weight: 1
+      - path: Rig/root/control-toe-roll.l/control-heel-roll.l/control-foot-roll.l/heelIK.l
+        weight: 1
+      - path: Rig/root/control-toe-roll.l/control-heel-roll.l/control-foot-roll.l/IK-foot.l
+        weight: 1
+      - path: Rig/root/control-toe-roll.l/control-heel-roll.l/IK-toe.l
+        weight: 1
+      - path: Rig/root/kneeIK.r
+        weight: 1
+      - path: Rig/root/control-toe-roll.r
+        weight: 1
+      - path: Rig/root/control-toe-roll.r/control-heel-roll.r
+        weight: 1
+      - path: Rig/root/control-toe-roll.r/control-heel-roll.r/control-foot-roll.r
+        weight: 1
+      - path: Rig/root/control-toe-roll.r/control-heel-roll.r/control-foot-roll.r/heelIK.r
+        weight: 1
+      - path: Rig/root/control-toe-roll.r/control-heel-roll.r/control-foot-roll.r/IK-foot.r
+        weight: 1
+      - path: Rig/root/control-toe-roll.r/control-heel-roll.r/IK-toe.r
+        weight: 1
+      - path: Rig/root/elbowIK.l
+        weight: 1
+      - path: Rig/root/handIK.l
+        weight: 1
+      - path: Rig/root/elbowIK.r
+        weight: 1
+      - path: Rig/root/handIK.r
+        weight: 1
+      maskType: 1
+      maskSource: {fileID: 31900000, guid: c4c952a0a8ad9f346ba5699f961cb47a, type: 2}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: 1H_Melee_Attack_Slice_Horizontal
@@ -2319,7 +2400,7 @@ ModelImporter:
     skinWeightsMode: 0
     maxBonesPerVertex: 4
     minBoneWeight: 0.001
-    optimizeBones: 1
+    optimizeBones: 0
     meshOptimizationFlags: -1
     indexFormat: 0
     secondaryUVAngleDistortion: 8
@@ -2343,151 +2424,7 @@ ModelImporter:
   importAnimation: 1
   humanDescription:
     serializedVersion: 3
-    human:
-    - boneName: hips
-      humanName: Hips
-      limit:
-        min: {x: 0, y: 0, z: 0}
-        max: {x: 0, y: 0, z: 0}
-        value: {x: 0, y: 0, z: 0}
-        length: 0
-        modified: 0
-    - boneName: upperleg.l
-      humanName: LeftUpperLeg
-      limit:
-        min: {x: 0, y: 0, z: 0}
-        max: {x: 0, y: 0, z: 0}
-        value: {x: 0, y: 0, z: 0}
-        length: 0
-        modified: 0
-    - boneName: upperleg.r
-      humanName: RightUpperLeg
-      limit:
-        min: {x: 0, y: 0, z: 0}
-        max: {x: 0, y: 0, z: 0}
-        value: {x: 0, y: 0, z: 0}
-        length: 0
-        modified: 0
-    - boneName: lowerleg.l
-      humanName: LeftLowerLeg
-      limit:
-        min: {x: 0, y: 0, z: 0}
-        max: {x: 0, y: 0, z: 0}
-        value: {x: 0, y: 0, z: 0}
-        length: 0
-        modified: 0
-    - boneName: lowerleg.r
-      humanName: RightLowerLeg
-      limit:
-        min: {x: 0, y: 0, z: 0}
-        max: {x: 0, y: 0, z: 0}
-        value: {x: 0, y: 0, z: 0}
-        length: 0
-        modified: 0
-    - boneName: foot.l
-      humanName: LeftFoot
-      limit:
-        min: {x: 0, y: 0, z: 0}
-        max: {x: 0, y: 0, z: 0}
-        value: {x: 0, y: 0, z: 0}
-        length: 0
-        modified: 0
-    - boneName: foot.r
-      humanName: RightFoot
-      limit:
-        min: {x: 0, y: 0, z: 0}
-        max: {x: 0, y: 0, z: 0}
-        value: {x: 0, y: 0, z: 0}
-        length: 0
-        modified: 0
-    - boneName: spine
-      humanName: Spine
-      limit:
-        min: {x: 0, y: 0, z: 0}
-        max: {x: 0, y: 0, z: 0}
-        value: {x: 0, y: 0, z: 0}
-        length: 0
-        modified: 0
-    - boneName: head
-      humanName: Head
-      limit:
-        min: {x: 0, y: 0, z: 0}
-        max: {x: 0, y: 0, z: 0}
-        value: {x: 0, y: 0, z: 0}
-        length: 0
-        modified: 0
-    - boneName: upperarm.l
-      humanName: LeftUpperArm
-      limit:
-        min: {x: 0, y: 0, z: 0}
-        max: {x: 0, y: 0, z: 0}
-        value: {x: 0, y: 0, z: 0}
-        length: 0
-        modified: 0
-    - boneName: upperarm.r
-      humanName: RightUpperArm
-      limit:
-        min: {x: 0, y: 0, z: 0}
-        max: {x: 0, y: 0, z: 0}
-        value: {x: 0, y: 0, z: 0}
-        length: 0
-        modified: 0
-    - boneName: lowerarm.l
-      humanName: LeftLowerArm
-      limit:
-        min: {x: 0, y: 0, z: 0}
-        max: {x: 0, y: 0, z: 0}
-        value: {x: 0, y: 0, z: 0}
-        length: 0
-        modified: 0
-    - boneName: lowerarm.r
-      humanName: RightLowerArm
-      limit:
-        min: {x: 0, y: 0, z: 0}
-        max: {x: 0, y: 0, z: 0}
-        value: {x: 0, y: 0, z: 0}
-        length: 0
-        modified: 0
-    - boneName: wrist.l
-      humanName: LeftHand
-      limit:
-        min: {x: 0, y: 0, z: 0}
-        max: {x: 0, y: 0, z: 0}
-        value: {x: 0, y: 0, z: 0}
-        length: 0
-        modified: 0
-    - boneName: wrist.r
-      humanName: RightHand
-      limit:
-        min: {x: 0, y: 0, z: 0}
-        max: {x: 0, y: 0, z: 0}
-        value: {x: 0, y: 0, z: 0}
-        length: 0
-        modified: 0
-    - boneName: toes.l
-      humanName: LeftToes
-      limit:
-        min: {x: 0, y: 0, z: 0}
-        max: {x: 0, y: 0, z: 0}
-        value: {x: 0, y: 0, z: 0}
-        length: 0
-        modified: 0
-    - boneName: toes.r
-      humanName: RightToes
-      limit:
-        min: {x: 0, y: 0, z: 0}
-        max: {x: 0, y: 0, z: 0}
-        value: {x: 0, y: 0, z: 0}
-        length: 0
-        modified: 0
-    - boneName: chest
-      humanName: Chest
-      limit:
-        min: {x: 0, y: 0, z: 0}
-        max: {x: 0, y: 0, z: 0}
-        value: {x: 0, y: 0, z: 0}
-        length: 0
-        modified: 0
+    human: []
     skeleton:
     - name: Barbarian(Clone)
       parentName: 
@@ -2778,12 +2715,12 @@ ModelImporter:
     feetSpacing: 0
     globalScale: 1
     rootMotionBoneName: 
-    hasTranslationDoF: 1
+    hasTranslationDoF: 0
     hasExtraRoot: 1
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
   autoGenerateAvatarMappingIfUnspecified: 1
-  animationType: 3
+  animationType: 2
   humanoidOversampling: 1
   avatarSetup: 1
   addHumanoidExtraRootOnlyWhenUsingAvatar: 1

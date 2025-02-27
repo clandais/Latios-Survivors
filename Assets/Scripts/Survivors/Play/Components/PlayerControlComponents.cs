@@ -11,6 +11,7 @@ namespace Survivors.Play.Components
 		public float2 Direction;
 		public bool IsSprinting;
 		public float2 MousePosition;
+		public bool MainAttackTriggered;
 	}
 	
 	public struct PlayerMotion : IComponentData

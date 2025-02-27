@@ -1,5 +1,6 @@
 using Survivors.Play.MonoBehaviours;
 using Survivors.Play.Systems;
+using Survivors.Play.Systems.Debug;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
@@ -11,11 +12,13 @@ namespace Survivors.Play.Scope
 	public class PlayLifetimeScope : LifetimeScope
 	{
 		[SerializeField] private PlayStateMenu _playStateMenu;
-
+		[SerializeField] private DebugPanel _debugPanel;
+		
 		protected override void Configure(IContainerBuilder builder)
 		{
 
 			builder.RegisterInstance(_playStateMenu);
+			builder.RegisterInstance(_debugPanel);
 
 			builder.UseEntryPoints(cfg =>
 			{
@@ -30,6 +33,8 @@ namespace Survivors.Play.Scope
 			});
 
 			builder.RegisterSystemFromDefaultWorld<CinemachineTargetUpdater>();
+			builder.RegisterSystemFromDefaultWorld<MotionDebugSystem>();
+			
 			builder.RegisterBuildCallback(container =>
 			{
 				var publisher       = Parent.Container.Resolve<ICommandPublisher>();
