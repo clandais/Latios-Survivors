@@ -1,4 +1,3 @@
-using Latios;
 using Latios.Kinemation;
 using Survivors.Play.Authoring.Animations;
 using Survivors.Play.Components;
@@ -31,90 +30,79 @@ namespace Survivors.Play.Systems
 		{
 
 		}
-	}
 
-
-	[WithAll(typeof(PlayerTag))]
-	[BurstCompile]
-	internal partial struct AnimationJob : IJobEntity
-	{
-		public float DeltaTime;
-
-		public void Execute(
-			OptimizedSkeletonAspect skeleton,
-			PlayerMotionAspect motion,
-			in Clips clips,
-			in PlayerInputState inputState,
-			ref FourDirectionClipStates clipStates,
-			ref AvatarMasks masks)
-
+		[WithAll(typeof(PlayerTag))]
+		[BurstCompile]
+		internal partial struct AnimationJob : IJobEntity
 		{
-			float idleThreshold = .1f;
+			public float DeltaTime;
 
-			if (motion.NormalizedSpeed <= idleThreshold && math.length(inputState.Direction) < idleThreshold)
-			{
-				ref ClipState state = ref clipStates.Center;
-				state.Time += DeltaTime * state.SpeedMultiplier;
+			public void Execute(
+				OptimizedSkeletonAspect skeleton,
+				PlayerMotionAspect motion,
+				in Clips clips,
+				in PlayerInputState inputState,
+				ref FourDirectionClipStates clipStates,
+				ref AvatarMasks masks)
 
-				ref SkeletonClip clip = ref clips.ClipSet.Value.clips[(int)EDirections.Center];
-				clip.SamplePose(ref skeleton, clip.LoopToClipTime(state.Time), 1f);
-			}
-			else
 			{
-				float2 rotatedVelocity = math.normalizesafe(math.mul(motion.Rotation, motion.Velocity).xz);
-				
+				float idleThreshold = .1f;
+
+				ref ClipState    state = ref clipStates.Center;
+				ref SkeletonClip clip  = ref clips.ClipSet.Value.clips[(int)EDirections.Center];
+
+				if (motion.NormalizedSpeed <= idleThreshold && math.length(inputState.Direction) < idleThreshold)
 				{
-					ref ClipState state = ref clipStates.Left;
-					state.Time += DeltaTime * state.SpeedMultiplier;
+					state.Update(DeltaTime * state.SpeedMultiplier);
+					state.Time = clip.LoopToClipTime(state.Time);
+					clip.SamplePose(ref skeleton, state.Time, 1f);
+				}
+				else
+				{
+					float2 rotatedVelocity = math.normalizesafe(math.mul(motion.Rotation, motion.Velocity).xz);
+					float  weight          = 0f;
 
-					ref SkeletonClip clip = ref clips.ClipSet.Value.clips[(int)EDirections.Left];
-					clip.SamplePose(ref skeleton, clip.LoopToClipTime(state.Time), 1f - rotatedVelocity.x);
+					for (int i = 1; i < 5; i++)
+					{
+
+						switch (i)
+						{
+							case (int)EDirections.Up:
+								state  = ref clipStates.Up;
+								weight = rotatedVelocity.y;
+								clip   = ref clips.ClipSet.Value.clips[(int)EDirections.Up];
+								break;
+							case (int)EDirections.Down:
+								state  = ref clipStates.Down;
+								weight = 1f - rotatedVelocity.y;
+								clip   = ref clips.ClipSet.Value.clips[(int)EDirections.Down];
+								break;
+							case (int)EDirections.Left:
+								state  = ref clipStates.Left;
+								weight = 1f - rotatedVelocity.x;
+								clip   = ref clips.ClipSet.Value.clips[(int)EDirections.Left];
+								break;
+							case (int)EDirections.Right:
+								state  = ref clipStates.Right;
+								weight = rotatedVelocity.x;
+								clip   = ref clips.ClipSet.Value.clips[(int)EDirections.Right];
+								break;
+						}
+
+
+						state.Update(DeltaTime * state.SpeedMultiplier);
+						state.Time = clip.LoopToClipTime(state.Time);
+						clip.SamplePose(ref skeleton, clip.LoopToClipTime(state.Time), weight);
+					}
 				}
 
-				{
-					ref ClipState state = ref clipStates.Right;
-					state.Time += DeltaTime * state.SpeedMultiplier;
 
-					ref SkeletonClip clip = ref clips.ClipSet.Value.clips[(int)EDirections.Right];
-					clip.SamplePose(ref skeleton, clip.LoopToClipTime(state.Time), rotatedVelocity.x);
-				}
+				skeleton.EndSamplingAndSync();
 
 
-				{
-					ref ClipState state = ref clipStates.Down;
-					state.Time += DeltaTime * state.SpeedMultiplier;
-
-					ref SkeletonClip clip = ref clips.ClipSet.Value.clips[(int)EDirections.Down];
-					clip.SamplePose(ref skeleton, clip.LoopToClipTime(state.Time), 1f - rotatedVelocity.y);
-				}
-
-				{
-					ref ClipState state = ref clipStates.Up;
-					state.Time += DeltaTime * state.SpeedMultiplier;
-
-					ref SkeletonClip clip = ref clips.ClipSet.Value.clips[(int)EDirections.Up];
-					clip.SamplePose(ref skeleton, clip.LoopToClipTime(state.Time), rotatedVelocity.y);
-				}
 			}
-
-			skeleton.EndSamplingAndSync();
-
-			ref SkeletonClip axeThrowClip  = ref clips.ClipSet.Value.clips[(int)EDirections.AxeThrow];
-			ref ClipState    axeThrowState = ref clipStates.AxeThrow;
-
-			if (inputState.MainAttackTriggered || axeThrowState.Time < axeThrowClip.duration && axeThrowState.Time > 0.033f)
-			{
-
-				axeThrowState.Time += DeltaTime * axeThrowState.SpeedMultiplier;
-				axeThrowClip.SamplePose(ref skeleton, masks.Blob.Value.masks[0].AsSpan(), axeThrowClip.LoopToClipTime(axeThrowState.Time), 1f);
-			}
-			else
-			{
-				axeThrowState.Time = 0;
-			}
-
-
-			if (skeleton.needsSync) skeleton.EndSamplingAndSync();
 		}
 	}
+
+
 }

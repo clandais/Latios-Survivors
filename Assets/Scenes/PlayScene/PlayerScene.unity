@@ -462,6 +462,7 @@ GameObject:
   - component: {fileID: 416695864}
   - component: {fileID: 416695868}
   - component: {fileID: 416695862}
+  - component: {fileID: 416695869}
   m_Layer: 0
   m_Name: Hero
   m_TagString: Untagged
@@ -643,6 +644,20 @@ MonoBehaviour:
     axeThrow:
       clip: {fileID: -6185155371445809522, guid: d5021417440645a4da971bc4b636bc86, type: 3}
       speedMultiplier: 2
+--- !u!114 &416695869
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 416695861}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5a1f02cbc914c9baefdebd4d1568112, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rightHandSlot: {fileID: 1366666621}
+  axePrefab: {fileID: 6442263632596362143, guid: b07e437b15f766d49be26e35aac2fa05, type: 3}
 --- !u!1 &438441272
 GameObject:
   m_ObjectHideFlags: 0

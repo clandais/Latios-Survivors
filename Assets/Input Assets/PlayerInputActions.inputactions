@@ -277,7 +277,7 @@
                     "name": "",
                     "id": "324042fa-cecc-496b-979c-35065efaff03",
                     "path": "<Mouse>/leftButton",
-                    "interactions": "",
+                    "interactions": "Press(pressPoint=1)",
                     "processors": "",
                     "groups": ";Keyboard&Mouse",
                     "action": "Attack",

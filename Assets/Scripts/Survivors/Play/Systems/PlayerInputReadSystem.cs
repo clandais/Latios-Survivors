@@ -5,22 +5,30 @@ using Survivors.Play.Input;
 using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace Survivors.Play.Systems
 {
 	public partial class PlayerInputReadSystem : SubSystem
 	{ 
 		PlayStateInput _playerStateInput;
+		
+		private bool _attackTriggered;
 
 		protected override void OnCreate()
 		{
 			_playerStateInput = new PlayStateInput();
 			_playerStateInput.Enable();
-			
+
+			_playerStateInput.Player.Attack.performed += AttackPerformed;
+
 		}
+		
+		void AttackPerformed(InputAction.CallbackContext _) => _attackTriggered = true;
 
 		protected override void OnDestroy()
 		{
+			_playerStateInput.Player.Attack.performed -= AttackPerformed;
 			_playerStateInput.Disable();
 		}
 
@@ -32,7 +40,6 @@ namespace Survivors.Play.Systems
 			bool   isSprinting   = actions.Sprint.ReadValue<float>() > 0.1f;
 			float2 mousePosition = actions.MouseMoved.ReadValue<Vector2>();
 			
-			bool attack = actions.Attack.ReadValue<float>() > 0.9f;
 
 
 			var ray = Camera.main.ScreenPointToRay(new Vector3(mousePosition.x, mousePosition.y, 0));
@@ -55,8 +62,10 @@ namespace Survivors.Play.Systems
 				Direction = movement,
 				IsSprinting = isSprinting,
 				MousePosition = mousePosition,
-				MainAttackTriggered = attack,
+				MainAttackTriggered = _attackTriggered,
 			};
+			
+			_attackTriggered = false;
 
 			foreach (var playerInputState in SystemAPI.Query<RefRW<PlayerInputState>>().WithAll<PlayerTag>())
 			{

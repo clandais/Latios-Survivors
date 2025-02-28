@@ -51,11 +51,25 @@ namespace Survivors.Play.Authoring.Animations
 							break;
 					}
 
-					clips[i] = new SkeletonClipConfig
+					if (clip.events != null)
 					{
-						clip     = clip,
-						settings = SkeletonClipCompressionSettings.kDefaultSettings
-					};
+						clips[i] = new SkeletonClipConfig
+						{
+							clip     = clip,
+							settings = SkeletonClipCompressionSettings.kDefaultSettings,
+							events   = clip.ExtractKinemationClipEvents(Allocator.Temp)
+						};
+					}
+					else
+					{
+						clips[i] = new SkeletonClipConfig
+						{
+							clip     = clip,
+							settings = SkeletonClipCompressionSettings.kDefaultSettings,
+						};
+					}
+					
+
 				}
 
 				m_clipSetHandle = baker.RequestCreateBlobAsset(baker.GetComponent<Animator>(), clips);
@@ -89,7 +103,11 @@ namespace Survivors.Play.Authoring.Animations
 					Up       = new ClipState { SpeedMultiplier = authoring.animations.up.speedMultiplier },
 					Left     = new ClipState { SpeedMultiplier = authoring.animations.left.speedMultiplier },
 					Right    = new ClipState { SpeedMultiplier = authoring.animations.right.speedMultiplier },
-					AxeThrow = new ClipState { SpeedMultiplier = authoring.animations.axeThrow.speedMultiplier }
+					AxeThrow = new ClipState
+					{
+						SpeedMultiplier = authoring.animations.axeThrow.speedMultiplier,
+						EventHash       = authoring.animations.axeThrow.clip.ExtractKinemationClipEvents(Allocator.Temp)[0].name.GetHashCode(),
+					}
 				};
 
 				AddComponent(entity, clipStates);

@@ -33,8 +33,16 @@ namespace Survivors.Play.Components
 	public struct ClipState
 	{
 
+		public float PreviousTime;
 		public float Time;
 		public float SpeedMultiplier;
+		public int  EventHash;
+
+		public void Update(float deltaTime)
+		{
+			PreviousTime =  Time;
+			Time         += deltaTime;
+		}
 	}
 	
 	#endregion
