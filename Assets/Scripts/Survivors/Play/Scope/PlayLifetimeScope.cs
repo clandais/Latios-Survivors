@@ -2,6 +2,7 @@ using Survivors.Play.MonoBehaviours;
 using Survivors.Play.Systems;
 using Survivors.Play.Systems.Debug;
 using UnityEngine;
+using UnityEngine.UI;
 using VContainer;
 using VContainer.Unity;
 using VitalRouter;
@@ -13,12 +14,14 @@ namespace Survivors.Play.Scope
 	{
 		[SerializeField] private PlayStateMenu _playStateMenu;
 		[SerializeField] private DebugPanel _debugPanel;
+		[SerializeField] private Image corsshair;
 		
 		protected override void Configure(IContainerBuilder builder)
 		{
 
 			builder.RegisterInstance(_playStateMenu);
 			builder.RegisterInstance(_debugPanel);
+			builder.RegisterInstance(corsshair);
 
 			builder.UseEntryPoints(cfg =>
 			{
@@ -28,12 +31,12 @@ namespace Survivors.Play.Scope
 
 			builder.RegisterVitalRouter(routingBuilder =>
 			{
-
 				routingBuilder.Map<PlayStateRouter>();
 			});
 
 			builder.RegisterSystemFromDefaultWorld<CinemachineTargetUpdater>();
 			builder.RegisterSystemFromDefaultWorld<MotionDebugSystem>();
+			builder.RegisterSystemFromDefaultWorld<PlayerInputReadSystem>();
 			
 			builder.RegisterBuildCallback(container =>
 			{

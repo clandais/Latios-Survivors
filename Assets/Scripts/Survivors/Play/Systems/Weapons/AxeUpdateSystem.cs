@@ -39,10 +39,10 @@ namespace Survivors.Play.Systems.Weapons
 			
 			public void Execute(TransformAspect transform, in AxeComponent axe)
 			{
-				var worldTransform = transform.worldTransform;
-				worldTransform.position += axe.Direction * axe.Speed * DeltaTime;
-				worldTransform.rotation = math.mul(worldTransform.rotation, quaternion.RotateZ(axe.RotationSpeed * DeltaTime));
-				transform.worldTransform = worldTransform;
+
+				
+				transform.TranslateWorld(axe.Direction * axe.Speed * DeltaTime);
+				transform.worldRotation =  math.mul(transform.worldTransform.rotation, quaternion.RotateX( axe.RotationSpeed * DeltaTime));
 			}
 		}
 	}

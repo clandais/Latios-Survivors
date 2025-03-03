@@ -1,6 +1,5 @@
 using Latios;
 using Latios.Kinemation;
-using Latios.Transforms;
 using Survivors.Play.Authoring.Animations;
 using Survivors.Play.Authoring.Weapons;
 using Survivors.Play.Components;
@@ -12,10 +11,13 @@ namespace Survivors.Play.Systems
 {
 	public partial struct PlayerActionsAnimationSystem : ISystem
 	{
-		
+
+		LatiosWorldUnmanaged _world;
+
 		[BurstCompile]
 		public void OnCreate(ref SystemState state)
 		{
+			_world = state.GetLatiosWorldUnmanaged();
 			state.RequireForUpdate<PlayerTag>();
 
 
@@ -24,21 +26,18 @@ namespace Survivors.Play.Systems
 		[BurstCompile]
 		public void OnUpdate(ref SystemState state)
 		{
-			
-			
-			var singleton = SystemAPI.GetSingleton<BeginSimulationEntityCommandBufferSystem.Singleton>();
-			EntityCommandBuffer ecb = singleton.CreateCommandBuffer(state.WorldUnmanaged);
-			
+
+
+			var                 singleton = SystemAPI.GetSingleton<BeginSimulationEntityCommandBufferSystem.Singleton>();
+			EntityCommandBuffer ecb       = singleton.CreateCommandBuffer(state.WorldUnmanaged);
+
 			state.Dependency = new AnimationJob
 			{
 				DeltaTime = SystemAPI.Time.DeltaTime,
-				Ecb = ecb.AsParallelWriter(),
+				Ecb       = ecb.AsParallelWriter()
 			}.ScheduleParallel(state.Dependency);
 
-			//state.Dependency.Complete();
 
-
-			
 		}
 
 		[BurstCompile]
@@ -97,6 +96,8 @@ namespace Survivors.Play.Systems
 				if (skeleton.needsSync) skeleton.EndSamplingAndSync();
 			}
 		}
+
+
 	}
 
 

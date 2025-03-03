@@ -43,7 +43,9 @@ namespace Survivors.Setup.Systems
 			GetOrCreateAndAddManagedSystem<MotionDebugSystem>();
 			GetOrCreateAndAddUnmanagedSystem<PlayerDesiredMotionSystem>();
 			GetOrCreateAndAddUnmanagedSystem<PlayerActionsSystem>();
-			
+
+			GetOrCreateAndAddUnmanagedSystem<AxeSpawnSystem>();
+
 		}
 		
 	}

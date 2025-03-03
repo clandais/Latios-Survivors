@@ -13,6 +13,7 @@ namespace Survivors.Play.Systems
 	public partial struct PlayerActionsSystem : ISystem
 	{
 		EntityQuery _rightHandQuery;
+		LatiosWorldUnmanaged _world;
 		
 		[BurstCompile]
 		public void OnCreate(ref SystemState state)
@@ -20,38 +21,59 @@ namespace Survivors.Play.Systems
 			_rightHandQuery = state.Fluent().WithEnabled<RightHandSlotThrowAxeTag>()
 				.With<RightHandSlot>()
 				.Build();
+			
+			_world = state.GetLatiosWorldUnmanaged();
+			
+
 		}
 
 		[BurstCompile]
 		public void OnUpdate(ref SystemState state)
 		{
 
+			if (!_world.worldBlackboardEntity.HasCollectionComponent<AxeSpawnQueue>())
+			{
+				_world.worldBlackboardEntity.AddOrSetCollectionComponentAndDisposeOld(new AxeSpawnQueue
+				{
+					AxesQueue = new NativeQueue<AxeSpawnQueue.AxeSpawnData>(Allocator.Persistent)
+				});
+			}
+
 
 			if (!_rightHandQuery.IsEmpty)
 			{
 				var                 singleton = SystemAPI.GetSingleton<BeginSimulationEntityCommandBufferSystem.Singleton>();
 				EntityCommandBuffer ecb       = singleton.CreateCommandBuffer(state.WorldUnmanaged);
+
+
+
+				var mouse = _world.sceneBlackboardEntity.GetComponentData<SceneMouse>();
+				
+
+				var spawnQueue = _world.worldBlackboardEntity.GetCollectionComponent<AxeSpawnQueue>().AxesQueue;
+
 				
 				foreach (var entity in _rightHandQuery.ToEntityArray(Allocator.Temp))
 				{
 					var playerTransform     = SystemAPI.GetComponent<WorldTransform>(entity);
 					var rHandSlot           = SystemAPI.GetComponent<RightHandSlot>(entity);
-					var rHandSlostTransform = SystemAPI.GetComponent<WorldTransform>(rHandSlot.RightHandSlotEntity);
-					
-					var axeComponent = state.EntityManager.GetComponentData<AxeComponent>(rHandSlot.AxePrefab);
-					
-					var axeEntity = ecb.Instantiate(rHandSlot.AxePrefab);
-					ecb.SetComponent(axeEntity, new WorldTransform { worldTransform = rHandSlostTransform.worldTransform });
+					var rHandSlotTransform  = SystemAPI.GetComponent<WorldTransform>(rHandSlot.RightHandSlotEntity);
 					
 					
-					axeComponent.Direction = playerTransform.forwardDirection;
-					ecb.SetComponent(axeEntity, axeComponent);
+					// get the direction of the axe
+					var direction = math.normalize( new float3( mouse.WorldPosition.x, 1f, mouse.WorldPosition.y) - playerTransform.position);
+					
+					
+					spawnQueue.Enqueue( new AxeSpawnQueue.AxeSpawnData()
+					{
+						AxePrefab = rHandSlot.AxePrefab,
+						Direction = direction,
+						Position = rHandSlotTransform.worldTransform.position,
+					});
+					
 					ecb.SetComponentEnabled<RightHandSlotThrowAxeTag>(entity, false);
 				}
-
-
-				
-
+	
 			}
 			
 		}
@@ -62,5 +84,7 @@ namespace Survivors.Play.Systems
 
 		}
 
+
+		
 	}
 }
