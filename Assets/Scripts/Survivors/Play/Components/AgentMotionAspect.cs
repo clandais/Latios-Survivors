@@ -4,15 +4,15 @@ using Unity.Mathematics;
 namespace Survivors.Play.Components
 {
 
-	public readonly partial struct PlayerMotionAspect : IAspect
+	public readonly partial struct AgentMotionAspect : IAspect
 	{
-		private readonly RefRO<PlayerSpeedSettings> _speedSettings;
-		public PlayerSpeedSettings SpeedSettings => _speedSettings.ValueRO;
+		private readonly RefRO<AgentSpeedSettings> _speedSettings;
+		public AgentSpeedSettings SpeedSettings => _speedSettings.ValueRO;
 
 
-		private readonly RefRW<PlayerMotion> _motion;
+		private readonly RefRW<MotionComponent> _motion;
 
-		public PlayerMotion Motion
+		public MotionComponent MotionComponent
 		{
 			get => _motion.ValueRW;
 			set => _motion.ValueRW = value;

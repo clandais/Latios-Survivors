@@ -641,7 +641,7 @@ MonoBehaviour:
     right:
       clip: {fileID: -6877218540166537120, guid: d5021417440645a4da971bc4b636bc86, type: 3}
       speedMultiplier: 2
-    axeThrow:
+    attack:
       clip: {fileID: -6185155371445809522, guid: d5021417440645a4da971bc4b636bc86, type: 3}
       speedMultiplier: 2
 --- !u!114 &416695869

@@ -1,6 +1,7 @@
 using Latios;
 using Latios.Transforms;
 using Survivors.Play.Authoring;
+using Survivors.Play.Authoring.Weapons;
 using Survivors.Play.Components;
 using Unity.Entities;
 using UnityEngine;
@@ -13,20 +14,31 @@ namespace Survivors.Play.Systems
 	{
 
 		private Transform _cinemachineTarget;
-
+		
 		[Inject]
 		public void Construct(Transform cinemachineTarget)
 		{
 			_cinemachineTarget = cinemachineTarget;
 		}
 
+		protected override void OnCreate()
+		{
+			RequireForUpdate<PlayerTag>();
+		}
+
 
 		protected override void OnUpdate()
 		{
-			foreach (var worldTransform in SystemAPI.Query<RefRO<WorldTransform>>().WithAll<PlayerTag>())
-			{
-				_cinemachineTarget.position = worldTransform.ValueRO.worldTransform.position;
-			}
+
+
+			var playerPosition = sceneBlackboardEntity.GetComponentData<PlayerPosition>();
+			_cinemachineTarget.position = playerPosition.Position;
+			//
+			// foreach (var worldTransform in SystemAPI.Query<RefRO<WorldTransform>>()
+			// 	         .WithPresent<PlayerTag>())
+			// {
+			// 	_cinemachineTarget.position = worldTransform.ValueRO.worldTransform.position;
+			// }
 		}
 	}
 }

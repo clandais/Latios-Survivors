@@ -23,6 +23,7 @@ namespace Survivors.Play.Authoring.Weapons
 				});
 				
 				AddComponent<SceneMouse>(entity);
+				AddComponent<PlayerPosition>(entity);
 			}
 		}
 	}
@@ -44,5 +45,10 @@ namespace Survivors.Play.Authoring.Weapons
 	{
 		public float2 Position;
 		public float2 WorldPosition;
+	}
+	
+	public struct PlayerPosition : IComponentData
+	{
+		public float3 Position;
 	}
 }

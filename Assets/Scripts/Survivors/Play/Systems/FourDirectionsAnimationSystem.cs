@@ -1,5 +1,5 @@
+using Latios;
 using Latios.Kinemation;
-using Survivors.Play.Authoring.Animations;
 using Survivors.Play.Components;
 using Unity.Burst;
 using Unity.Entities;
@@ -7,13 +7,25 @@ using Unity.Mathematics;
 
 namespace Survivors.Play.Systems
 {
-	public partial struct PlayerFourDirectionsAnimationSystem : ISystem
+	
+	[RequireMatchingQueriesForUpdate]
+	public partial struct FourDirectionsAnimationSystem : ISystem
 	{
+		
+		LatiosWorldUnmanaged m_latiosWorldUnmanaged;
+		EntityQuery m_query;
+		
 		[BurstCompile]
 		public void OnCreate(ref SystemState state)
 		{
-			state.RequireForUpdate<PlayerTag>();
-			state.RequireForUpdate<FourDirectionClipStates>();
+			m_latiosWorldUnmanaged = state.GetLatiosWorldUnmanaged();
+			m_query = state.Fluent()
+				.WithAspect<OptimizedSkeletonAspect>()
+				.With<Clips>()
+				.With<FourDirectionClipStates>()
+				.WithAspect<AgentMotionAspect>()
+				.Without<DeadTag>()
+				.Build();
 		}
 
 		[BurstCompile]
@@ -22,7 +34,7 @@ namespace Survivors.Play.Systems
 			state.Dependency = new AnimationJob
 			{
 				DeltaTime = SystemAPI.Time.DeltaTime
-			}.ScheduleParallel(state.Dependency);
+			}.ScheduleParallel(m_query, state.Dependency);
 		}
 
 		[BurstCompile]
@@ -30,8 +42,7 @@ namespace Survivors.Play.Systems
 		{
 
 		}
-
-		[WithAll(typeof(PlayerTag))]
+		
 		[BurstCompile]
 		internal partial struct AnimationJob : IJobEntity
 		{
@@ -39,11 +50,9 @@ namespace Survivors.Play.Systems
 
 			public void Execute(
 				OptimizedSkeletonAspect skeleton,
-				PlayerMotionAspect motion,
+				AgentMotionAspect motion,
 				in Clips clips,
-				in PlayerInputState inputState,
-				ref FourDirectionClipStates clipStates,
-				ref AvatarMasks masks)
+				ref FourDirectionClipStates clipStates)
 
 			{
 				float idleThreshold = .1f;
@@ -51,7 +60,7 @@ namespace Survivors.Play.Systems
 				ref ClipState    state = ref clipStates.Center;
 				ref SkeletonClip clip  = ref clips.ClipSet.Value.clips[(int)EDirections.Center];
 
-				if (motion.NormalizedSpeed <= idleThreshold && math.length(inputState.Direction) < idleThreshold)
+				if (motion.NormalizedSpeed <= idleThreshold && math.length(motion.DesiredVelocity) < idleThreshold)
 				{
 					state.Update(DeltaTime * state.SpeedMultiplier);
 					state.Time = clip.LoopToClipTime(state.Time);

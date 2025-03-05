@@ -7,6 +7,7 @@ using VContainer;
 using VContainer.Unity;
 using VitalRouter;
 using VitalRouter.VContainer;
+using PlayerInputReadSystem = Survivors.Play.Systems.Player.PlayerInputReadSystem;
 
 namespace Survivors.Play.Scope
 {

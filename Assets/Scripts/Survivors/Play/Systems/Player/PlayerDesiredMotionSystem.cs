@@ -1,4 +1,3 @@
-
 using Latios.Transforms;
 using Survivors.Play.Components;
 using Survivors.Play.Utilities;
@@ -7,7 +6,7 @@ using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
 
-namespace Survivors.Play.Systems
+namespace Survivors.Play.Systems.Player
 {
 	[RequireMatchingQueriesForUpdate]
 	[BurstCompile]
@@ -43,7 +42,7 @@ namespace Survivors.Play.Systems
 		[BurstCompile]
 		public void Execute(
 			TransformAspect transformAspect,
-			PlayerMotionAspect motionAspect,
+			AgentMotionAspect motionAspect,
 			in PlayerInputState inputState)
 		{
 			float2 dir = inputState.Direction;

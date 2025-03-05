@@ -2,6 +2,7 @@ using Latios;
 using Latios.Psyshock;
 using Latios.Transforms;
 using Survivors.Play.Authoring;
+using Survivors.Play.Authoring.Enemies;
 using Unity.Burst;
 using Unity.Entities;
 
@@ -23,11 +24,21 @@ namespace Survivors.Play.Systems.Debug
 
 			var layer = state.GetLatiosWorldUnmanaged().sceneBlackboardEntity.GetCollectionComponent<EnvironmentCollisionLayer>();
 			state.Dependency = PhysicsDebug.DrawLayer(layer.Layer).ScheduleParallel(state.Dependency);
+			
+			var enemyLayer = state.GetLatiosWorldUnmanaged().sceneBlackboardEntity.GetCollectionComponent<EnemyCollisionLayer>();
+			if (enemyLayer.Layer.IsCreated)
+				state.Dependency = PhysicsDebug.DrawLayer(enemyLayer.Layer).ScheduleParallel(state.Dependency);
 
 			foreach (var (collider, transformAspect) in SystemAPI.Query<RefRO<Collider>, TransformAspect>().WithAll<LevelTag>())
 			{
 				var transform = transformAspect.worldTransform;
 				PhysicsDebug.DrawCollider( in collider.ValueRO, in transform, UnityEngine.Color.green);
+			}
+			
+			foreach (var (collider, transformAspect) in SystemAPI.Query<RefRO<Collider>, TransformAspect>().WithAll<EnemyTag>())
+			{
+				var transform = transformAspect.worldTransform;
+				PhysicsDebug.DrawCollider( in collider.ValueRO, in transform, UnityEngine.Color.blue);
 			}
 		}
 

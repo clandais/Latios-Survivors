@@ -23,7 +23,7 @@ namespace Survivors.Play.Scope
 		[Route]
 		private async UniTask On(BackToMainMenuClicked _)
 		{
-			await ParentPublisher.PublishAsync(new TriggerCurtainFade { FromAlpha = 0f, ToAlpha = 1f, Duration = 1f });
+		//	await ParentPublisher.PublishAsync(new TriggerCurtainFade { FromAlpha = 0f, ToAlpha = 1f, Duration = 1f });
 			await ParentPublisher.PublishAsync(new MainMenuStateCommand());
 		}
 		

@@ -24,9 +24,6 @@ namespace Survivors.Play.Systems.Initialization
 		public void OnUpdate(ref SystemState state)
 		{
 			state.Enabled = false;
-
-
-			
 			
 			foreach (var (_, entity) in SystemAPI.Query<RefRO<RightHandSlot>>().WithAll<RightHandSlotThrowAxeTag>().WithEntityAccess())
 			{

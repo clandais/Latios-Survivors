@@ -7,20 +7,16 @@ using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
 
-namespace Survivors.Play.Systems
+namespace Survivors.Play.Systems.Player
 {
 	public partial struct PlayerActionsAnimationSystem : ISystem
 	{
 
-		LatiosWorldUnmanaged _world;
 
 		[BurstCompile]
 		public void OnCreate(ref SystemState state)
 		{
-			_world = state.GetLatiosWorldUnmanaged();
 			state.RequireForUpdate<PlayerTag>();
-
-
 		}
 
 		[BurstCompile]
@@ -63,8 +59,8 @@ namespace Survivors.Play.Systems
 				ref FourDirectionClipStates clipStates,
 				ref AvatarMasks masks)
 			{
-				ref SkeletonClip axeThrowClip  = ref clips.ClipSet.Value.clips[(int)EDirections.AxeThrow];
-				ref ClipState    axeThrowState = ref clipStates.AxeThrow;
+				ref SkeletonClip axeThrowClip  = ref clips.ClipSet.Value.clips[(int)EDirections.Attack];
+				ref ClipState    axeThrowState = ref clipStates.Attack;
 
 				if (inputState.MainAttackTriggered || axeThrowState.PreviousTime < axeThrowState.Time)
 				{

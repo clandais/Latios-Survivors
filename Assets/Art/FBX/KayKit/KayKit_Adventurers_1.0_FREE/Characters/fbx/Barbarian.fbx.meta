@@ -17,7 +17,7 @@ ModelImporter:
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
-    resampleCurves: 1
+    resampleCurves: 0
     optimizeGameObjects: 1
     removeConstantScaleCurves: 0
     motionNodeName: 
@@ -89,7 +89,7 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Idle
+      name: H_Idle
       takeName: Idle
       internalID: -3100369314251171874
       firstFrame: 0
@@ -205,7 +205,7 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Walking_Backwards
+      name: H_Walking_Backwards
       takeName: Walking_Backwards
       internalID: -6411013857362534180
       firstFrame: 0
@@ -263,7 +263,7 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Running_B
+      name: H_Running_B
       takeName: Running_B
       internalID: -1640158340307531623
       firstFrame: 0
@@ -292,7 +292,7 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Running_Strafe_Right
+      name: H_Running_Strafe_Right
       takeName: Running_Strafe_Right
       internalID: -6877218540166537120
       firstFrame: 0
@@ -321,7 +321,7 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Running_Strafe_Left
+      name: H_Running_Strafe_Left
       takeName: Running_Strafe_Left
       internalID: -1640272175068026219
       firstFrame: 0
@@ -669,7 +669,7 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Throw
+      name: H_Throw
       takeName: Throw
       internalID: -6185155371445809522
       firstFrame: 0
@@ -690,7 +690,7 @@ ModelImporter:
       keepOriginalPositionXZ: 1
       heightFromFeet: 0
       mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      bodyMask: 00000000010000000100000000000000000000000100000001000000010000000100000000000000000000000000000000000000
       curves: []
       events:
       - time: 0.5819158
@@ -700,9 +700,121 @@ ModelImporter:
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      transformMask: []
-      maskType: 3
-      maskSource: {instanceID: 0}
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Barbarian_ArmLeft
+        weight: 0
+      - path: Barbarian_ArmRight
+        weight: 0
+      - path: Barbarian_Body
+        weight: 0
+      - path: Barbarian_Head
+        weight: 0
+      - path: Barbarian_LegLeft
+        weight: 0
+      - path: Barbarian_LegRight
+        weight: 0
+      - path: Rig
+        weight: 0
+      - path: Rig/root
+        weight: 0
+      - path: Rig/root/hips
+        weight: 1
+      - path: Rig/root/hips/spine
+        weight: 1
+      - path: Rig/root/hips/spine/chest
+        weight: 1
+      - path: Rig/root/hips/spine/chest/Barbarian_Cape
+        weight: 0
+      - path: Rig/root/hips/spine/chest/upperarm.l
+        weight: 1
+      - path: Rig/root/hips/spine/chest/upperarm.l/lowerarm.l
+        weight: 1
+      - path: Rig/root/hips/spine/chest/upperarm.l/lowerarm.l/wrist.l
+        weight: 1
+      - path: Rig/root/hips/spine/chest/upperarm.l/lowerarm.l/wrist.l/hand.l
+        weight: 1
+      - path: Rig/root/hips/spine/chest/upperarm.l/lowerarm.l/wrist.l/hand.l/handslot.l
+        weight: 1
+      - path: Rig/root/hips/spine/chest/upperarm.l/lowerarm.l/wrist.l/hand.l/handslot.l/Barbarian_Round_Shield
+        weight: 0
+      - path: Rig/root/hips/spine/chest/upperarm.l/lowerarm.l/wrist.l/hand.l/handslot.l/1H_Axe_Offhand
+        weight: 0
+      - path: Rig/root/hips/spine/chest/upperarm.r
+        weight: 1
+      - path: Rig/root/hips/spine/chest/upperarm.r/lowerarm.r
+        weight: 1
+      - path: Rig/root/hips/spine/chest/upperarm.r/lowerarm.r/wrist.r
+        weight: 1
+      - path: Rig/root/hips/spine/chest/upperarm.r/lowerarm.r/wrist.r/hand.r
+        weight: 1
+      - path: Rig/root/hips/spine/chest/upperarm.r/lowerarm.r/wrist.r/hand.r/handslot.r
+        weight: 1
+      - path: Rig/root/hips/spine/chest/upperarm.r/lowerarm.r/wrist.r/hand.r/handslot.r/1H_Axe
+        weight: 0
+      - path: Rig/root/hips/spine/chest/upperarm.r/lowerarm.r/wrist.r/hand.r/handslot.r/2H_Axe
+        weight: 0
+      - path: Rig/root/hips/spine/chest/upperarm.r/lowerarm.r/wrist.r/hand.r/handslot.r/Mug
+        weight: 0
+      - path: Rig/root/hips/spine/chest/head
+        weight: 1
+      - path: Rig/root/hips/spine/chest/head/Barbarian_Hat
+        weight: 0
+      - path: Rig/root/hips/upperleg.l
+        weight: 0
+      - path: Rig/root/hips/upperleg.l/lowerleg.l
+        weight: 0
+      - path: Rig/root/hips/upperleg.l/lowerleg.l/foot.l
+        weight: 0
+      - path: Rig/root/hips/upperleg.l/lowerleg.l/foot.l/toes.l
+        weight: 0
+      - path: Rig/root/hips/upperleg.r
+        weight: 0
+      - path: Rig/root/hips/upperleg.r/lowerleg.r
+        weight: 0
+      - path: Rig/root/hips/upperleg.r/lowerleg.r/foot.r
+        weight: 0
+      - path: Rig/root/hips/upperleg.r/lowerleg.r/foot.r/toes.r
+        weight: 0
+      - path: Rig/root/kneeIK.l
+        weight: 0
+      - path: Rig/root/control-toe-roll.l
+        weight: 0
+      - path: Rig/root/control-toe-roll.l/control-heel-roll.l
+        weight: 0
+      - path: Rig/root/control-toe-roll.l/control-heel-roll.l/control-foot-roll.l
+        weight: 0
+      - path: Rig/root/control-toe-roll.l/control-heel-roll.l/control-foot-roll.l/heelIK.l
+        weight: 0
+      - path: Rig/root/control-toe-roll.l/control-heel-roll.l/control-foot-roll.l/IK-foot.l
+        weight: 0
+      - path: Rig/root/control-toe-roll.l/control-heel-roll.l/IK-toe.l
+        weight: 0
+      - path: Rig/root/kneeIK.r
+        weight: 0
+      - path: Rig/root/control-toe-roll.r
+        weight: 0
+      - path: Rig/root/control-toe-roll.r/control-heel-roll.r
+        weight: 0
+      - path: Rig/root/control-toe-roll.r/control-heel-roll.r/control-foot-roll.r
+        weight: 0
+      - path: Rig/root/control-toe-roll.r/control-heel-roll.r/control-foot-roll.r/heelIK.r
+        weight: 0
+      - path: Rig/root/control-toe-roll.r/control-heel-roll.r/control-foot-roll.r/IK-foot.r
+        weight: 0
+      - path: Rig/root/control-toe-roll.r/control-heel-roll.r/IK-toe.r
+        weight: 0
+      - path: Rig/root/elbowIK.l
+        weight: 0
+      - path: Rig/root/handIK.l
+        weight: 0
+      - path: Rig/root/elbowIK.r
+        weight: 0
+      - path: Rig/root/handIK.r
+        weight: 0
+      maskType: 1
+      maskSource: {fileID: 31900000, guid: c4c952a0a8ad9f346ba5699f961cb47a, type: 2}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
       name: Interact

@@ -40,7 +40,7 @@ namespace Survivors.Play.Scope
 
 			_playStateMenu.Hide();
 
-			_commandPublisher.PublishAsync(new TriggerCurtainFade { FromAlpha = 1f, ToAlpha = 0f, Duration = 1f });
+		//	_commandPublisher.PublishAsync(new TriggerCurtainFade { FromAlpha = 1f, ToAlpha = 0f, Duration = 1f });
 		}
 
 

@@ -21,6 +21,7 @@ namespace Survivors.Play.Authoring.Weapons
 				});
 				
 				AddComponent<RightHandSlotThrowAxeTag>(entity);
+				SetComponentEnabled<RightHandSlotThrowAxeTag>(entity, false);
 			
 			}
 		}

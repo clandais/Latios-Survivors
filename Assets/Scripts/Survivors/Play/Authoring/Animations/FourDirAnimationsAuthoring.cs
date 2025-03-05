@@ -6,20 +6,21 @@ using Survivors.Play.Components;
 using Unity.Collections;
 using Unity.Entities;
 using UnityEngine;
+using UnityEngine.Serialization;
 using SkeletonClipConfig = Latios.Kinemation.Authoring.SkeletonClipConfig;
 
 namespace Survivors.Play.Authoring.Animations
 {
-	public class PlayerFourDirAnimationsAuthoring : MonoBehaviour
+	public class FourDirAnimationsAuthoring : MonoBehaviour
 	{
 		public FourDirAnimations animations;
 
-		[TemporaryBakingType] struct AnimationClipSmartBakeItem : ISmartBakeItem<PlayerFourDirAnimationsAuthoring>
+		[TemporaryBakingType] struct AnimationClipSmartBakeItem : ISmartBakeItem<FourDirAnimationsAuthoring>
 		{
 
 			SmartBlobberHandle<SkeletonClipSetBlob> m_clipSetHandle;
 
-			public bool Bake(PlayerFourDirAnimationsAuthoring authoring, IBaker baker)
+			public bool Bake(FourDirAnimationsAuthoring authoring, IBaker baker)
 			{
 				Entity entity = baker.GetEntity(TransformUsageFlags.Dynamic);
 				baker.AddComponent<Clips>(entity);
@@ -46,8 +47,8 @@ namespace Survivors.Play.Authoring.Animations
 						case (int)EDirections.Right:
 							clip = authoring.animations.right.clip;
 							break;
-						case (int)EDirections.AxeThrow:
-							clip = authoring.animations.axeThrow.clip;
+						case (int)EDirections.Attack:
+							clip = authoring.animations.attack.clip;
 							break;
 					}
 
@@ -83,15 +84,15 @@ namespace Survivors.Play.Authoring.Animations
 			}
 		}
 
-		class ClpBaker : SmartBaker<PlayerFourDirAnimationsAuthoring, AnimationClipSmartBakeItem>
+		class ClpBaker : SmartBaker<FourDirAnimationsAuthoring, AnimationClipSmartBakeItem>
 		{
 
 		}
 
 
-		class PlayerFourDirAnimationsBaker : Baker<PlayerFourDirAnimationsAuthoring>
+		class FourDirAnimationsBaker : Baker<FourDirAnimationsAuthoring>
 		{
-			public override void Bake(PlayerFourDirAnimationsAuthoring authoring)
+			public override void Bake(FourDirAnimationsAuthoring authoring)
 			{
 
 				Entity entity = GetEntity(TransformUsageFlags.Dynamic);
@@ -103,10 +104,10 @@ namespace Survivors.Play.Authoring.Animations
 					Up       = new ClipState { SpeedMultiplier = authoring.animations.up.speedMultiplier },
 					Left     = new ClipState { SpeedMultiplier = authoring.animations.left.speedMultiplier },
 					Right    = new ClipState { SpeedMultiplier = authoring.animations.right.speedMultiplier },
-					AxeThrow = new ClipState
+					Attack = new ClipState
 					{
-						SpeedMultiplier = authoring.animations.axeThrow.speedMultiplier,
-						EventHash       = authoring.animations.axeThrow.clip.ExtractKinemationClipEvents(Allocator.Temp)[0].name.GetHashCode(),
+						SpeedMultiplier = authoring.animations.attack.speedMultiplier,
+						EventHash       =  (authoring.animations.attack.clip.events.Length > 0) ? authoring.animations.attack.clip.ExtractKinemationClipEvents(Allocator.Temp)[0].name.GetHashCode() : -1,
 					}
 				};
 
@@ -117,7 +118,7 @@ namespace Survivors.Play.Authoring.Animations
 	}
 
 
-	#region Player Animation Authoring Structs
+	#region Animation Authoring Structs
 
 	[Serializable]
 	public struct FourDirAnimations
@@ -127,7 +128,7 @@ namespace Survivors.Play.Authoring.Animations
 		public AnimationClipProperty up;
 		public AnimationClipProperty left;
 		public AnimationClipProperty right;
-		public AnimationClipProperty axeThrow;
+		public AnimationClipProperty attack;
 
 	}
 

@@ -15,7 +15,7 @@ namespace Survivors.Setup.Systems
 	{
 		protected override void CreateSystems()
 		{
-			GetOrCreateAndAddUnmanagedSystem<PlayerInitializationSystem>();
+			// GetOrCreateAndAddUnmanagedSystem<PlayerInitializationSystem>();
 		}
 	}
 	
@@ -25,6 +25,7 @@ namespace Survivors.Setup.Systems
 		{
 			GetOrCreateAndAddManagedSystem<GlobalInputReadSystem>();
 			GetOrCreateAndAddManagedSystem<PlayerSuperSystem>();
+			GetOrCreateAndAddManagedSystem<EnemySuperSystem>();
 		}
 	}
 
@@ -35,6 +36,7 @@ namespace Survivors.Setup.Systems
 		protected override void CreateSystems()
 		{
 			GetOrCreateAndAddManagedSystem<PlayerAnimationSuperSystem>();
+			GetOrCreateAndAddManagedSystem<EnemyAnimationSuperSystem>();
 		}
 	}
 	
@@ -45,6 +47,7 @@ namespace Survivors.Setup.Systems
 		protected override void CreateSystems()
 		{
 			GetOrCreateAndAddManagedSystem<PhysicsSuperSystem>();
+			GetOrCreateAndAddManagedSystem<EnemyPhysicsSuperSystem>();
 		}
 	}
 	

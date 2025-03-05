@@ -28,7 +28,7 @@ namespace Survivors.Play.Systems.Debug
 
 			string message = "";
 
-			Entities.ForEach((Entity entity,  PlayerMotionAspect motion) =>
+			Entities.ForEach((Entity entity,  AgentMotionAspect motion, in PlayerTag _) =>
 			{
 				message += $"[{entity.Index}]\n" +
 				           $"Velocity: {motion.Velocity.xz}\n" +

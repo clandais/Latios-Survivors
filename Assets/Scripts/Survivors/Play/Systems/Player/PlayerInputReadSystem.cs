@@ -9,7 +9,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using VContainer;
 
-namespace Survivors.Play.Systems
+namespace Survivors.Play.Systems.Player
 {
 
 	public partial class PlayerInputReadSystem : SubSystem

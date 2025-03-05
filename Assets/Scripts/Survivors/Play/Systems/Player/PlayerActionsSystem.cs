@@ -7,7 +7,7 @@ using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
 
-namespace Survivors.Play.Systems
+namespace Survivors.Play.Systems.Player
 {
 	[RequireMatchingQueriesForUpdate]
 	public partial struct PlayerActionsSystem : ISystem

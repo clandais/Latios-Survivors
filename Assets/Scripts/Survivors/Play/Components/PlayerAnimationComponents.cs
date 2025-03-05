@@ -1,4 +1,5 @@
 using Latios.Kinemation;
+using Unity.Collections;
 using Unity.Entities;
 
 namespace Survivors.Play.Components
@@ -7,6 +8,21 @@ namespace Survivors.Play.Components
 	{
 		public BlobAssetReference<SkeletonClipSetBlob> ClipSet;
 	}
+	
+	
+	public struct DeathClips : IComponentData
+	{
+		public BlobAssetReference<SkeletonClipSetBlob> ClipSet;
+	}
+	
+	public struct DeathClipsStates : IComponentData
+	{
+		public ClipState StateA;
+		public ClipState StateB;
+		public ClipState StateC;
+		public int ChosenState;
+	}
+	
 	public struct FourDirectionClipStates : IComponentData
 	{
 		public ClipState Center;
@@ -14,7 +30,7 @@ namespace Survivors.Play.Components
 		public ClipState Up;
 		public ClipState Left;
 		public ClipState Right;
-		public ClipState AxeThrow;
+		public ClipState Attack;
 	}
 	
 	
@@ -27,7 +43,7 @@ namespace Survivors.Play.Components
 		Up,
 		Left,
 		Right,
-		AxeThrow
+		Attack
 	}
 
 	public struct ClipState

@@ -17,7 +17,7 @@ namespace Survivors.Play.Components
 		public bool MainAttackTriggered;
 	}
 	
-	public struct PlayerMotion : IComponentData
+	public struct MotionComponent : IComponentData
 	{
 		public float3 DesiredVelocity;
 		public quaternion DesiredRotation;
@@ -25,7 +25,7 @@ namespace Survivors.Play.Components
 		public quaternion Rotation;
 	}
 	
-	public struct PlayerSpeedSettings : IComponentData
+	public struct AgentSpeedSettings : IComponentData
 	{
 		public float WalkSpeed;
 		public float RunSpeed;

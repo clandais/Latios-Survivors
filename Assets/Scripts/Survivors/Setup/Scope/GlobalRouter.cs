@@ -21,9 +21,11 @@ namespace Survivors.Setup.Scope
 	{
 
 
+		[Inject] private ICommandPublisher _publisher;
 		[Inject] private CurtainBehaviour _curtainBehaviour;
 		[Inject] private GameScenesReferences _gameScenesReferences;
 
+		
 		private readonly Dictionary<string, AsyncOperationHandle<SceneInstance>> _handles = new();
 		
 
@@ -47,6 +49,7 @@ namespace Survivors.Setup.Scope
 		private async UniTask On(MainMenuStateCommand _)
 		{
 
+			await _curtainBehaviour.FadeAlpha(0f, 1f, 1f);
 			await DisposeScene(_gameScenesReferences.playScene.AssetGUID);
 
 			if (_handles.ContainsKey(_gameScenesReferences.mainMenuScene.AssetGUID))
@@ -60,13 +63,16 @@ namespace Survivors.Setup.Scope
 				var handle = Addressables.LoadSceneAsync(_gameScenesReferences.mainMenuScene, LoadSceneMode.Additive);
 				_handles.Add(_gameScenesReferences.mainMenuScene.AssetGUID, handle);
 
-				await handle.Task;
+				await handle;
+				await _curtainBehaviour.FadeAlpha(1f, 0f, 1f);
 			}
 		}
 
 		[Route]
 		private async UniTask On(PlayStateCommand _)
 		{
+			
+			await _curtainBehaviour.FadeAlpha(0f, 1f, 1f);
 
 			await DisposeScene(_gameScenesReferences.mainMenuScene.AssetGUID);
 
@@ -80,7 +86,9 @@ namespace Survivors.Setup.Scope
 				var handle = Addressables.LoadSceneAsync(_gameScenesReferences.playScene, LoadSceneMode.Additive);
 				_handles.Add(_gameScenesReferences.playScene.AssetGUID, handle);
 
-				await handle.Task;
+				await handle;
+				await _curtainBehaviour.FadeAlpha(1f, 0f, 1f);
+				
 			}
 		}
 
