@@ -15,22 +15,22 @@ namespace Survivors.Setup.Scope
 {
 	public class GameLifetimeScope : LifetimeScope
 	{
-		[SerializeField] private GameScenesReferences gameScenesReferences;
-		[SerializeField] private CurtainBehaviour curtainBehaviour;
-		[SerializeField] private Transform cinemachineTarget;
+		[SerializeField] GameScenesReferences gameScenesReferences;
+		[SerializeField] CurtainBehaviour curtainBehaviour;
+		[SerializeField] Transform cinemachineTarget;
 
 #if UNITY_EDITOR
 
 		protected override void Awake()
 		{
 			base.Awake();
-
+			
+			// Dispose MANUALLY the world when exiting play mode
 			EditorApplication.playModeStateChanged += state =>
 			{
 				if (state == PlayModeStateChange.ExitingPlayMode)
 				{
-					World.DisposeAllWorlds();
-					UnityEditorTool.RestartEditorWorld();
+					World.DefaultGameObjectInjectionWorld?.Dispose();
 				}
 			};
 		}
@@ -46,6 +46,7 @@ namespace Survivors.Setup.Scope
 			builder.RegisterVitalRouter(routingBuilder =>
 			{
 				routingBuilder.Isolated = true;
+				
 				routingBuilder.Filters
 					.Add<ExceptionHandling>()
 					.Add<LoggingInterceptor>();
@@ -56,12 +57,10 @@ namespace Survivors.Setup.Scope
 
 			builder.RegisterBuildCallback(container =>
 			{
+				// Upon build, we want to start the game in the main menu
 				var publisher = container.Resolve<ICommandPublisher>();
-
 				publisher.PublishAsync(new MainMenuStateCommand());
 			});
 		}
 	}
-
-
 }

@@ -77,21 +77,23 @@ namespace Survivors.Play.Systems.Weapons
 			{
 				
 				TransformQvvs transformQvs = transform.worldTransform;
-				
-				if (Physics.ColliderCast(in collider, in transformQvs, axe.Direction, in WallLayer,  out ColliderCastResult hitInfo, out _))
-				{
-					DestroyCommandBuffer.Add(entity, idx);
-					return;
-				}
-				
-				if (Physics.ColliderCast(in collider, in transformQvs, axe.Direction, in EnemyLayer,  out ColliderCastResult hitInfo2, out var o))
-				{
 
-					HitEntities.Add(o.entity);
-					DestroyCommandBuffer.Add(entity, idx);
-					return;
-				}
+				CapsuleCollider capsuleCollider = collider;
 				
+				
+				if (Physics.ColliderCast(in collider, in transformQvs, transform.worldPosition + axe.Direction, in EnemyLayer, out ColliderCastResult hitInfos, out var o))
+				{
+					 if ( hitInfos.distance <= capsuleCollider.radius )
+						HitEntities.Add(o.entity);
+				}
+
+				if (Physics.ColliderCast(in collider, in transformQvs, axe.Direction, in WallLayer, out ColliderCastResult result, out _))
+				{
+					if ( result.distance <= capsuleCollider.radius )
+						DestroyCommandBuffer.Add(entity, idx);
+				}
+
+
 				transform.TranslateWorld(axe.Direction * axe.Speed * DeltaTime);
 				transform.worldRotation =  math.mul(transform.worldTransform.rotation, quaternion.RotateX( axe.RotationSpeed * DeltaTime));
 				

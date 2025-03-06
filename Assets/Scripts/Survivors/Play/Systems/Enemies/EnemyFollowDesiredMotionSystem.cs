@@ -12,15 +12,7 @@ using Unity.Mathematics;
 
 namespace Survivors.Play.Systems.Enemies
 {
-
-	public struct SteeringForces : IComponentData
-	{
-		public float2 Separation;
-		public float2 Alignment;
-		public float2 Cohesion;
-		public int Count;
-	}
-
+	
 	public partial struct EnemyFollowDesiredMotionSystem : ISystem
 	{
 
@@ -44,16 +36,30 @@ namespace Survivors.Play.Systems.Enemies
 				enemyLayer.Layer,
 				state.WorldUpdateAllocator);
 
+
 			var findPairProcessor = new MonsterVsMonsterFindPairProcessor
 			{
 				PairStream              = pairStream.AsParallelWriter(),
-				MotionLookup            = SystemAPI.GetComponentLookup<SteeringForces>(),
+				AlignmentLookup         = SystemAPI.GetComponentLookup<AlignmentForce>(),
+				CohesionLookup          = SystemAPI.GetComponentLookup<CohesionForce>(),
+				SeparationLookup        = SystemAPI.GetComponentLookup<SeparationForce>(),
 				MotionComponentLookup   = SystemAPI.GetComponentLookup<MotionComponent>(true),
 				SteeringComponentLookup = SystemAPI.GetComponentLookup<SteeringComponent>(true)
 			};
 
 			state.Dependency = Physics.FindPairs(enemyLayer.Layer, findPairProcessor).ScheduleParallel(state.Dependency);
 
+			var monsterForEachProcessor = new MonsterForEachProcessor
+			{
+				AlignmentLookup         = SystemAPI.GetComponentLookup<AlignmentForce>(),
+				CohesionLookup          = SystemAPI.GetComponentLookup<CohesionForce>(),
+				SeparationLookup        = SystemAPI.GetComponentLookup<SeparationForce>(),
+				MotionComponentLookup   = SystemAPI.GetComponentLookup<MotionComponent>(true),
+				SteeringComponentLookup = SystemAPI.GetComponentLookup<SteeringComponent>(true),
+				TransformLookup         = SystemAPI.GetComponentLookup<WorldTransform>(true)
+			};
+
+			state.Dependency = Physics.ForEachPair(pairStream, monsterForEachProcessor).ScheduleParallel(state.Dependency);
 
 			state.Dependency = new FollowPlayerJob
 			{
@@ -73,72 +79,80 @@ namespace Survivors.Play.Systems.Enemies
 	{
 
 		public PairStream.ParallelWriter PairStream;
-		public PhysicsComponentLookup<SteeringForces> MotionLookup;
+		public PhysicsComponentLookup<SeparationForce> SeparationLookup;
+		public PhysicsComponentLookup<AlignmentForce> AlignmentLookup;
+		public PhysicsComponentLookup<CohesionForce> CohesionLookup;
+
 		[ReadOnly] public ComponentLookup<MotionComponent> MotionComponentLookup;
 		[ReadOnly] public ComponentLookup<SteeringComponent> SteeringComponentLookup;
 
 		public void Execute(in FindPairsResult result)
 		{
-			float radius = SteeringComponentLookup[result.entityA].Radius;
+			float viewRadius = SteeringComponentLookup[result.entityA].ViewRadius;
 
-			if (Physics.DistanceBetween(result.colliderA, result.transformA, result.colliderB, result.transformB, radius, out ColliderDistanceResult distanceResult))
+			if (Physics.DistanceBetween(result.colliderA, result.transformA, result.colliderB, result.transformB, viewRadius, out ColliderDistanceResult distanceResult))
 			{
-				ref float2 sep  = ref PairStream.AddPairAndGetRef<float2>(result.pairStreamKey, false, true, out _);
-				ref float2 sepB = ref PairStream.AddPairAndGetRef<float2>(result.pairStreamKey, true, false, out _);
-				ref float2 vel  = ref PairStream.AddPairAndGetRef<float2>(result.pairStreamKey, false, true, out _);
-				ref float2 velB = ref PairStream.AddPairAndGetRef<float2>(result.pairStreamKey, true, false, out _);
-				ref float2 coh  = ref PairStream.AddPairAndGetRef<float2>(result.pairStreamKey, false, true, out _);
-				ref float2 cohB = ref PairStream.AddPairAndGetRef<float2>(result.pairStreamKey, true, false, out _);
 
-				sep  += (result.transformA.position.xz - result.transformB.position.xz) / math.pow(distanceResult.distance, 2);
-				sepB += (result.transformB.position.xz - result.transformA.position.xz) / math.pow(distanceResult.distance, 2);
+				PairStream.AddPairAndGetRef<int>(result.pairStreamKey, true, false, out _);
 
-				vel  += MotionComponentLookup[result.entityB].Velocity.xz;
-				velB += MotionComponentLookup[result.entityA].Velocity.xz;
+				var alignment  = AlignmentLookup.GetRW(result.entityA);
+				var cohesion   = CohesionLookup.GetRW(result.entityA);
+				var separation = SeparationLookup.GetRW(result.entityA);
 
-				if (distanceResult.distance < SteeringComponentLookup[result.entityA].CohesionRadius)
-					coh += result.transformB.position.xz;
+				alignment.ValueRW.Force += MotionComponentLookup[result.entityB].Velocity.xz;
+				alignment.ValueRW.Count++;
 
-				if (distanceResult.distance < SteeringComponentLookup[result.entityB].CohesionRadius)
-					cohB += result.transformA.position.xz;
+				cohesion.ValueRW.Force += result.transformB.position.xz;
+				cohesion.ValueRW.Count++;
 
-				var motionA = MotionLookup.GetRW(result.entityA);
-				motionA.ValueRW.Separation = sep;
-				motionA.ValueRW.Alignment  = vel;
-				motionA.ValueRW.Cohesion   = coh;
-				motionA.ValueRW.Count++;
-
-				var motionB = MotionLookup.GetRW(result.entityB);
-				motionB.ValueRW.Separation = sepB;
-				motionB.ValueRW.Alignment  = velB;
-				motionB.ValueRW.Cohesion   = cohB;
-				motionB.ValueRW.Count++;
-
+				if (distanceResult.distance < SteeringComponentLookup[result.entityA].SeparationRadius)
+					separation.ValueRW.Force += (result.transformA.position.xz - result.transformB.position.xz) / math.pow(distanceResult.distance, 2);
 			}
 
 		}
 	}
 
 
-	internal struct MonsterVsMonsterForEachPairProcessor : IForEachPairProcessor
+	internal struct MonsterForEachProcessor : IForEachPairProcessor
 	{
-		public PhysicsComponentLookup<SteeringForces> MotionLookup;
-		public PairStream.ParallelWriter PairStream;
+		public PhysicsComponentLookup<SeparationForce> SeparationLookup;
+		public PhysicsComponentLookup<AlignmentForce> AlignmentLookup;
+		public PhysicsComponentLookup<CohesionForce> CohesionLookup;
+
+		[ReadOnly] public ComponentLookup<SteeringComponent> SteeringComponentLookup;
+		[ReadOnly] public ComponentLookup<WorldTransform> TransformLookup;
+		[ReadOnly] public ComponentLookup<MotionComponent> MotionComponentLookup;
 
 		public void Execute(ref PairStream.Pair pair)
 		{
-			if (pair.userByte == 0)
+
+			var cohesionA = CohesionLookup.GetRW(pair.entityA);
+			if (cohesionA.ValueRW.Count > 0)
 			{
-				SteeringForces motionA = MotionLookup.GetRW(pair.entityA).ValueRW;
-				motionA.Separation /= motionA.Count;
+				cohesionA.ValueRW.Force /= cohesionA.ValueRW.Count;
+				cohesionA.ValueRW.Force -= TransformLookup[pair.entityA].position.xz;
+				cohesionA.ValueRW.Force *= SteeringComponentLookup[pair.entityA].CohesionWeight;
 			}
-			// else if (pair.userByte == 1)
-			// {
-			// 	var motionB = MotionLookup.GetRW(pair.entityB).ValueRW;
-			// 	motionB.Separation /= motionB.Count;
-			// }
+
+
+			var separationA = SeparationLookup.GetRW(pair.entityA);
+			if (separationA.ValueRW.Count > 0)
+			{
+				separationA.ValueRW.Force /= separationA.ValueRW.Count;
+				separationA.ValueRW.Force *= SteeringComponentLookup[pair.entityA].SeparationWeight;
+			}
+
+			var alignmentA = AlignmentLookup.GetRW(pair.entityA);
+			if (alignmentA.ValueRW.Count > 0)
+			{
+				alignmentA.ValueRW.Force /= alignmentA.ValueRW.Count;
+				alignmentA.ValueRW.Force -= MotionComponentLookup[pair.entityA].Velocity.xz;
+				alignmentA.ValueRW.Force *= SteeringComponentLookup[pair.entityA].AlignmentWeight;
+			}
+
 		}
 	}
+
 
 	[WithAll(typeof(EnemyTag))]
 	[WithNone(typeof(DeadTag))]
@@ -148,25 +162,18 @@ namespace Survivors.Play.Systems.Enemies
 		[ReadOnly] public float DeltaTime;
 		[ReadOnly] public float3 PlayerPosition;
 
-		public void Execute(TransformAspect transformAspect, AgentMotionAspect motionAspect, in SteeringComponent steeringComponent, ref SteeringForces forces)
+		public void Execute(TransformAspect transformAspect, SteeringAspect steeringAspect, AgentMotionAspect motionAspect, in SteeringComponent steeringComponent)
 		{
-			float2 dir          = math.normalize(PlayerPosition.xz - transformAspect.worldPosition.xz);
-			float  desiredSpeed = motionAspect.SpeedSettings.RunSpeed;
 
-			float2 desiredVelocity = dir;
 
-			if (forces.Count > 0)
-			{
-				desiredVelocity *= steeringComponent.VelocityWeight;
-				desiredVelocity += forces.Separation * steeringComponent.SeparationWeight;
-				desiredVelocity += forces.Alignment / forces.Count * steeringComponent.AlignmentWeight;
-				desiredVelocity += forces.Cohesion / forces.Count * steeringComponent.CohesionWeight;
-			}
+			motionAspect.Rotation = transformAspect.worldRotation;
 
-			forces.Separation = float2.zero;
-			forces.Alignment  = float2.zero;
-			forces.Cohesion   = float2.zero;
-			forces.Count      = 0;
+			float2 desiredVelocity = math.normalizesafe((PlayerPosition.xz - transformAspect.worldPosition.xz) * steeringComponent.VelocityWeight + steeringAspect.DesiredVelocity);
+			float  desiredSpeed    = motionAspect.SpeedSettings.RunSpeed;
+
+
+			steeringAspect.Clear();
+
 
 			motionAspect.DesiredVelocity = new float3(desiredVelocity.x, 0, desiredVelocity.y);
 			motionAspect.DesiredVelocity = math.normalizesafe(motionAspect.DesiredVelocity) * desiredSpeed;
@@ -174,10 +181,14 @@ namespace Survivors.Play.Systems.Enemies
 
 			motionAspect.Velocity = motionAspect.Velocity.MoveTowards(motionAspect.DesiredVelocity, motionAspect.SpeedSettings.VelocityChange * DeltaTime);
 
-			float3     lookDir      = motionAspect.DesiredVelocity;
-			quaternion lookRotation = quaternion.LookRotation(lookDir, math.up());
-			motionAspect.DesiredRotation = lookRotation;
-			motionAspect.Rotation        = transformAspect.worldRotation.RotateTowards(motionAspect.DesiredRotation, 90f * DeltaTime);
+
+			if (math.lengthsq(motionAspect.Velocity) > 0f)
+			{
+
+				quaternion lookRotation = quaternion.LookRotation(motionAspect.DesiredVelocity, math.up());
+				motionAspect.DesiredRotation = lookRotation;
+				motionAspect.Rotation        = transformAspect.worldRotation.RotateTowards(motionAspect.DesiredRotation, 45f * DeltaTime);
+			}
 		}
 	}
 }

@@ -1,3 +1,4 @@
+using Survivors.Play.Components;
 using Survivors.Play.Systems.Enemies;
 using Unity.Entities;
 using Unity.Mathematics;
@@ -13,7 +14,8 @@ namespace Survivors.Play.Authoring.Enemies
 		[SerializeField] float separationWeight;
 		[SerializeField] float alignmentWeight;
 		[SerializeField] float cohesionWeight;
-		[SerializeField] float radius = 10f;
+		[SerializeField] float viewRadius = 50f;
+		[SerializeField] float separationRadius = 20f;
 		[SerializeField] float cohesionRadius = 10f;
 		private class EnemyAuthoringBaker : Baker<EnemyAuthoring>
 		{
@@ -21,10 +23,15 @@ namespace Survivors.Play.Authoring.Enemies
 			{
 				var entity = GetEntity(TransformUsageFlags.Dynamic);
 				AddComponent<EnemyTag>(entity);
-				AddComponent<SteeringForces>(entity);
+				
+				AddComponent<CohesionForce>(entity);
+				AddComponent<AlignmentForce>(entity);
+				AddComponent<SeparationForce>(entity);
+				
 				AddComponent(entity, new SteeringComponent
 				{
-					Radius = authoring.radius,
+					ViewRadius = authoring.viewRadius,
+					SeparationRadius = authoring.separationRadius,
 					CohesionRadius = authoring.cohesionRadius,
 					VelocityWeight = authoring.velocityWeight,
 					SeparationWeight = authoring.separationWeight,
@@ -42,7 +49,8 @@ namespace Survivors.Play.Authoring.Enemies
 	public struct SteeringComponent : IComponentData
 	{
 
-		public float Radius;
+		public float ViewRadius;
+		public float SeparationRadius;
 		public float CohesionRadius;
 		public float VelocityWeight;
 		public float SeparationWeight;

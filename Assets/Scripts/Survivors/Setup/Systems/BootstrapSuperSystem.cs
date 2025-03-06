@@ -2,6 +2,7 @@ using Latios;
 using Latios.Systems;
 using Latios.Transforms.Systems;
 using Survivors.Play.Systems.Debug;
+using Survivors.Play.Systems.Enemies;
 using Survivors.Play.Systems.Initialization;
 using Unity.Entities;
 using VContainer;
@@ -15,6 +16,7 @@ namespace Survivors.Setup.Systems
 	{
 		protected override void CreateSystems()
 		{
+			GetOrCreateAndAddUnmanagedSystem<EnemySpawnerSystem>();
 			// GetOrCreateAndAddUnmanagedSystem<PlayerInitializationSystem>();
 		}
 	}

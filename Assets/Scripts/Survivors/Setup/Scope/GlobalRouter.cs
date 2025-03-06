@@ -4,7 +4,6 @@ using Cysharp.Threading.Tasks;
 using Survivors.Setup.MonoBehaviours;
 using Survivors.Setup.Scope.Messages.GlobalMessages;
 using Survivors.Setup.ScriptableObjects;
-using Survivors.Setup.Systems;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
@@ -21,15 +20,15 @@ namespace Survivors.Setup.Scope
 	{
 
 
-		[Inject] private ICommandPublisher _publisher;
-		[Inject] private CurtainBehaviour _curtainBehaviour;
-		[Inject] private GameScenesReferences _gameScenesReferences;
+		[Inject] ICommandPublisher _publisher;
+		[Inject] CurtainBehaviour _curtainBehaviour;
+		[Inject] GameScenesReferences _gameScenesReferences;
 
-		
-		private readonly Dictionary<string, AsyncOperationHandle<SceneInstance>> _handles = new();
-		
 
-		private async UniTask DisposeScene(string assetGuid)
+		readonly Dictionary<string, AsyncOperationHandle<SceneInstance>> _handles = new();
+
+
+		async UniTask DisposeScene(string assetGuid)
 		{
 			if (_handles.ContainsKey(assetGuid))
 			{
@@ -46,7 +45,7 @@ namespace Survivors.Setup.Scope
 
 
 		[Route]
-		private async UniTask On(MainMenuStateCommand _)
+		async UniTask On(MainMenuStateCommand _)
 		{
 
 			await _curtainBehaviour.FadeAlpha(0f, 1f, 1f);
@@ -69,9 +68,9 @@ namespace Survivors.Setup.Scope
 		}
 
 		[Route]
-		private async UniTask On(PlayStateCommand _)
+		async UniTask On(PlayStateCommand _)
 		{
-			
+
 			await _curtainBehaviour.FadeAlpha(0f, 1f, 1f);
 
 			await DisposeScene(_gameScenesReferences.mainMenuScene.AssetGUID);
@@ -88,13 +87,13 @@ namespace Survivors.Setup.Scope
 
 				await handle;
 				await _curtainBehaviour.FadeAlpha(1f, 0f, 1f);
-				
+
 			}
 		}
 
 
 		[Route]
-		private async UniTask On(TriggerCurtainFade cmd)
+		async UniTask On(TriggerCurtainFade cmd)
 		{
 			await _curtainBehaviour.FadeAlpha(cmd.FromAlpha, cmd.ToAlpha, cmd.Duration);
 		}

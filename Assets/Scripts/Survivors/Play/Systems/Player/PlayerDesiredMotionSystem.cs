@@ -47,6 +47,8 @@ namespace Survivors.Play.Systems.Player
 		{
 			float2 dir = inputState.Direction;
 
+			
+			// Currently no sprinting involved
 			float desiredSpeed = inputState.IsSprinting ? motionAspect.SpeedSettings.RunSpeed : motionAspect.SpeedSettings.WalkSpeed;
 
 			motionAspect.DesiredVelocity = new float3(dir.x, 0, dir.y) * desiredSpeed;

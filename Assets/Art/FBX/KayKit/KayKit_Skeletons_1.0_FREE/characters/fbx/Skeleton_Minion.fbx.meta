@@ -3,7 +3,17 @@ guid: 5a0dc554ec4a6c04eab311be0a063aec
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Glow
+    second: {fileID: 2100000, guid: a75f199ef8309bd47b02c63313fe52b4, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: skeleton
+    second: {fileID: 2100000, guid: bb1eb929722fbc241afa16aa49b3a733, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -12,7 +22,7 @@ ModelImporter:
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
-    resampleCurves: 1
+    resampleCurves: 0
     optimizeGameObjects: 1
     removeConstantScaleCurves: 0
     motionNodeName: 
@@ -52,6 +62,33 @@ ModelImporter:
     - Rig/root/hips/upperleg.r/lowerleg.r
     - Rig/root/hips/upperleg.r/lowerleg.r/foot.r
     - Rig/root/hips/upperleg.r/lowerleg.r/foot.r/toes.r
+    - Rig/root/kneeIK.l
+    - Rig/root/control-toe-roll.l
+    - Rig/root/control-toe-roll.l/control-heel-roll.l
+    - Rig/root/control-toe-roll.l/control-heel-roll.l/control-foot-roll.l
+    - Rig/root/control-toe-roll.l/control-heel-roll.l/control-foot-roll.l/heelIK.l
+    - Rig/root/control-toe-roll.l/control-heel-roll.l/control-foot-roll.l/IK-foot.l
+    - Rig/root/control-toe-roll.l/control-heel-roll.l/IK-toe.l
+    - Rig/root/kneeIK.r
+    - Rig/root/control-toe-roll.r
+    - Rig/root/control-toe-roll.r/control-heel-roll.r
+    - Rig/root/control-toe-roll.r/control-heel-roll.r/control-foot-roll.r
+    - Rig/root/control-toe-roll.r/control-heel-roll.r/control-foot-roll.r/heelIK.r
+    - Rig/root/control-toe-roll.r/control-heel-roll.r/control-foot-roll.r/IK-foot.r
+    - Rig/root/control-toe-roll.r/control-heel-roll.r/IK-toe.r
+    - Rig/root/elbowIK.l
+    - Rig/root/handIK.l
+    - Rig/root/elbowIK.r
+    - Rig/root/handIK.r
+    - Skeleton_Minion_ArmLeft
+    - Skeleton_Minion_ArmRight
+    - Skeleton_Minion_Body
+    - Skeleton_Minion_Cloak
+    - Skeleton_Minion_Eyes
+    - Skeleton_Minion_Head
+    - Skeleton_Minion_Jaw
+    - Skeleton_Minion_LegLeft
+    - Skeleton_Minion_LegRight
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
@@ -2834,7 +2871,7 @@ ModelImporter:
     skinWeightsMode: 0
     maxBonesPerVertex: 4
     minBoneWeight: 0.001
-    optimizeBones: 1
+    optimizeBones: 0
     meshOptimizationFlags: -1
     indexFormat: 0
     secondaryUVAngleDistortion: 8

@@ -3,6 +3,7 @@ using Latios.Psyshock;
 using Latios.Transforms;
 using Survivors.Play.Authoring;
 using Survivors.Play.Authoring.Enemies;
+using Survivors.Play.Authoring.Level;
 using Unity.Burst;
 using Unity.Entities;
 

@@ -1,41 +1,37 @@
-using Latios;
 using Survivors.BootStrap;
-using Survivors.Setup;
 using Survivors.Setup.MonoBehaviours;
-using Survivors.Setup.Scope;
-using Survivors.Setup.Scope.Interceptors;
 using Survivors.Setup.Systems;
 using Unity.Entities;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
-using VitalRouter;
 using VitalRouter.VContainer;
 
 namespace Survivors.Main_Menu.Scope
 {
 	public class MainMenuLifetimeScope : LifetimeScope
 	{
-		[SerializeField] private MainMenuBehaviour mainMenuBehaviour;
-	
-		
+		[SerializeField] MainMenuBehaviour mainMenuBehaviour;
+
+
 		protected override void Configure(IContainerBuilder builder)
 		{
 			builder.RegisterInstance(mainMenuBehaviour);
 
 			World.DefaultGameObjectInjectionWorld?.Dispose();
-			
+
 			if (new LatiosBootstrap().Initialize("LatiosWorld"))
 			{
 				Debug.Log("Latios initialized");
 			}
 			else
 			{
-				Debug.LogError("Latios failed to initialize");
+				Debug.LogException( new System.Exception("Latios failed to initialize :'("));
+				return;
 			}
 
 			builder.RegisterSystemFromDefaultWorld<GlobalInputReadSystem>();
-			
+
 			builder.UseEntryPoints(cfg =>
 			{
 				cfg.Add<MainMenuEntryPoint>();
@@ -50,8 +46,8 @@ namespace Survivors.Main_Menu.Scope
 					routing.Map<MainMenuRouter>();
 				});
 			}
-			
+
 		}
-		
+
 	}
 }

@@ -79,7 +79,7 @@ namespace Survivors.Setup.Systems
 			CreateQueries();
 
 			GetOrCreateAndAddUnmanagedSystem<BuildEnvironmentCollisionLayerSystem>();
-			
+			GetOrCreateAndAddUnmanagedSystem<FloorGridSystem>();
 			
 			GetOrCreateAndAddUnmanagedSystem<AgentMovementSystem>();
 

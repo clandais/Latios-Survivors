@@ -1,5 +1,6 @@
 using Latios;
 using Latios.Psyshock;
+using Latios.Transforms;
 using Survivors.Play.Authoring.Enemies;
 using Unity.Burst;
 using Unity.Collections;
@@ -40,10 +41,29 @@ namespace Survivors.Play.Systems
 
 			_buildCollisionLayerTypeHandles.Update(ref state);
 			
-			var settings = new CollisionLayerSettings { worldAabb = new Aabb(-100f, 100f), worldSubdivisionsPerAxis = new int3(1, 1, 8) };
+			
+			var entities = _query.ToEntityArray(state.WorldUpdateAllocator);
+			
+			float3 min = float3.zero;
+			float3 max = float3.zero;
+			
+			foreach (Entity entity in entities)
+			{
+				var collider  = SystemAPI.GetComponent<Collider>(entity);
+				var transform = SystemAPI.GetComponent<WorldTransform>(entity);
+				var aabb      = Physics.AabbFrom(collider, transform.worldTransform);
+				min = math.min(aabb.min, min);
+				max = math.max(aabb.max, max);
+			}
+			
+			// add a small padding to the AABB
+			min -= new float3(5f);
+			max += new float3(5f);
+			
+			var settings = new CollisionLayerSettings { worldAabb = new Aabb(min, max), worldSubdivisionsPerAxis = new int3(1, 1, 8) };
 			
 			state.Dependency = Physics.BuildCollisionLayer(_query, in _buildCollisionLayerTypeHandles).WithSettings(settings)
-				.ScheduleParallel(out CollisionLayer enemyCollisionLayer, Allocator.Persistent, state.Dependency);
+				.ScheduleParallel(out CollisionLayer enemyCollisionLayer, Allocator.TempJob, state.Dependency);
 			
 			_world.sceneBlackboardEntity.SetCollectionComponentAndDisposeOld(new EnemyCollisionLayer { Layer = enemyCollisionLayer });
 		}

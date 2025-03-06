@@ -61,8 +61,8 @@ namespace Survivors.Play.Systems.Player
 					
 					
 					// get the direction of the axe
-					var direction = math.normalize( new float3( mouse.WorldPosition.x, 1f, mouse.WorldPosition.y) - playerTransform.position);
-					
+					float2 direction2D = math.normalizesafe( mouse.WorldPosition - playerTransform.position.xz);
+					float3 direction =  new float3(direction2D.x, 0f, direction2D.y);
 					
 					spawnQueue.Enqueue( new AxeSpawnQueue.AxeSpawnData()
 					{

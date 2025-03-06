@@ -6,11 +6,11 @@ namespace Survivors.Play.Components
 
 	public readonly partial struct AgentMotionAspect : IAspect
 	{
-		private readonly RefRO<AgentSpeedSettings> _speedSettings;
+		readonly RefRO<AgentSpeedSettings> _speedSettings;
 		public AgentSpeedSettings SpeedSettings => _speedSettings.ValueRO;
 
 
-		private readonly RefRW<MotionComponent> _motion;
+		readonly RefRW<MotionComponent> _motion;
 
 		public MotionComponent MotionComponent
 		{
@@ -41,9 +41,7 @@ namespace Survivors.Play.Components
 			get => _motion.ValueRW.DesiredRotation;
 			set => _motion.ValueRW.DesiredRotation = value;
 		}
-		
+
 		public float NormalizedSpeed => math.length(_motion.ValueRO.Velocity) / SpeedSettings.RunSpeed;
-		
-		
 	}
 }
