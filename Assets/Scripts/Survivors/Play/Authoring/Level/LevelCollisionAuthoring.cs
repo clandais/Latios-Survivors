@@ -47,6 +47,55 @@ namespace Survivors.Play.Authoring.Level
 			return new float2(cellPos.x * CellSize + MinX, cellPos.y * CellSize + MinY);
 		}
 		
+		public int2 IndexToCell(int index)
+		{
+			return new int2(index % Width, index / Width);
+		}
+		
+		public float2 IndexToWorld(int index)
+		{
+			return CellToWorld(IndexToCell(index));
+		}
+
+		
+		/// <summary>
+		///  Draw the grid in the editor
+		/// </summary>
+		/// <param name="grid">
+		/// The grid to draw
+		/// </param>
+		public static void Draw(FloorGrid grid)
+		{
+			for (int i = 0; i < grid.Walkable.Length; i++)
+			{
+				Color color = grid.Walkable[i] ? Color.green : Color.red;
+
+
+				float2 cell = grid.IndexToWorld(i);
+
+				UnityEngine.Debug.DrawLine(
+					new float3(cell.x - grid.CellSize/2f, 0f, cell.y - grid.CellSize/2f ),
+					new float3(cell.x - grid.CellSize/2f, 0f, cell.y +  grid.CellSize / 2f),
+					color);
+				
+				UnityEngine.Debug.DrawLine(
+					new float3(cell.x + grid.CellSize/2f, 0f, cell.y - grid.CellSize/2f ),
+					new float3(cell.x + grid.CellSize/2f, 0f, cell.y +  grid.CellSize / 2f),
+					color);
+				
+				
+				UnityEngine.Debug.DrawLine(
+					new float3(cell.x - grid.CellSize/2f, 0f, cell.y - grid.CellSize/2f ),
+					new float3(cell.x + grid.CellSize/2f, 0f, cell.y -  grid.CellSize / 2f),
+					color);
+				
+				UnityEngine.Debug.DrawLine(
+					new float3(cell.x - grid.CellSize/2f, 0f, cell.y + grid.CellSize/2f ),
+					new float3(cell.x + grid.CellSize/2f, 0f, cell.y +  grid.CellSize / 2f),
+					color);
+			}
+		}
+		
 		
 		public JobHandle TryDispose(JobHandle inputDeps)
 		{

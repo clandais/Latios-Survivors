@@ -152,12 +152,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a13f5f1453a456a9334864c70f3ba7f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  velocityWeight: 0.1
-  separationWeight: 0.05
-  alignmentWeight: 0.05
-  cohesionWeight: 0.005
-  radius: 25
-  cohesionRadius: 10
 --- !u!114 &2034101364744182827
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -204,6 +198,8 @@ MonoBehaviour:
   walkSpeed: 5
   runSpeed: 5
   velocityChange: 10
+  radius: 2
+  obstacleHorizon: 1
 --- !u!114 &8446108900856776258
 MonoBehaviour:
   m_ObjectHideFlags: 0

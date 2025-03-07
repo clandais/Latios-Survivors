@@ -9,9 +9,10 @@ namespace Survivors.Setup.Systems
 		protected override void CreateSystems()
 		{
 			CreateQueries();
-		
 
-			GetOrCreateAndAddUnmanagedSystem<EnemyFollowDesiredMotionSystem>();
+
+
+		//	GetOrCreateAndAddUnmanagedSystem<EnemyFollowDesiredMotionSystem>();
 			GetOrCreateAndAddUnmanagedSystem<DisableDeadCollidersSystem>();
 
 		}
@@ -35,6 +36,7 @@ namespace Survivors.Setup.Systems
 		{
 			CreateQueries();
 			GetOrCreateAndAddUnmanagedSystem<BuildEnemyCollisionLayerSystem>();
+			GetOrCreateAndAddUnmanagedSystem<EnemyRVOSystem>();
 		}
 	}
 }

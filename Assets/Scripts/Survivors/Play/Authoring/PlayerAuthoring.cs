@@ -11,6 +11,7 @@ namespace Survivors.Play.Authoring
 		[SerializeField] private float walkSpeed = 2f;
 		[SerializeField] private float runSpeed = 5f;
 		[SerializeField] private float velocityChange = 10f;
+		[SerializeField] private float radius = 1f;
 
 		private class PlayerAuthoringBaker : Baker<PlayerAuthoring>
 		{
@@ -19,7 +20,13 @@ namespace Survivors.Play.Authoring
 				Entity entity = GetEntity(TransformUsageFlags.Dynamic);
 				AddComponent<PlayerTag>(entity);
 				AddComponent<PlayerInputState>(entity);
-				AddComponent(entity, new AgentSpeedSettings { WalkSpeed = authoring.walkSpeed, RunSpeed = authoring.runSpeed, VelocityChange = authoring.velocityChange});
+				AddComponent(entity, new AgentSettings
+				{
+					WalkSpeed = authoring.walkSpeed, 
+					RunSpeed = authoring.runSpeed, 
+					VelocityChange = authoring.velocityChange,
+					Radius = authoring.radius,
+				});
 
 				AddComponent(entity, new MotionComponent
 				{
@@ -27,6 +34,7 @@ namespace Survivors.Play.Authoring
 					DesiredRotation = quaternion.LookRotation(math.forward(), math.up())
 				});
 
+				AddComponent<AgentVelocityComponent>(entity);
 			}
 		}
 	}

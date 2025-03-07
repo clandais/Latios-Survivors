@@ -71,6 +71,9 @@ namespace Survivors.Play.Systems
 		public void Execute(TransformAspect transform, AgentMotionAspect agentMotionAspect,  in Collider collider)
 		{
 
+			
+			agentMotionAspect.RvoVelocity = agentMotionAspect.Velocity;
+			
 			float3        motion            = agentMotionAspect.Velocity * DeltaTime;
 			TransformQvvs currentTransform  = transform.worldTransform;
 			float3        direction         = math.normalizesafe(motion);

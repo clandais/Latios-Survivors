@@ -49,11 +49,11 @@ namespace Survivors.Play.Systems.Player
 
 			
 			// Currently no sprinting involved
-			float desiredSpeed = inputState.IsSprinting ? motionAspect.SpeedSettings.RunSpeed : motionAspect.SpeedSettings.WalkSpeed;
+			float desiredSpeed = inputState.IsSprinting ? motionAspect.Settings.RunSpeed : motionAspect.Settings.WalkSpeed;
 
 			motionAspect.DesiredVelocity = new float3(dir.x, 0, dir.y) * desiredSpeed;
 
-			motionAspect.Velocity = motionAspect.Velocity.MoveTowards(motionAspect.DesiredVelocity, motionAspect.SpeedSettings.VelocityChange * DeltaTime);
+			motionAspect.Velocity = motionAspect.Velocity.MoveTowards(motionAspect.DesiredVelocity, motionAspect.Settings.VelocityChange * DeltaTime);
 
 			float3     position     = transformAspect.worldPosition;
 			float2     aim          = inputState.MousePosition;

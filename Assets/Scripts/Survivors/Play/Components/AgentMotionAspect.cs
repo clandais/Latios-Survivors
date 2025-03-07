@@ -6,9 +6,11 @@ namespace Survivors.Play.Components
 
 	public readonly partial struct AgentMotionAspect : IAspect
 	{
-		readonly RefRO<AgentSpeedSettings> _speedSettings;
-		public AgentSpeedSettings SpeedSettings => _speedSettings.ValueRO;
+		readonly RefRO<AgentSettings> _speedSettings;
+		public AgentSettings Settings => _speedSettings.ValueRO;
 
+		
+		readonly RefRW<AgentVelocityComponent> _velocity;
 
 		readonly RefRW<MotionComponent> _motion;
 
@@ -29,6 +31,12 @@ namespace Survivors.Play.Components
 			get => _motion.ValueRW.Velocity;
 			set => _motion.ValueRW.Velocity = value;
 		}
+		
+		public float3 RvoVelocity
+		{
+			get => _velocity.ValueRW.Velocity;
+			set => _velocity.ValueRW.Velocity = value;
+		}
 
 		public quaternion Rotation
 		{
@@ -42,6 +50,12 @@ namespace Survivors.Play.Components
 			set => _motion.ValueRW.DesiredRotation = value;
 		}
 
-		public float NormalizedSpeed => math.length(_motion.ValueRO.Velocity) / SpeedSettings.RunSpeed;
+		public float3 AvoidanceVelocity
+		{
+			get => _motion.ValueRW.AvoidanceVelocity;
+			set => _motion.ValueRW.AvoidanceVelocity = value;
+		}
+
+		public float NormalizedSpeed => math.length(_motion.ValueRO.Velocity) / Settings.RunSpeed;
 	}
 }

@@ -63,29 +63,16 @@ namespace Survivors.Play.Systems
 
 			foreach (var transform in SystemAPI.Query<RefRO<WorldTransform>>().WithAll<FloorTag>())
 			{
-				float2 worldPos = transform.ValueRO.position.xz;
-				var    gridPos  = new int2((int)((worldPos.x - minX) / grid.CellSize), (int)((worldPos.y - minY) / grid.CellSize));
+			//	float2 worldPos = transform.ValueRO.position.xz;
+			//	var    gridPos  = new int2((int)((worldPos.x - minX) / grid.CellSize), (int)((worldPos.y - minY) / grid.CellSize));
 
+				var gridPos = grid.WorldToCell(transform.ValueRO.position);
 				grid.Walkable[gridPos.x + gridPos.y * grid.Width] = true;
 			}
 
 			m_world.sceneBlackboardEntity.SetCollectionComponentAndDisposeOld(grid);
-
-
-			for (int i = 0; i < grid.Walkable.Length; i++)
-			{
-				Color color = grid.Walkable[i] ? Color.green : Color.red;
-
-
-				float2 cell = grid.CellToWorld(new int2(i % grid.Width , i / grid.Width));
-
-				UnityEngine.Debug.DrawLine(
-					new float3(cell.x - grid.CellSize/2f, 0f, cell.y - grid.CellSize/2f),
-					new float3(cell.x + grid.CellSize / 2f, 0f, cell.y +  grid.CellSize / 2f),
-					color);
-
-				//UnityEngine.Debug.DrawLine(new float3(i % grid.Width, 0, i / grid.Width), new float3(i % grid.Width, 10, i / grid.Width), color);
-			}
+			
+			FloorGrid.Draw(grid);
 
 		}
 	

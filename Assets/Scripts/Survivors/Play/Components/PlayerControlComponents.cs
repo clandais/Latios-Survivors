@@ -17,19 +17,28 @@ namespace Survivors.Play.Components
 		public bool MainAttackTriggered;
 	}
 	
+	
+	public struct AgentVelocityComponent : IComponentData
+	{
+		public float3 Velocity;
+	}
+	
 	public struct MotionComponent : IComponentData
 	{
 		public float3 DesiredVelocity;
 		public quaternion DesiredRotation;
 		public float3 Velocity;
 		public quaternion Rotation;
+		public float3 AvoidanceVelocity;
 	}
 	
-	public struct AgentSpeedSettings : IComponentData
+	public struct AgentSettings : IComponentData
 	{
 		public float WalkSpeed;
 		public float RunSpeed;
 		public float VelocityChange;
+		public float Radius;
+		public float ObstacleHorizon;
 	}
 	
 	public partial struct AxeSpawnQueue : ICollectionComponent

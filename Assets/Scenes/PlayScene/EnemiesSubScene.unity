@@ -164,7 +164,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyPrefab: {fileID: 3658279222646950327, guid: f47082d21b688514da07ab9a9ed1709d, type: 3}
-  spawnInterval: 2
+  spawnInterval: 0.2
   maxEnemies: 1000
 --- !u!1 &1027215071
 GameObject:
@@ -196,7 +196,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyPrefab: {fileID: 3658279222646950327, guid: f47082d21b688514da07ab9a9ed1709d, type: 3}
-  spawnInterval: 2
+  spawnInterval: 0.2
   maxEnemies: 1000
 --- !u!4 &1027215073
 Transform:
