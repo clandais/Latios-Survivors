@@ -173,16 +173,16 @@ MonoBehaviour:
       speedMultiplier: 1
     down:
       clip: {fileID: -6411013857362534180, guid: 5a0dc554ec4a6c04eab311be0a063aec, type: 3}
-      speedMultiplier: 1.5
+      speedMultiplier: 1
     up:
       clip: {fileID: -7800337380646078255, guid: 5a0dc554ec4a6c04eab311be0a063aec, type: 3}
-      speedMultiplier: 1.5
+      speedMultiplier: 1
     left:
       clip: {fileID: -1640272175068026219, guid: 5a0dc554ec4a6c04eab311be0a063aec, type: 3}
-      speedMultiplier: 1.5
+      speedMultiplier: 1
     right:
       clip: {fileID: -6877218540166537120, guid: 5a0dc554ec4a6c04eab311be0a063aec, type: 3}
-      speedMultiplier: 1.5
+      speedMultiplier: 1
     attack:
       clip: {fileID: -1272215259011234369, guid: 5a0dc554ec4a6c04eab311be0a063aec, type: 3}
       speedMultiplier: 1

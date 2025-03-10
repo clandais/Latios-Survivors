@@ -165,9 +165,9 @@ namespace Survivors.Play.Systems.Enemies
             if (math.lengthsq(motion.Velocity) > 0f)
             {
                 var lookRotation =
-                    quaternion.LookRotation(new float3(desiredVelocity.x, 0f, desiredVelocity.y), math.up());
+                    quaternion.LookRotation(new float3(PlayerPosition.x, 0f, PlayerPosition.z) - transform.position, math.up());
                 motion.DesiredRotation = lookRotation;
-                motion.Rotation = TransformLookup[entity].rotation
+                motion.Rotation = transform.rotation
                     .RotateTowards(motion.DesiredRotation, 90f * DeltaTime);
             }
         }
