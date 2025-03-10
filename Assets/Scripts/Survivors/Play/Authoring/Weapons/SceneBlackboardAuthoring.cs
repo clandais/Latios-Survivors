@@ -1,3 +1,4 @@
+using Latios.Psyshock;
 using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;
@@ -11,7 +12,7 @@ namespace Survivors.Play.Authoring.Weapons
 		[SerializeField] float rotationSpeed;
 		
 		
-		private class AxeAuthoringBaker : Baker<SceneBlackboardAuthoring>
+		private class SceneBlackboardAuthoringBaker : Baker<SceneBlackboardAuthoring>
 		{
 			public override void Bake(SceneBlackboardAuthoring authoring)
 			{
@@ -24,6 +25,7 @@ namespace Survivors.Play.Authoring.Weapons
 				
 				AddComponent<SceneMouse>(entity);
 				AddComponent<PlayerPosition>(entity);
+				AddComponent<LevelAABB>(entity);
 			}
 		}
 	}
@@ -49,6 +51,12 @@ namespace Survivors.Play.Authoring.Weapons
 	
 	public struct PlayerPosition : IComponentData
 	{
+		public float3 LastPosition;
 		public float3 Position;
+	}
+
+	public struct LevelAABB : IComponentData
+	{
+		public Aabb AABB;
 	}
 }

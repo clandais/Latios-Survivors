@@ -36,6 +36,7 @@ namespace Survivors.Play.Systems.Debug
 				           $"Desired Velocity {motion.DesiredVelocity.xz}\n" +
 				           $"Rotated Velocity {math.normalizesafe( math.mul(motion.Rotation, motion.Velocity).xz)}\n";
 
+				
 			}).WithoutBurst().Run();
 
 			_publisher.PublishAsync(new DebugCommand { Message = message });

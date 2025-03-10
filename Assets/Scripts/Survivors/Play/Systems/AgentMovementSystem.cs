@@ -1,7 +1,6 @@
 using Latios;
 using Latios.Psyshock;
 using Latios.Transforms;
-using Survivors.Play.Authoring.Enemies;
 using Survivors.Play.Authoring.Weapons;
 using Survivors.Play.Components;
 using Unity.Burst;
@@ -11,107 +10,98 @@ using Unity.Mathematics;
 
 namespace Survivors.Play.Systems
 {
-	[RequireMatchingQueriesForUpdate]
-	[BurstCompile]
-	public partial struct AgentMovementSystem : ISystem
-	{
+    [RequireMatchingQueriesForUpdate]
+    [BurstCompile]
+    public partial struct AgentMovementSystem : ISystem
+    {
+        LatiosWorldUnmanaged m_world;
 
 
-		[BurstCompile]
-		public void OnCreate(ref SystemState state)
-		{
+        [BurstCompile]
+        public void OnCreate(ref SystemState state)
+        {
+            m_world = state.GetLatiosWorldUnmanaged();
+        }
 
-		}
+        [BurstCompile]
+        public void OnUpdate(ref SystemState state)
+        {
+            var dt = SystemAPI.Time.DeltaTime;
 
-		[BurstCompile]
-		public void OnUpdate(ref SystemState state)
-		{
-			float dt = SystemAPI.Time.DeltaTime;
+            var sceneBlackboardEntity = m_world.sceneBlackboardEntity;
 
-			CollisionLayer collisionLayer = state.GetLatiosWorldUnmanaged()
-				.sceneBlackboardEntity.GetCollectionComponent<EnvironmentCollisionLayer>().Layer;
+            var collisionLayer = sceneBlackboardEntity.GetCollectionComponent<EnvironmentCollisionLayer>().Layer;
 
 
-			state.Dependency = new CollideAndSlideCharacterJob
-			{
-				CollisionLayer   = collisionLayer,
-				DeltaTime        = dt,
-			}.ScheduleParallel(state.Dependency);
+            state.Dependency = new CollideAndSlideCharacterJob
+            {
+                CollisionLayer = collisionLayer,
+                DeltaTime      = dt
+            }.ScheduleParallel(state.Dependency);
 
-			state.Dependency.Complete();
-			
-			var buffer =
-				state.GetLatiosWorldUnmanaged().syncPoint.CreateEntityCommandBuffer();
-			
-			foreach (var transform in SystemAPI.Query<RefRO<WorldTransform>>().WithAll<PlayerTag>())
-			{
+            state.Dependency.Complete();
 
-				buffer.SetComponent(state.GetLatiosWorldUnmanaged().sceneBlackboardEntity, new PlayerPosition
-				{
-					Position = transform.ValueRO.position,
-				});
-				
-			}
-		}
 
-		[BurstCompile]
-		public void OnDestroy(ref SystemState state)
-		{
+            foreach (var transform in SystemAPI.Query<RefRO<WorldTransform>>().WithAll<PlayerTag>())
+                sceneBlackboardEntity.SetComponentData(new PlayerPosition
+                {
+                    LastPosition = sceneBlackboardEntity.GetComponentData<PlayerPosition>().Position,
+                    Position     = transform.ValueRO.position
+                });
+        }
 
-		}
-	}
+        [BurstCompile]
+        public void OnDestroy(ref SystemState state)
+        {
+        }
+    }
 
-	[WithNone(typeof(DeadTag))]
-	[BurstCompile]
-	internal partial struct CollideAndSlideCharacterJob : IJobEntity
-	{
-		[ReadOnly] public CollisionLayer CollisionLayer;
-		[ReadOnly] public float DeltaTime;
-		
-		public void Execute(TransformAspect transform, AgentMotionAspect agentMotionAspect,  in Collider collider)
-		{
+    [WithNone(typeof(DeadTag))]
+    [BurstCompile]
+    internal partial struct CollideAndSlideCharacterJob : IJobEntity
+    {
+        [ReadOnly] public CollisionLayer CollisionLayer;
+        [ReadOnly] public float DeltaTime;
 
-			
-			agentMotionAspect.RvoVelocity = agentMotionAspect.Velocity;
-			
-			float3        motion            = agentMotionAspect.Velocity * DeltaTime;
-			TransformQvvs currentTransform  = transform.worldTransform;
-			float3        direction         = math.normalizesafe(motion);
-			float         remainingDistance = math.length(agentMotionAspect.Velocity) * DeltaTime;
+        public void Execute(TransformAspect transform, AgentMotionAspect agentMotionAspect, in Collider collider)
+        {
+            agentMotionAspect.RvoVelocity = agentMotionAspect.Velocity;
 
-			float skinEpsilon = 0.01f;
+            var motion = agentMotionAspect.Velocity * DeltaTime;
+            var currentTransform = transform.worldTransform;
+            var direction = math.normalizesafe(motion);
+            var remainingDistance = math.length(agentMotionAspect.Velocity) * DeltaTime;
 
-			for (int iteration = 0; iteration < 16; iteration++)
-			{
-				if (remainingDistance < skinEpsilon)
-				{
-					break;
-				}
+            var skinEpsilon = 0.01f;
 
-				float3 end = currentTransform.position + direction * remainingDistance;
+            for (var iteration = 0; iteration < 16; iteration++)
+            {
+                if (remainingDistance < skinEpsilon) break;
 
-				if (Physics.ColliderCast(in collider, in currentTransform, end, in CollisionLayer, out ColliderCastResult hitInfo, out _))
-				{
-					currentTransform.position += direction * (hitInfo.distance - skinEpsilon);
-					remainingDistance         =  math.max(0.0f, remainingDistance - hitInfo.distance);
-					if (math.dot(hitInfo.normalOnTarget, direction) < -0.9f)
-						break;
+                var end = currentTransform.position + direction * remainingDistance;
 
-					direction = math.mul(quaternion.LookRotation(hitInfo.normalOnCaster, direction), math.up());
-				}
-				else
-				{
-					currentTransform.position += direction * remainingDistance;
-					break;
-				}
-			}
+                if (Physics.ColliderCast(in collider, in currentTransform, end, in CollisionLayer, out var hitInfo,
+                        out _))
+                {
+                    currentTransform.position += direction * (hitInfo.distance - skinEpsilon);
+                    remainingDistance         =  math.max(0.0f, remainingDistance - hitInfo.distance);
+                    if (math.dot(hitInfo.normalOnTarget, direction) < -0.9f)
+                        break;
 
-			currentTransform.position.y = 0f;
+                    direction = math.mul(quaternion.LookRotation(hitInfo.normalOnCaster, direction), math.up());
+                }
+                else
+                {
+                    currentTransform.position += direction * remainingDistance;
+                    break;
+                }
+            }
 
-			
-			transform.worldPosition = currentTransform.position;
-			transform.worldRotation = agentMotionAspect.Rotation;
-			
-		}
-	}
+            currentTransform.position.y = 0f;
+
+
+            transform.worldPosition = currentTransform.position;
+            transform.worldRotation = agentMotionAspect.Rotation;
+        }
+    }
 }

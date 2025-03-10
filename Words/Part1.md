@@ -3,7 +3,7 @@
 ## Me, Me and Me
 I've been wanting to learn Unity's Data-Oriented Technology Stack (DOTS) for a while now. Sadly, the documentation is still a bit lacking and the examples are all over the place. And I'm not even mentioning the fact that DOD is a whole new way of thinking about programming.
 
-## The Training Samples
+### The Training Samples
 A month ago, I stubbled upon Unity's [DOTS training samples]([https://](https://github.com/Unity-Technologies/DOTS-training-samples)). This is pretty awesome since I'm a "learn by doing" kind of guy. Exactly what I was looking for. What is it? It's a series of small projects / simulations implemented in a classic way and the goal is to reimplemement them using DOTS.
 
 The first project is called "Ant Phereomones". Quick pitch from the Readme:
@@ -20,12 +20,12 @@ The first project is called "Ant Phereomones". Quick pitch from the Readme:
 > - Keyboard controls allow the user to slow down, speed up, and reset the simulation.
 > - The amount of pheromone an ant drops depends on the speed of the ant, and the speed depends on steering.
 
-## The *CLICK*
+### The *CLICK*
 Mission accomplished! It made DOTS click in my head. I understood the basics of how to implement a DOTS project. I was able to reimplement the project in a few days (plus some more because I tend to be quite self-demanding). I was quite impressed with the results. Without really knowing what I was doing, I was able to make a project that was running at 60fps with 100k ants on screen. I've found that the DOTS way of thinking is quite refreshing and that it encourages some good practices (sepation of concerns, data-oriented design, etc).
 
 TODO : Insert video here
 
-## The *What Now?*
+### The *What Now?*
 
 I started looking for features required to make actual full games and if they were implemented in DOTS and then stumbled upon a post on Unity's forums by Door 407, *Diplomacy Is Not An Option*'s developers. I was shocked that if you want actual skinned and animated characters without using GameObjects, you'd have to roll your own solution.
 
@@ -45,17 +45,17 @@ Latios has a good number of modules and some interesting addons. It does not for
 - A custom transform system tha just makes sense (QVVS)
 - And more!
 
-## Let's Make a Game!
+### Let's Make a Game!
 
 Like I said, I'm more of a "learn by doing" kind of guy. So I'll be making a game using Latios Framework. I'll be documenting the process here. I may say complete inaccuracies, so please take everything with a grain of salt. I'm still learning.
 
-## The Game
+### The Game
 
 What kind of game could make a great use of DOTS (and Latios) ? A game genre that I'm familiar with... A *Vampire Survivors-like*, obviously!
 
 *Aside: This game idea was suggested to me by Dreaming I'm Latios as a learning experience*
 
-## The Plan
+### The Plan
 
 I had no plan when starting this project except for the fact that I wanted to make a *real* game with DOTS/Latios.
 
@@ -70,58 +70,5 @@ It took me wey more time than I expected. Maybe because I *absolutely* wanted to
 
 Why all the pain? Because I tend to find ECS World <-> GameObject world *communication* pretty *dirty*. So, yeah, I absolutely wanted to keep my usual tools with me, especially Vital Router (which works best with VContainer) to handle, mostly, the UI <-> ECS communication.
 
-## Some Code
+### How it started
 
-```csharp
-public class GameLifetimeScope : LifetimeScope
-{
-    // 
-    [SerializeField] GameScenesReferences gameScenesReferences;
-    [SerializeField] CurtainBehaviour curtainBehaviour;
-    [SerializeField] Transform cinemachineTarget;
-
-#if UNITY_EDITOR
-
-    protected override void Awake()
-    {
-        base.Awake();
-        
-        // Dispose MANUALLY the world when exiting play mode
-        EditorApplication.playModeStateChanged += state =>
-        {
-            if (state == PlayModeStateChange.ExitingPlayMode)
-            {
-                World.DefaultGameObjectInjectionWorld?.Dispose();
-            }
-        };
-    }
-#endif
-
-    protected override void Configure(IContainerBuilder builder)
-    {
-        builder.RegisterInstance(gameScenesReferences);
-        builder.RegisterInstance(curtainBehaviour);
-        builder.RegisterInstance(cinemachineTarget);
-
-
-        builder.RegisterVitalRouter(routingBuilder =>
-        {
-            routingBuilder.Isolated = true;
-            
-            routingBuilder.Filters
-                .Add<ExceptionHandling>()
-                .Add<LoggingInterceptor>();
-
-            routingBuilder.Map<GlobalRouter>();
-        });
-
-
-        builder.RegisterBuildCallback(container =>
-        {
-            // Upon build, we want to start the game in the main menu
-            var publisher = container.Resolve<ICommandPublisher>();
-            publisher.PublishAsync(new MainMenuStateCommand());
-        });
-    }
-}
-```

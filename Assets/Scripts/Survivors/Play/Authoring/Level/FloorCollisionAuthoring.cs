@@ -6,11 +6,11 @@ namespace Survivors.Play.Authoring.Level
 	
 	[DisallowMultipleComponent]
 	[AddComponentMenu("Survivors/Level/Floor")]
-	public class FloorLevelAuthoring : MonoBehaviour
+	public class FloorCollisionAuthoring : MonoBehaviour
 	{
-		private class FloorLevelAuthoringBaker : Baker<FloorLevelAuthoring>
+		private class FloorCollisionAuthoringBaker : Baker<FloorCollisionAuthoring>
 		{
-			public override void Bake(FloorLevelAuthoring authoring)
+			public override void Bake(FloorCollisionAuthoring authoring)
 			{
 				var entity = GetEntity(TransformUsageFlags.Renderable);
 				AddComponent<FloorTag>(entity);

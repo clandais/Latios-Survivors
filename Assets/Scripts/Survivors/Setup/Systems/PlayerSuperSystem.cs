@@ -79,13 +79,18 @@ namespace Survivors.Setup.Systems
 			CreateQueries();
 
 			GetOrCreateAndAddUnmanagedSystem<BuildEnvironmentCollisionLayerSystem>();
+		//	GetOrCreateAndAddUnmanagedSystem<BuildFloorCollisionLayerSystem>();
 			GetOrCreateAndAddUnmanagedSystem<FloorGridSystem>();
-			
-			GetOrCreateAndAddUnmanagedSystem<AgentMovementSystem>();
 
 			
-			GetOrCreateAndAddUnmanagedSystem<PhysicsDebugSystem>();
+			GetOrCreateAndAddUnmanagedSystem<AgentMovementSystem>();
+			GetOrCreateAndAddUnmanagedSystem<VectorFieldSystem>();
+
+			
+
 			GetOrCreateAndAddUnmanagedSystem<AxeUpdateSystem>();
+			
+			GetOrCreateAndAddUnmanagedSystem<PhysicsDebugSystem>();
 
 		}
 

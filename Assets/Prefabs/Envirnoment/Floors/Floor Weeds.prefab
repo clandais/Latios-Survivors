@@ -9,7 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3908922816577559345}
-  - component: {fileID: 6107089643870920465}
+  - component: {fileID: 748775494026062419}
+  - component: {fileID: 1296348454126964670}
   m_Layer: 0
   m_Name: Floor Weeds
   m_TagString: Untagged
@@ -36,7 +37,28 @@ Transform:
   - {fileID: 8890685241198010432}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6107089643870920465
+--- !u!65 &748775494026062419
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6679226797108741348}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 4, y: 1, z: 4}
+  m_Center: {x: 0, y: -0.5, z: 0}
+--- !u!114 &1296348454126964670
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -45,7 +67,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6679226797108741348}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 191f0f6883014fe195323af222c2d929, type: 3}
+  m_Script: {fileID: 11500000, guid: c1b3307c850b4872889727c53e295f4f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1001 &133324916283706320

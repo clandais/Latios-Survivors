@@ -10,7 +10,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 5a0dc554ec4a6c04eab311be0a063aec, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -5.72
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5a0dc554ec4a6c04eab311be0a063aec, type: 3}
       propertyPath: m_LocalPosition.y
@@ -94,7 +94,10 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: c59fd4073c819214abdae4b13c0e807b, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 7653086443560924788, guid: 5a0dc554ec4a6c04eab311be0a063aec, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7281852284515494705}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 5a0dc554ec4a6c04eab311be0a063aec, type: 3}
       insertIndex: -1
@@ -170,16 +173,16 @@ MonoBehaviour:
       speedMultiplier: 1
     down:
       clip: {fileID: -6411013857362534180, guid: 5a0dc554ec4a6c04eab311be0a063aec, type: 3}
-      speedMultiplier: 2
+      speedMultiplier: 1.5
     up:
       clip: {fileID: -7800337380646078255, guid: 5a0dc554ec4a6c04eab311be0a063aec, type: 3}
-      speedMultiplier: 2
+      speedMultiplier: 1.5
     left:
       clip: {fileID: -1640272175068026219, guid: 5a0dc554ec4a6c04eab311be0a063aec, type: 3}
-      speedMultiplier: 2
+      speedMultiplier: 1.5
     right:
       clip: {fileID: -6877218540166537120, guid: 5a0dc554ec4a6c04eab311be0a063aec, type: 3}
-      speedMultiplier: 2
+      speedMultiplier: 1.5
     attack:
       clip: {fileID: -1272215259011234369, guid: 5a0dc554ec4a6c04eab311be0a063aec, type: 3}
       speedMultiplier: 1
@@ -195,11 +198,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91efa87d29a74d96abaa30ebaca0dfc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  walkSpeed: 5
-  runSpeed: 5
-  velocityChange: 10
-  radius: 2
-  obstacleHorizon: 1
+  walkSpeed: 3
+  runSpeed: 3
+  velocityChange: 4
+  radius: 1
+  obstacleHorizon: 0.3
 --- !u!114 &8446108900856776258
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -222,3 +225,74 @@ MonoBehaviour:
     DeathC:
       clip: {fileID: 4195386022990170606, guid: 5a0dc554ec4a6c04eab311be0a063aec, type: 3}
       speedMultiplier: 1
+--- !u!4 &6066491434340647570 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7653086443560924788, guid: 5a0dc554ec4a6c04eab311be0a063aec, type: 3}
+  m_PrefabInstance: {fileID: 4469180807283307750}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &7099062173130083546
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 6066491434340647570}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: 7d80eed94682d0e438fb6982b8d2d5a0, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 7d80eed94682d0e438fb6982b8d2d5a0, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 7d80eed94682d0e438fb6982b8d2d5a0, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 7d80eed94682d0e438fb6982b8d2d5a0, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 7d80eed94682d0e438fb6982b8d2d5a0, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 7d80eed94682d0e438fb6982b8d2d5a0, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 7d80eed94682d0e438fb6982b8d2d5a0, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 7d80eed94682d0e438fb6982b8d2d5a0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 7d80eed94682d0e438fb6982b8d2d5a0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 180
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 7d80eed94682d0e438fb6982b8d2d5a0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 7d80eed94682d0e438fb6982b8d2d5a0, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 55e128cd841ff84498ea634f14673864, type: 2}
+    - target: {fileID: 919132149155446097, guid: 7d80eed94682d0e438fb6982b8d2d5a0, type: 3}
+      propertyPath: m_Name
+      value: Skeleton_Blade
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 7d80eed94682d0e438fb6982b8d2d5a0, type: 3}
+--- !u!4 &7281852284515494705 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 7d80eed94682d0e438fb6982b8d2d5a0, type: 3}
+  m_PrefabInstance: {fileID: 7099062173130083546}
+  m_PrefabAsset: {fileID: 0}
