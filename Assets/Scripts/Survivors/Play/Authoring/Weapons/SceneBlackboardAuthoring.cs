@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using Latios;
 using Latios.Psyshock;
 using Unity.Entities;
 using Unity.Mathematics;
@@ -10,7 +12,7 @@ namespace Survivors.Play.Authoring.Weapons
 		[Header("Axe Config")]
 		[SerializeField] float speed;
 		[SerializeField] float rotationSpeed;
-		
+		[SerializeField] List<GameObject> sfxPrefabs;
 		
 		private class SceneBlackboardAuthoringBaker : Baker<SceneBlackboardAuthoring>
 		{
@@ -20,12 +22,22 @@ namespace Survivors.Play.Authoring.Weapons
 				AddComponent(entity, new AxeConfigComponent
 				{
 					Speed         = authoring.speed,
-					RotationSpeed = authoring.rotationSpeed,
+					RotationSpeed = authoring.rotationSpeed
 				});
 				
 				AddComponent<SceneMouse>(entity);
 				AddComponent<PlayerPosition>(entity);
 				AddComponent<LevelAABB>(entity);
+
+				var sfxBuffer = AddBuffer<AxeSfxBufferElement>(entity);
+				foreach (var authoringSfxPrefab in authoring.sfxPrefabs)
+				{
+					sfxBuffer.Add(new AxeSfxBufferElement
+					{
+						SfxPrefab = GetEntity(authoringSfxPrefab, TransformUsageFlags.Dynamic),
+					});
+				}
+
 			}
 		}
 	}
@@ -41,6 +53,12 @@ namespace Survivors.Play.Authoring.Weapons
 	{
 		public float Speed;
 		public float RotationSpeed;
+		//public EntityWith<Prefab> SfxPrefab;
+	}
+	
+	public struct AxeSfxBufferElement : IBufferElementData
+	{
+		public EntityWith<Prefab> SfxPrefab;
 	}
 	
 	public struct SceneMouse : IComponentData

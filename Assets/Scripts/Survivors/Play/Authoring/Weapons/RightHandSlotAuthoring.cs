@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using Latios;
 using Unity.Entities;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -18,6 +20,7 @@ namespace Survivors.Play.Authoring.Weapons
 				{
 					RightHandSlotEntity = GetEntity(authoring.rightHandSlot, TransformUsageFlags.Dynamic),
 					AxePrefab = GetEntity(authoring.axePrefab, TransformUsageFlags.Dynamic),
+					//AxeWooshPrefab = GetEntity(authoring.axePrefab, TransformUsageFlags.Dynamic)
 				});
 				
 				AddComponent<RightHandSlotThrowAxeTag>(entity);
@@ -32,8 +35,9 @@ namespace Survivors.Play.Authoring.Weapons
 	public struct RightHandSlot : IComponentData
 	{
 		public Entity RightHandSlotEntity;
-		public Entity AxePrefab;
+		public EntityWith<Prefab> AxePrefab;
 	}
+	
 	
 	public struct RightHandSlotThrowAxeTag : IComponentData, IEnableableComponent {}
 }

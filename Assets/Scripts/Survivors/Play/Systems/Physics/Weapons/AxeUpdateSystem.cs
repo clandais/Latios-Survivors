@@ -87,7 +87,7 @@ namespace Survivors.Play.Systems.Weapons
 						HitEntities.Add(o.entity);
 				}
 
-				if (Physics.ColliderCast(in collider, in transformQvs, axe.Direction, in WallLayer, out ColliderCastResult result, out _))
+				if (Physics.ColliderCast(in collider, in transformQvs, transform.worldPosition + axe.Direction, in WallLayer, out ColliderCastResult result, out _))
 				{
 					if ( result.distance <= capsuleCollider.radius )
 						DestroyCommandBuffer.Add(entity, idx);

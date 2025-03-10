@@ -463,6 +463,7 @@ GameObject:
   - component: {fileID: 416695868}
   - component: {fileID: 416695862}
   - component: {fileID: 416695869}
+  - component: {fileID: 416695870}
   m_Layer: 0
   m_Name: Hero
   m_TagString: Untagged
@@ -498,6 +499,7 @@ MonoBehaviour:
   walkSpeed: 10
   runSpeed: 10
   velocityChange: 12
+  radius: 1
 --- !u!136 &416695865
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -658,6 +660,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rightHandSlot: {fileID: 1366666621}
   axePrefab: {fileID: 717540283895511224, guid: 319b88bc84ce69645a53002146545f5d, type: 3}
+--- !u!114 &416695870
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 416695861}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ecd89e842ebc68e40a9cdd2462156c7b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  volume: 1
+  interauralTimeDifferenceResolution: 2
+  listenerResponseProfile: {fileID: 0}
 --- !u!1 &438441272
 GameObject:
   m_ObjectHideFlags: 0
@@ -1782,6 +1799,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 10
   rotationSpeed: 15
+  sfxPrefabs:
+  - {fileID: 1693291223603685899, guid: 499fe13c3899be949968b691a26a247c, type: 3}
+  - {fileID: 8674080395964618867, guid: 5cd7eebef0cc11743ace1acb4edc4125, type: 3}
+  - {fileID: 2741863770235836276, guid: 30e8a2e792bffd34f840878c100f08b2, type: 3}
 --- !u!1 &1297730280
 GameObject:
   m_ObjectHideFlags: 0

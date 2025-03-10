@@ -46,7 +46,7 @@ namespace Survivors.Play.Components
 
 		public struct AxeSpawnData
 		{
-			public Entity AxePrefab;
+			public EntityWith<Prefab> AxePrefab;
 			public float3 Direction;
 			public float3 Position;
 		}
