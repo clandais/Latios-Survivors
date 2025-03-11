@@ -1,0 +1,18 @@
+{
+    "name": "Latios.Myri.Editor",
+    "rootNamespace": "Latios.Myri.Editor",
+    "references": [
+        "GUID:d1d3d8be6fb0d9248bc0df28e441c521"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": true,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

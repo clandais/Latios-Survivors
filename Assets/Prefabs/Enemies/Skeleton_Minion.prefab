@@ -244,6 +244,8 @@ MonoBehaviour:
   - {fileID: 2495799659353898627, guid: c82fa291938ab244ba5b840637ab471f, type: 3}
   - {fileID: 5859341720098085284, guid: d4ffd0bdda7b5b847a5afdf2df91a24c, type: 3}
   - {fileID: 1550563439658634569, guid: 32edb65e828d33c4b8a5bd3f9e4987d4, type: 3}
+  - {fileID: 7525045310803392871, guid: e3007db01980aff479800c88328ecaa2, type: 3}
+  - {fileID: 6487109160475421808, guid: f39987cf718039541a33d29971772b54, type: 3}
 --- !u!4 &6066491434340647570 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7653086443560924788, guid: 5a0dc554ec4a6c04eab311be0a063aec, type: 3}

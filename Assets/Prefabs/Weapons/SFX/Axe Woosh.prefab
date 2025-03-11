@@ -48,7 +48,7 @@ MonoBehaviour:
   looping: 0
   autoDestroyOnFinish: 1
   volume: 0.5
-  innerRange: 25
+  innerRange: 10
   outerRange: 50
   rangeFadeMargin: 25
   playFromBeginningAtSpawn: 0
