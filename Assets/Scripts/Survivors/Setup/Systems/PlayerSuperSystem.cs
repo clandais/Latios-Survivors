@@ -53,6 +53,8 @@ namespace Survivors.Setup.Systems
 
 			GetOrCreateAndAddUnmanagedSystem<AxeSpawnSystem>();
 
+			GetOrCreateAndAddUnmanagedSystem<VFXPositionEventSpawnerSystem>();
+
 		}
 
 	}

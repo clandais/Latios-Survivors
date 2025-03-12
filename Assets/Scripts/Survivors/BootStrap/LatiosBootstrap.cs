@@ -75,7 +75,7 @@ namespace Survivors.BootStrap
 			CalligraphicsBootstrap.InstallCalligraphics(world);
 			CalligraphicsBootstrap.InstallCalligraphicsAnimations(world);
 			UnikaBootstrap.InstallUnikaEntitySerialization(world);
-			//Latios.LifeFX.LifeFXBootstrap.InstallLifeFX(world);
+			Latios.LifeFX.LifeFXBootstrap.InstallLifeFX(world);
 
 			// MecanimBootstrap.InstallMecanimAddon(world);
 

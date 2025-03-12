@@ -21,6 +21,7 @@ namespace Survivors.Setup.Systems
 		}
 	}
 	
+	[UpdateInGroup(typeof(SimulationSystemGroup))]
 	public partial class BootstrapSuperSystem : RootSuperSystem
 	{
 		protected override void CreateSystems()
