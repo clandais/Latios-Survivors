@@ -4,6 +4,7 @@ using Latios.Psyshock;
 using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Survivors.Play.Authoring.Weapons
 {
@@ -12,7 +13,9 @@ namespace Survivors.Play.Authoring.Weapons
 		[Header("Axe Config")]
 		[SerializeField] float speed;
 		[SerializeField] float rotationSpeed;
-		[SerializeField] List<GameObject> sfxPrefabs;
+		[FormerlySerializedAs("sfxPrefabs")] [SerializeField] List<GameObject> wooshSfxPrefabs;
+		[SerializeField] List<GameObject> hitSfxPrefabs;
+		[SerializeField] List<GameObject> clashSfxPrefabs;
 		
 		private class SceneBlackboardAuthoringBaker : Baker<SceneBlackboardAuthoring>
 		{
@@ -30,14 +33,31 @@ namespace Survivors.Play.Authoring.Weapons
 				AddComponent<LevelAABB>(entity);
 
 				var sfxBuffer = AddBuffer<AxeSfxBufferElement>(entity);
-				foreach (var authoringSfxPrefab in authoring.sfxPrefabs)
+				foreach (var authoringSfxPrefab in authoring.wooshSfxPrefabs)
 				{
 					sfxBuffer.Add(new AxeSfxBufferElement
 					{
-						SfxPrefab = GetEntity(authoringSfxPrefab, TransformUsageFlags.Dynamic),
+						WooshSfxPrefab = GetEntity(authoringSfxPrefab, TransformUsageFlags.Dynamic),
+					});
+				}
+				
+				var hitSfxBuffer = AddBuffer<AxeHitSfxBufferElement>(entity);
+				foreach (var authoringSfxPrefab in authoring.hitSfxPrefabs)
+				{
+					hitSfxBuffer.Add(new AxeHitSfxBufferElement
+					{
+						HitSfxPrefab = GetEntity(authoringSfxPrefab, TransformUsageFlags.Dynamic),
 					});
 				}
 
+				var clashSfxBuffer = AddBuffer<AxeClashSfxBufferElement>(entity);
+				foreach (var authoringSfxPrefab in authoring.clashSfxPrefabs)
+				{
+					clashSfxBuffer.Add(new AxeClashSfxBufferElement
+					{
+						ClashSfxPrefab = GetEntity(authoringSfxPrefab, TransformUsageFlags.Dynamic),
+					});
+				}
 			}
 		}
 	}
@@ -48,17 +68,31 @@ namespace Survivors.Play.Authoring.Weapons
 		public float RotationSpeed;
 		public float3 Direction;
 	}
+
+	public struct AxeDestroyVfx : IComponentData
+	{
+		public EntityWith<Prefab> Prefab;
+	}
 	
 	public struct AxeConfigComponent : IComponentData
 	{
 		public float Speed;
 		public float RotationSpeed;
-		//public EntityWith<Prefab> SfxPrefab;
 	}
 	
 	public struct AxeSfxBufferElement : IBufferElementData
 	{
-		public EntityWith<Prefab> SfxPrefab;
+		public EntityWith<Prefab> WooshSfxPrefab;
+	}
+	
+	public struct AxeHitSfxBufferElement : IBufferElementData
+	{
+		public EntityWith<Prefab> HitSfxPrefab;
+	}
+	
+	public struct AxeClashSfxBufferElement : IBufferElementData
+	{
+		public EntityWith<Prefab> ClashSfxPrefab;
 	}
 	
 	public struct SceneMouse : IComponentData

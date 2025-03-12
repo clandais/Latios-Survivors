@@ -5,6 +5,7 @@ using Survivors.Play.Systems;
 using Survivors.Play.Systems.Debug;
 using Survivors.Play.Systems.Enemies;
 using Survivors.Play.Systems.Player;
+using Survivors.Play.Systems.SFX;
 using Survivors.Play.Systems.Weapons;
 using Survivors.Setup.Components;
 using Unity.Entities;
@@ -52,8 +53,10 @@ namespace Survivors.Setup.Systems
 
 
 			GetOrCreateAndAddUnmanagedSystem<AxeSpawnSystem>();
+			GetOrCreateAndAddUnmanagedSystem<SFXSpawnQueueSystem>();
 
-			GetOrCreateAndAddUnmanagedSystem<VFXPositionEventSpawnerSystem>();
+		//	GetOrCreateAndAddUnmanagedSystem<VFXPositionEventSpawnerSystem>();
+			GetOrCreateAndAddUnmanagedSystem<VFXPositionRotationEventSpawnerSystem>();
 
 		}
 

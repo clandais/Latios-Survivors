@@ -1,10 +1,13 @@
-﻿using Latios;
+﻿
+using Latios;
 using Latios.Psyshock;
 using Latios.Transforms;
 using Survivors.Play.Authoring.Enemies;
+using Survivors.Play.Authoring.Weapons;
 using Survivors.Play.Components;
 using Unity.Burst;
 using Unity.Burst.Intrinsics;
+using Unity.Collections;
 using Unity.Entities;
 
 
@@ -59,6 +62,7 @@ namespace Survivors.Play.Systems.Enemies
     
     
     [WithAll(typeof(DeadTag))]
+    [BurstCompile]
     partial struct SpawnDeathSFXJob : IJobEntity, IJobEntityChunkBeginEnd
     {
         public SystemRng Rng;
@@ -66,8 +70,10 @@ namespace Survivors.Play.Systems.Enemies
 
         public void Execute( [EntityIndexInQuery] int idx,  in WorldTransform transform, in DynamicBuffer<DeathClipsBufferElement> buffer)
         {
+            
             CommandBuffer.Add(buffer[Rng.NextInt(0, buffer.Length)].AudioPrefab, transform, idx);
         }
+        
 
         public bool OnChunkBegin(in ArchetypeChunk chunk, int unfilteredChunkIndex, bool useEnabledMask, in v128 chunkEnabledMask)
         {

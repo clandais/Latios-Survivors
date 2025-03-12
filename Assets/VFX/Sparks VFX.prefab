@@ -43,7 +43,7 @@ VisualEffect:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6414825715766418841}
   m_Enabled: 1
-  m_Asset: {fileID: 8926484042661614526, guid: 296c8a06ab616b341905b6fe806c28be, type: 3}
+  m_Asset: {fileID: 8926484042661614526, guid: 96ac693da26ad594b9ff41c8c1fad516, type: 3}
   m_InitialEventName: OnPlay
   m_InitialEventNameOverriden: 0
   m_StartSeed: 0
@@ -107,6 +107,12 @@ VisualEffect:
         m_Overridden: 1
       - m_Value: {x: 0, y: 1, z: 0}
         m_Name: Bounds_center
+        m_Overridden: 1
+      - m_Value: {x: 1, y: 4, z: 1}
+        m_Name: Position
+        m_Overridden: 1
+      - m_Value: {x: 0, y: 0, z: 10}
+        m_Name: Rotation
         m_Overridden: 1
     m_Vector4f:
       m_Array: []
@@ -255,7 +261,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27a9b3f81d41dc745911804fc69c6bbd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tunnel: {fileID: 11400000, guid: 948dd9bd77aaa13439b87abd92cb6ea3, type: 2}
+  tunnel: {fileID: 11400000, guid: d83866af3ce431c4c805420ce52225de, type: 2}
   OnGraphicsEventPublishedSerialized:
     m_PersistentCalls:
       m_Calls: []

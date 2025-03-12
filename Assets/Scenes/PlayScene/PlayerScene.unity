@@ -1799,10 +1799,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 10
   rotationSpeed: 15
-  sfxPrefabs:
+  wooshSfxPrefabs:
   - {fileID: 1693291223603685899, guid: 499fe13c3899be949968b691a26a247c, type: 3}
   - {fileID: 8674080395964618867, guid: 5cd7eebef0cc11743ace1acb4edc4125, type: 3}
   - {fileID: 2741863770235836276, guid: 30e8a2e792bffd34f840878c100f08b2, type: 3}
+  hitSfxPrefabs:
+  - {fileID: 2254602119881889322, guid: e06e800e83b9aea4d9d6a28951899715, type: 3}
+  - {fileID: 4995883710559318029, guid: 9705ab39bd68b284ab610a330b169223, type: 3}
+  - {fileID: 4977686279052779460, guid: 042d40837d7be7f4b97a7e55043d9abb, type: 3}
+  clashSfxPrefabs:
+  - {fileID: 2488165914981436859, guid: 037ebc43f5fbad74b9a1751611a10bb7, type: 3}
 --- !u!1 &1297730280
 GameObject:
   m_ObjectHideFlags: 0

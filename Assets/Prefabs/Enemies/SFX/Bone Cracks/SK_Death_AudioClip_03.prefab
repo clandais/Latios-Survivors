@@ -47,7 +47,7 @@ MonoBehaviour:
   clip: {fileID: 8300000, guid: ab0b6487239c5a94998d2e192f9b50a0, type: 3}
   looping: 0
   autoDestroyOnFinish: 1
-  volume: 0.5
+  volume: 0.7
   innerRange: 5
   outerRange: 100
   rangeFadeMargin: 1

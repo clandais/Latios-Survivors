@@ -63,7 +63,7 @@ namespace Survivors.Play.Systems.Weapons
             }
 
 
-            state.Dependency = new AxeSfxSpanJob
+            state.Dependency = new AxeSfxSpawnJob
             {
                 Rng = _rng.Shuffle(),
                 Positions = positionList,
@@ -80,7 +80,7 @@ namespace Survivors.Play.Systems.Weapons
     }
 
     [BurstCompile]
-    internal struct AxeSfxSpanJob : IJobFor
+    internal struct AxeSfxSpawnJob : IJobFor
     {
         [ReadOnly] public NativeList<float3> Positions;
         [ReadOnly] public DynamicBuffer<AxeSfxBufferElement> SfxPrefab;
@@ -105,7 +105,7 @@ namespace Survivors.Play.Systems.Weapons
             
             
             transform.worldTransform.position = Positions[index];
-            Icb.Add(SfxPrefab[random.NextInt(0, SfxPrefab.Length)].SfxPrefab, transform, index);
+            Icb.Add(SfxPrefab[random.NextInt(0, SfxPrefab.Length)].WooshSfxPrefab, transform, index);
         }
     }
 }

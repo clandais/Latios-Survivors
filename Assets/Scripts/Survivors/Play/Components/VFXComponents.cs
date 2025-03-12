@@ -10,4 +10,11 @@ namespace Survivors.Play.Components
         public float TimeBetweenSpawns; 
         public UnityObjectRef<PositionGraphicsEventTunnel> EventTunnel;
     }
+
+    public struct PositionRotationEventSpawner : IComponentData
+    {
+        public float TimeUntilNextSpawn;
+        public float TimeBetweenSpawns;
+        public UnityObjectRef<PositionRotationGraphicsEventTunnel> EventTunnel;
+    }
 }

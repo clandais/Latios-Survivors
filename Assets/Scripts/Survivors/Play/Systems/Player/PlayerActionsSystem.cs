@@ -10,7 +10,7 @@ using Unity.Mathematics;
 namespace Survivors.Play.Systems.Player
 {
 	[RequireMatchingQueriesForUpdate]
-	public partial struct PlayerActionsSystem : ISystem
+	public partial struct PlayerActionsSystem : ISystem, ISystemNewScene
 	{
 		EntityQuery _rightHandQuery;
 		LatiosWorldUnmanaged _world;
@@ -31,13 +31,13 @@ namespace Survivors.Play.Systems.Player
 		public void OnUpdate(ref SystemState state)
 		{
 
-			if (!_world.worldBlackboardEntity.HasCollectionComponent<AxeSpawnQueue>())
-			{
-				_world.worldBlackboardEntity.AddOrSetCollectionComponentAndDisposeOld(new AxeSpawnQueue
-				{
-					AxesQueue = new NativeQueue<AxeSpawnQueue.AxeSpawnData>(Allocator.Persistent)
-				});
-			}
+			// if (!_world.worldBlackboardEntity.HasCollectionComponent<AxeSpawnQueue>())
+			// {
+			// 	_world.worldBlackboardEntity.AddOrSetCollectionComponentAndDisposeOld(new AxeSpawnQueue
+			// 	{
+			// 		AxesQueue = new NativeQueue<AxeSpawnQueue.AxeSpawnData>(Allocator.Persistent)
+			// 	});
+			// }
 
 
 			if (!_rightHandQuery.IsEmpty)
@@ -85,6 +85,12 @@ namespace Survivors.Play.Systems.Player
 		}
 
 
-		
+		public void OnNewScene(ref SystemState state)
+		{
+			_world.worldBlackboardEntity.AddOrSetCollectionComponentAndDisposeOld(new AxeSpawnQueue
+			{
+				AxesQueue = new NativeQueue<AxeSpawnQueue.AxeSpawnData>(Allocator.Persistent)
+			});
+		}
 	}
 }
