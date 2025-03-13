@@ -14,6 +14,7 @@ using Unity.Entities;
 namespace Survivors.Play.Systems.Enemies
 {
     [RequireMatchingQueriesForUpdate]
+    [BurstCompile]
     public partial struct PlayDeathSFXSystem : ISystem, ISystemNewScene
     {
         LatiosWorldUnmanaged _world;
@@ -27,7 +28,7 @@ namespace Survivors.Play.Systems.Enemies
                 .With<DeadTag>()
                 .With<DeathClipsBufferElement>()
                 .With<WorldTransform>()
-                // we wa,t to play the SFX just before the collider is removed
+                // we want to play the SFX just before the collider is removed
                 .With<Collider>()
                 .Build();
             

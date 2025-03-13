@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4596460277115701281}
   - component: {fileID: 4166961297298115425}
   m_Layer: 0
-  m_Name: Axe Destroy VFX
+  m_Name: Axe Destroy VFX Spawner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

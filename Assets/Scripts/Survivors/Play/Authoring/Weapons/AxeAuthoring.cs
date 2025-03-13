@@ -1,4 +1,5 @@
-﻿using Unity.Entities;
+﻿using Survivors.Play.Components;
+using Unity.Entities;
 using UnityEngine;
 
 namespace Survivors.Play.Authoring.Weapons

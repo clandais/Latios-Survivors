@@ -69,10 +69,9 @@ namespace Survivors.Play.Authoring.Weapons
 		public float3 Direction;
 	}
 
-	public struct AxeDestroyVfx : IComponentData
-	{
-		public EntityWith<Prefab> Prefab;
-	}
+
+	
+
 	
 	public struct AxeConfigComponent : IComponentData
 	{

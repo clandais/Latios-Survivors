@@ -6,9 +6,8 @@ using Survivors.Play.Components.VFXTunnels;
 using Unity.Burst;
 using Unity.Entities;
 using Unity.Mathematics;
-using UnityEngine;
 
-namespace Survivors.Play.Systems.Debug
+namespace Survivors.Play.Systems.VFX
 {
 
     [RequireMatchingQueriesForUpdate]
@@ -31,24 +30,21 @@ namespace Survivors.Play.Systems.Debug
 
             var dcb = m_world.syncPoint.CreateDestroyCommandBuffer();
 
-            foreach (var (transform, eventSpawner, entity) in SystemAPI.Query<WorldTransform, RefRW<PositionRotationEventSpawner>>().WithEntityAccess())
+            foreach (var (positionInitialVelocity, eventSpawner, entity) 
+                     in SystemAPI.Query<RefRO<PositionInitialVelocityVFX>, RefRW<OneShotPositionRotationEventSpawner>>()
+                         .WithEntityAccess())
             {
                 ref var sp = ref eventSpawner.ValueRW;
-                sp.TimeUntilNextSpawn -= SystemAPI.Time.DeltaTime;
-                
-                if (sp.TimeUntilNextSpawn < 0f)
+
+                mailBoxe.Send(new PositionRotationEventInput
                 {
-                    var rotation = math.Euler(transform.rotation);
-                    rotation.z *= 10f;
-                    mailBoxe.Send(new PositionRotationEventInput
-                    {
-                        Position = transform.position,
-                        Rotation = rotation,
-                    }, sp.EventTunnel);
-                    
-                 
-                    dcb.Add(entity);
-                }
+                    Position = positionInitialVelocity.ValueRO.Position,
+                    Rotation = positionInitialVelocity.ValueRO.InitialVelocity,
+                }, sp.EventTunnel);
+                
+             
+                dcb.Add(entity);
+                
             }
         }
     }

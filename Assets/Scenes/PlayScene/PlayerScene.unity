@@ -673,7 +673,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   volume: 1
-  interauralTimeDifferenceResolution: 2
+  interauralTimeDifferenceResolution: 0
   listenerResponseProfile: {fileID: 0}
 --- !u!1 &438441272
 GameObject:

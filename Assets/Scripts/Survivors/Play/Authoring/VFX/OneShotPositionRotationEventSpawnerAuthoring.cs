@@ -5,21 +5,18 @@ using UnityEngine;
 
 namespace Survivors.Play.Authoring.VFX
 {
-    public class PositionRotationEventSpawnerAuthoring : MonoBehaviour
+    public class OneShotPositionRotationEventSpawnerAuthoring : MonoBehaviour
     {
-        [SerializeField] float period = 1f;
         [SerializeField] PositionRotationGraphicsEventTunnel tunnel;
         
-        private class PositionRotationEventSpawnerAuthoringBaker : Baker<PositionRotationEventSpawnerAuthoring>
+        private class OneShotPositionRotationEventSpawnerAuthoringBaker : Baker<OneShotPositionRotationEventSpawnerAuthoring>
         {
-            public override void Bake(PositionRotationEventSpawnerAuthoring authoring)
+            public override void Bake(OneShotPositionRotationEventSpawnerAuthoring authoring)
             {
                 var entity = GetEntity(TransformUsageFlags.Renderable);
-                AddComponent(entity, new PositionRotationEventSpawner
+                AddComponent(entity, new OneShotPositionRotationEventSpawner
                 {
                     EventTunnel = new UnityObjectRef<PositionRotationGraphicsEventTunnel> { Value = authoring.tunnel },
-                    TimeBetweenSpawns = authoring.period,
-                    TimeUntilNextSpawn = authoring.period,
                 });
             }
         }

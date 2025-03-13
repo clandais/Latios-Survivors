@@ -10,6 +10,7 @@ using Survivors.Play.Systems.Weapons;
 using Survivors.Setup.Components;
 using Unity.Entities;
 using PlayerInputReadSystem = Survivors.Play.Systems.Player.PlayerInputReadSystem;
+using VFXPositionRotationEventSpawnerSystem = Survivors.Play.Systems.VFX.VFXPositionRotationEventSpawnerSystem;
 
 
 namespace Survivors.Setup.Systems

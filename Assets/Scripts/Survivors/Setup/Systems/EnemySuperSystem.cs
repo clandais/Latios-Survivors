@@ -13,7 +13,7 @@ namespace Survivors.Setup.Systems
 
 
 			GetOrCreateAndAddUnmanagedSystem<PlayDeathSFXSystem>();
-		//	GetOrCreateAndAddUnmanagedSystem<EnemyFollowDesiredMotionSystem>();
+			GetOrCreateAndAddUnmanagedSystem<PlayDeathVFXSystem>();
 			GetOrCreateAndAddUnmanagedSystem<DisableDeadCollidersSystem>();
 
 		}

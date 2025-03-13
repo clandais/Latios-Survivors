@@ -28,7 +28,7 @@ namespace Survivors.Play.Systems.Weapons
 
 			var dcb = m_latiosWorldUnmanaged.syncPoint.CreateDestroyCommandBuffer( );
 			var ecb = m_latiosWorldUnmanaged.syncPoint.CreateEntityCommandBuffer( );
-			var icb = m_latiosWorldUnmanaged.syncPoint.CreateInstantiateCommandBuffer<WorldTransform>( );
+			var icb = m_latiosWorldUnmanaged.syncPoint.CreateInstantiateCommandBuffer<PositionInitialVelocityVFX>( );
 			CollisionLayer collisionLayer = m_latiosWorldUnmanaged.sceneBlackboardEntity
 				.GetCollectionComponent<EnvironmentCollisionLayer>().Layer;
 			CollisionLayer enemyLayer = m_latiosWorldUnmanaged.sceneBlackboardEntity
@@ -36,7 +36,7 @@ namespace Survivors.Play.Systems.Weapons
 
 			var rng = state.GetMainThreadRng();
 			
-			var hitEntities = new NativeList<Entity>(Allocator.TempJob);
+			var hitEntities = new NativeList<HitInfos>(Allocator.TempJob);
 			var destroyedAxesPositions = new NativeList<float3>(Allocator.TempJob);
 			
 			var sfxSpawnQueue = m_latiosWorldUnmanaged.sceneBlackboardEntity.GetCollectionComponent<SFXSpawnQueue>();
@@ -71,18 +71,19 @@ namespace Survivors.Play.Systems.Weapons
 			destroyedAxesPositions.Dispose();
 
 
-			foreach (var entity in hitEntities)
+			foreach (var infos in hitEntities)
 			{
 				
 				var axeHitSfx = m_latiosWorldUnmanaged.sceneBlackboardEntity.GetBuffer<AxeHitSfxBufferElement>();
 				sfxSpawnQueue.SFXSQueue.Enqueue(  new SFXSpawnQueue.SFXSpawnData
 				{
 					SFXPrefab = axeHitSfx[rng.NextInt(0, axeHitSfx.Length)].HitSfxPrefab,
-					Position = state.EntityManager.GetComponentData<WorldTransform>(entity).position
+					Position = infos.Position,
 				});
 				
 			
-				state.EntityManager.AddComponent<DeadTag>(entity);
+				state.EntityManager.AddComponentData(infos.Entity, infos);
+				state.EntityManager.AddComponent<DeadTag>(infos.Entity);
 			}
 
 
@@ -101,8 +102,8 @@ namespace Survivors.Play.Systems.Weapons
 		{
 			
 			public DestroyCommandBuffer.ParallelWriter DestroyCommandBuffer;
-			public InstantiateCommandBuffer<WorldTransform>.ParallelWriter Icb;
-			[NativeDisableParallelForRestriction] public NativeList<Entity> HitEntities;
+			public InstantiateCommandBuffer<PositionInitialVelocityVFX>.ParallelWriter Icb;
+			[NativeDisableParallelForRestriction] public NativeList<HitInfos> HitEntities;
 			[NativeDisableParallelForRestriction] public NativeList<float3> DestoryedAxesPositions;
 			[ReadOnly] public float DeltaTime;
 			[ReadOnly] public CollisionLayer WallLayer;
@@ -124,7 +125,12 @@ namespace Survivors.Play.Systems.Weapons
 				if (Physics.ColliderCast(in collider, in transformQvs, transform.position + axe.Direction, in EnemyLayer, out ColliderCastResult hitInfos, out var o))
 				{
 					 if ( hitInfos.distance <= capsuleCollider.radius )
-						HitEntities.Add(o.entity);
+						HitEntities.Add(new HitInfos
+						{
+							Position = hitInfos.hitpoint,
+							Normal = hitInfos.normalOnTarget * axe.Speed,
+							Entity = o.entity,
+						});
 				}
 
 				if (Physics.ColliderCast(in collider, in transformQvs, transform.position + axe.Direction, in WallLayer, out ColliderCastResult result, out _))
@@ -132,7 +138,11 @@ namespace Survivors.Play.Systems.Weapons
 					if (result.distance <= capsuleCollider.radius)
 					{
 						DestoryedAxesPositions.Add(transform.position);
-						Icb.Add(axeDestroyVfx.Prefab, transform, idx);
+						Icb.Add(axeDestroyVfx.Prefab, new PositionInitialVelocityVFX
+						{
+							Position = result.hitpoint,
+							InitialVelocity = (-axe.Direction) * axe.Speed
+						}, idx);
 						DestroyCommandBuffer.Add(entity, idx);
 					}
 				}

@@ -158,6 +158,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a13f5f1453a456a9334864c70f3ba7f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DestroyVfxPrefab: {fileID: 8911872691944305848, guid: 023cf34bcab5fed4aa10977c95bb9c8c, type: 3}
 --- !u!114 &2034101364744182827
 MonoBehaviour:
   m_ObjectHideFlags: 0

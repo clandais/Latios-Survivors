@@ -1,5 +1,7 @@
+using Latios;
 using Survivors.Play.Components.VFXTunnels;
 using Unity.Entities;
+using Unity.Mathematics;
 
 namespace Survivors.Play.Components
 {
@@ -11,10 +13,27 @@ namespace Survivors.Play.Components
         public UnityObjectRef<PositionGraphicsEventTunnel> EventTunnel;
     }
 
-    public struct PositionRotationEventSpawner : IComponentData
+    public struct OneShotPositionRotationEventSpawner : IComponentData
     {
-        public float TimeUntilNextSpawn;
-        public float TimeBetweenSpawns;
         public UnityObjectRef<PositionRotationGraphicsEventTunnel> EventTunnel;
+    }
+    
+    
+    public struct PositionInitialVelocityVFX : IComponentData
+    {
+	
+        public float3 Position;
+        public float3 InitialVelocity;
+    }
+    
+    
+    public struct AxeDestroyVfx : IComponentData
+    {
+        public EntityWith<Prefab> Prefab;
+    }
+    
+    public struct SkeletonDestroyVfx : IComponentData
+    {
+        public EntityWith<Prefab> Prefab;
     }
 }
