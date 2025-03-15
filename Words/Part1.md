@@ -1,7 +1,10 @@
 # Making a *Survivors-like* with Latios Framework Part 1
 
 ## Me, Me and Me
-I've been wanting to learn Unity's Data-Oriented Technology Stack (DOTS) for a while now. Sadly, the documentation is still a bit lacking and the examples are all over the place. And I'm not even mentioning the fact that DOD is a whole new way of thinking about programming.
+
+![giphy.gif](https://file.notion.so/f/f/c29ce22d-4673-4469-97c4-dcd26d56a571/1744ea8a-c5cb-4083-bc67-7f1ceff01812/giphy.gif?table=block&id=1b7dd5db-3ea3-8092-8e03-fc930f96d3d1&spaceId=c29ce22d-4673-4469-97c4-dcd26d56a571&expirationTimestamp=1742097600000&signature=kz6kq8elrQCgKat0qTtHP7pRVmpFbdUnYbOo0mGTWAI)
+
+I've been wanting to learn Unity's Data-Oriented Technology Stack (DOTS) for a while now. Sadly, the documentation is still a bit lacking and the examples are all over the place. And I'm not even mentioning the fact that DOD is a whole new way of thinking about programming coming from an OOP background.
 
 ### The Training Samples
 A month ago, I stubbled upon Unity's [DOTS training samples]([https://](https://github.com/Unity-Technologies/DOTS-training-samples)). This is pretty awesome since I'm a "learn by doing" kind of guy. Exactly what I was looking for. What is it? It's a series of small projects / simulations implemented in a classic way and the goal is to reimplemement them using DOTS.
@@ -21,9 +24,15 @@ The first project is called "Ant Phereomones". Quick pitch from the Readme:
 > - The amount of pheromone an ant drops depends on the speed of the ant, and the speed depends on steering.
 
 ### The *CLICK*
+
+![](https://file.notion.so/f/f/c29ce22d-4673-4469-97c4-dcd26d56a571/d6a59b5b-31f9-43b2-b983-461ac53e0889/giphy.gif?table=block&id=1b7dd5db-3ea3-807b-a3d7-cf1c8b7fb61b&spaceId=c29ce22d-4673-4469-97c4-dcd26d56a571&expirationTimestamp=1742097600000&signature=ILUiAfogF-t6VVaaCiReNGTGA1Sfb6O6dL_-45nk5d4)
+
+
 Mission accomplished! It made DOTS click in my head. I understood the basics of how to implement a DOTS project. I was able to reimplement the project in a few days (plus some more because I tend to be quite self-demanding). I was quite impressed with the results. Without really knowing what I was doing, I was able to make a project that was running at 60fps with 100k ants on screen. I've found that the DOTS way of thinking is quite refreshing and that it encourages some good practices (sepation of concerns, data-oriented design, etc).
 
-TODO : Insert video here
+<video width="800" height="600" controls>
+  <source src="medias/mesmerizants.mp4" type="video/mp4">
+</video>
 
 ### The *What Now?*
 
@@ -31,8 +40,9 @@ I started looking for features required to make actual full games and if they we
 
 ## Latios Framework
 
+![text](https://img.notionusercontent.com/ext/https%3A%2F%2Fwww.pokepedia.fr%2Fimages%2Ff%2Ffa%2FLatios-RS.png/size/w=1690?exp=1742070581&sig=5kiJ4astAeXTr9otTYd6yQD0zA4GKeNnxAFFMhPceTQ)
 
-There is this *guy* you'll see a lot if you hang around Unity's DOTS forums. Dreaming I'm Latios. He's been working on a framework that aims to make DOTS development easier. It's called [Latios Framework](https://github.com/Dreaming381/Latios-Framework). It's still in development but it's already quite impressive!
+There is this *guy* you'll see a lot if you hang around Unity's DOTS forums. **Dreaming I'm Latios**. He's been working on a framework that aims to make DOTS development easier. It's called [Latios Framework](https://github.com/Dreaming381/Latios-Framework). It's still in development but it's already quite impressive!
 
 Latios has a good number of modules and some interesting addons. It does not forces you to use everything but manages to do, as an open source project, what you would find in paid assets:
 - GPU Skinning
@@ -45,7 +55,9 @@ Latios has a good number of modules and some interesting addons. It does not for
 - A custom transform system tha just makes sense (QVVS)
 - And more!
 
-### Let's Make a Game!
+## Let's Make a Game!
+
+![text](https://img.notionusercontent.com/s3/prod-files-secure%2Fc29ce22d-4673-4469-97c4-dcd26d56a571%2F3ea9a03b-5c95-4183-adb6-e52cab4778d5%2Fbill-gates-doom-2.webp/size/w=400?exp=1742156119&sig=xkPdAeh89pxMK1rEXi5YLXuvYxlJgM582_GB6hS9eYU)
 
 Like I said, I'm more of a "learn by doing" kind of guy. So I'll be making a game using Latios Framework. I'll be documenting the process here. I may say complete inaccuracies, so please take everything with a grain of salt. I'm still learning.
 
@@ -57,12 +69,17 @@ What kind of game could make a great use of DOTS (and Latios) ? A game genre tha
 
 ### The Plan
 
+
+![alt text](https://file.notion.so/f/f/c29ce22d-4673-4469-97c4-dcd26d56a571/b08a909e-a424-48d3-a851-17bdb5457fc5/giphy.gif?table=block&id=1b7dd5db-3ea3-803b-834b-f2585586f8a4&spaceId=c29ce22d-4673-4469-97c4-dcd26d56a571&expirationTimestamp=1742097600000&signature=2wvwrBFlGINQwBA1VIkKCkFdcY6WY3Qwmni9Nal7ywc)
+
 I had no plan when starting this project except for the fact that I wanted to make a *real* game with DOTS/Latios.
 
 I just started with this :
+- Find some CC0 assets to use (Thank you Kay Lousberg ! [https://kaylousberg.itch.io/])
+- Figure out where to go with these assets
 - Make a Main Menu with a Play button
 - Upon pressing the Play button, load the game scene
-- In the game scene, spawn a player character
+- In the game scene, bootstrap Latios and spawn a player character
 - Pressing escape pauses the game and shows a pause menu
 - The pause menu has a Resume button, a Back To Main Menu button and a Quit button
 
@@ -78,67 +95,118 @@ Since that with the Survivors-like I'm going single player only with one single 
 
 Additionally, I disabled the automatic world bootstrap (`UNITY_DISABLE_AUTOMATIC_SYSTEM_BOOTSTRAP_RUNTIME_WORLD`) so I could have more control over the world's lifecycle.
 
-#### Game Lifetime Scope
+### Code example
 
-I'll probably need to revise this later but here is what my `GameLifetimeScope` looks like:
+Here is a stripped down sample that shows how to setup a *clean* ECS <-> UI communication with VContainer and Vital Router
 
+`PlayLifetimeScope.cs` : A child scope of `GameLifetimeScope`.
 ```csharp
-/// <summary>
-///  This is the root container for the game.
-/// </summary>
-public class GameLifetimeScope : LifetimeScope
+public class PlayLifetimeScope : LifetimeScope
 {
-    
-    [SerializeField] GameScenesReferences gameScenesReferences; // A ScriptableObject that holds references to all (adressable) scenes
-    [SerializeField] CurtainBehaviour curtainBehaviour; // A simple curtain behaviour to fade in/out between scenes
-    [SerializeField] Transform cinemachineTarget; // The target for the Cinemachine Virtual Camera ...
 
-#if UNITY_EDITOR
-
-    protected override void Awake()
-    {
-        base.Awake();
-
-        // Dispose MANUALLY the world when exiting play mode in the editor
-        EditorApplication.playModeStateChanged += state =>
-        {
-            if (state == PlayModeStateChange.ExitingPlayMode)
-                World.DefaultGameObjectInjectionWorld?.Dispose();
-        };
-    }
-#endif
+    // This is a refenrence to a panel that will be used to show debug information
+    [SerializeField] DebugPanel _debugPanel;
 
     protected override void Configure(IContainerBuilder builder)
     {
-        // Register the game scenes references, the curtain behaviour and the cinemachine target to be injected
-        builder.RegisterInstance(gameScenesReferences);
-        builder.RegisterInstance(curtainBehaviour);
-        builder.RegisterInstance(cinemachineTarget);
+        builder.RegisterInstance(_debugPanel);
 
+        // Register the PlayStateRouter that will handle the routing of game state related commands
+        builder.RegisterVitalRouter(routingBuilder => 
+        { 
 
-        // Register the game's main router (global messages)
-        builder.RegisterVitalRouter(routingBuilder =>
-        {
-            routingBuilder.Isolated = true;
-
-            routingBuilder.Filters
-                .Add<ExceptionHandling>()
-                .Add<LoggingInterceptor>();
-
-            routingBuilder.Map<GlobalRouter>();
+            routingBuilder.Map<PlayStateRouter>(); 
         });
 
-
-        builder.RegisterBuildCallback(container =>
-        {
-            // Upon build, we want to start the game in the main menu
-            var publisher = container.Resolve<ICommandPublisher>();
-            publisher.PublishAsync(new MainMenuStateCommand());
-        });
+        // Register the DebugSystem that will publish commands to the PlayStateRouter
+        builder.RegisterSystemFromDefaultWorld<DebugSystem>();
     }
 }
 ```
 
-`GlobalRouter`'s role is simple : it handles only the 2 main states commands (`MainMenuStateCommand` and `PlayStateCommand`) and loads and unloads the scenes accordingly.
+`DebugPanel.cs` : Warning: Rocket science!
 
-When the container is built, the game will start, the `MainMenuStateCommand` will be published and the `GlobalRouter` will load the main menu scene with its `MainMenuLifetimeScope` as a child scope.
+```csharp
+public class DebugPanel : MonoBehaviour
+{
+    [SerializeField] private TMP_Text _text;
+    
+    public TMP_Text DebugText => _text;
+}
+```
+
+`PlaystateRouter.cs`
+```csharp
+[Routes]
+public partial class PlayStateRouter : IDisposable
+{
+
+    [Inject] private DebugPanel _debugPanel;
+
+    /// <summary>
+    /// Upon receiving a DebugCommand, we update the text of the DebugPanel
+    /// </summary> 
+    [Route]
+    void On(DebugCommand command)
+    {
+        _debugPanel.DebugText.text = command.Message;
+    }
+
+    public void Dispose()
+    {
+        UnmapRoutes();
+    }
+}
+```
+
+`DebugSystem.cs` : The managed system that will be used for debugging. As an example, it will count the number of alive and dead enemies.
+```csharp
+public partial class DebugSystem : SystemBase
+{
+    ICommandPublisher _publisher;
+
+    [Inject]
+    public void Construct(ICommandPublisher publisher)
+    {
+        _publisher = publisher;
+    }
+
+
+    protected override void OnUpdate()
+    {
+
+        string message = "";
+        
+        var aliveEnemyCount = SystemAPI.QueryBuilder().WithAll<EnemyTag>().WithNone<DeadTag>().Build().CalculateEntityCount();
+        message += $"Alive Enemies: {aliveEnemyCount}\n";
+        
+        var deadEnemyCount = SystemAPI.QueryBuilder().WithAll<EnemyTag>().WithAll<DeadTag>().Build().CalculateEntityCount();
+        message += $"Dead Enemies: {deadEnemyCount}\n";
+        
+        
+        _publisher.PublishAsync(new DebugCommand { Message = message });
+    }
+}
+```
+
+### The Result
+
+![Where's Waldo](medias/DebugSystem.png)
+
+
+## The Next Steps
+Draw the rest of the f*cking owl!
+...
+I mean, implement some parts of the game loop and try some of Latios Framework's features :
+- an animated 3D player character and enemies (Kinemation module)
+- Add an axe throwing mechanic (Psyshock module)
+- Add some kind of pathfinding and flocking behavior to the enemies
+- Get sidetracked and add VFX (LifeFX module) and SFX (Myri module) just for fun!
+
+## Conclusion
+
+![alt text](https://file.notion.so/f/f/c29ce22d-4673-4469-97c4-dcd26d56a571/e27699d2-a157-45b5-9db3-c89fc45e2627/giphy.gif?table=block&id=1b7dd5db-3ea3-8082-8560-f415b54a6076&spaceId=c29ce22d-4673-4469-97c4-dcd26d56a571&expirationTimestamp=1742097600000&signature=bJ7lQKHINCs_TWTk7bAi38iTreKT_lXj57KNxmF0in0)
+
+I hope this article was helpful to you. I know it was a bit all over the place and that I haven't talked much about my experience with Latios (yet) but I wanted to share my experience learning and tinkering  with DOTS and Latios Framework.
+
+If you have some DOTS experience (from noob to pro) and haven't tried Latios Framework yet, I highly recommend you to give it a try. It's a great framework with an awesome community behind it. Come join us on Discord and share your experience with us!
