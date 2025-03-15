@@ -3,6 +3,7 @@ using Cysharp.Threading.Tasks;
 using Survivors.Play.MonoBehaviours;
 using Survivors.Play.Scope.Messages;
 using Survivors.Setup.Scope.Messages.GlobalMessages;
+using UnityEngine;
 using VContainer;
 using VitalRouter;
 
@@ -23,7 +24,6 @@ namespace Survivors.Play.Scope
 		[Route]
 		private async UniTask On(BackToMainMenuClicked _)
 		{
-		//	await ParentPublisher.PublishAsync(new TriggerCurtainFade { FromAlpha = 0f, ToAlpha = 1f, Duration = 1f });
 			await ParentPublisher.PublishAsync(new MainMenuStateCommand());
 		}
 		
@@ -37,6 +37,12 @@ namespace Survivors.Play.Scope
 		void On(DebugCommand command)
 		{
 			_debugPanel.DebugText.text = command.Message;
+		}
+
+		[Route]
+		void On(PlayerScrollCommand command)
+		{
+			ParentPublisher.PublishAsync( new CameraZoomCommand { ZoomValue = command.ScrollValue });
 		}
 
 		public void Dispose()

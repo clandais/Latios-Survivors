@@ -42,13 +42,6 @@
       },
       "url": "https://package.openupm.com"
     },
-    "com.latios.latiosframework.addons": {
-      "version": "https://github.com/Dreaming381/Latios-Framework-Add-Ons.git",
-      "depth": 0,
-      "source": "git",
-      "dependencies": {},
-      "hash": "211dd086c85f11a5cd5cbbffce1aa82074ce414f"
-    },
     "com.unity.2d.sprite": {
       "version": "1.0.0",
       "depth": 0,
@@ -273,7 +266,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.project-auditor": {
-      "version": "1.0.0",
+      "version": "1.0.1",
       "depth": 0,
       "source": "registry",
       "dependencies": {

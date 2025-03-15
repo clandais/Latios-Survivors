@@ -26,8 +26,8 @@ namespace Survivors.Play.Systems.Weapons
         public void OnUpdate(ref SystemState state)
         {
 
-            var spawnQueue = _world.worldBlackboardEntity.GetCollectionComponent<AxeSpawnQueue>();
-            var axeConfig = _world.sceneBlackboardEntity.GetComponentData<AxeConfigComponent>();
+            var spawnQueue = _world.worldBlackboardEntity.GetCollectionComponent<AxeSpawnQueue>().AxesQueue;
+          //  var axeConfig = _world.sceneBlackboardEntity.GetComponentData<AxeConfigComponent>();
             var axeSfxBuffer = _world.sceneBlackboardEntity.GetBuffer<AxeSfxBufferElement>();
             InstantiateCommandBuffer<AxeComponent, WorldTransform> icb = _world.syncPoint.CreateInstantiateCommandBuffer<AxeComponent, WorldTransform>();
             InstantiateCommandBuffer<WorldTransform> sfxIcb = _world.syncPoint.CreateInstantiateCommandBuffer<WorldTransform>();
@@ -36,9 +36,9 @@ namespace Survivors.Play.Systems.Weapons
             var positionList = new NativeList<float3>(Allocator.TempJob);
 
 
-            while (!spawnQueue.AxesQueue.IsEmpty())
+            while (!spawnQueue.IsEmpty())
             {
-                if (spawnQueue.AxesQueue.TryDequeue(out var axe))
+                if (spawnQueue.TryDequeue(out var axe))
                 {
 
                     var transform = new WorldTransform
@@ -51,11 +51,13 @@ namespace Survivors.Play.Systems.Weapons
                     positionList.Add(axe.Position);
                     transform.worldTransform.rotation = quaternion.LookRotation(axe.Direction, math.up());
 
+                    var config = state.EntityManager.GetComponentData<AxeConfigComponent>(axe.AxePrefab);
+                    
                     icb.Add(axe.AxePrefab, new AxeComponent
                     {
                         Direction     = axe.Direction,
-                        Speed         = axeConfig.Speed,
-                        RotationSpeed = axeConfig.RotationSpeed
+                        Speed         = config.Speed,
+                        RotationSpeed = config.RotationSpeed
                     }, transform);
 
                 }
@@ -70,6 +72,10 @@ namespace Survivors.Play.Systems.Weapons
                 SfxPrefab = axeSfxBuffer,
                 Icb       = sfxIcb.AsParallelWriter(),
             }.Schedule(positionList.Length, state.Dependency);
+            
+            
+            state.Dependency.Complete();
+            positionList.Dispose();
         }
 
         [BurstCompile]

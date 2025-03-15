@@ -72,3 +72,73 @@ Why all the pain? Because I tend to find ECS World <-> GameObject world *communi
 
 ### How it started
 
+I needed to figure out how to *plug* VContainer and Co into Latios / DOTS. I already had done some experiments with *pure* DOTS and Netcode for Entities: it worked but it was a pain to differentiate between client and server worlds.
+
+Since that with the Survivors-like I'm going single player only with one single ECS World, using `builder.RegisterSystemFromDefaultWorld` would just work as Latios's bootstrap template registers the world as the `DefaultGameObjectInjectionWorld` (yep, I'm not planning to do anything fancy with the boostrap).
+
+Additionally, I disabled the automatic world bootstrap (`UNITY_DISABLE_AUTOMATIC_SYSTEM_BOOTSTRAP_RUNTIME_WORLD`) so I could have more control over the world's lifecycle.
+
+#### Game Lifetime Scope
+
+I'll probably need to revise this later but here is what my `GameLifetimeScope` looks like:
+
+```csharp
+/// <summary>
+///  This is the root container for the game.
+/// </summary>
+public class GameLifetimeScope : LifetimeScope
+{
+    
+    [SerializeField] GameScenesReferences gameScenesReferences; // A ScriptableObject that holds references to all (adressable) scenes
+    [SerializeField] CurtainBehaviour curtainBehaviour; // A simple curtain behaviour to fade in/out between scenes
+    [SerializeField] Transform cinemachineTarget; // The target for the Cinemachine Virtual Camera ...
+
+#if UNITY_EDITOR
+
+    protected override void Awake()
+    {
+        base.Awake();
+
+        // Dispose MANUALLY the world when exiting play mode in the editor
+        EditorApplication.playModeStateChanged += state =>
+        {
+            if (state == PlayModeStateChange.ExitingPlayMode)
+                World.DefaultGameObjectInjectionWorld?.Dispose();
+        };
+    }
+#endif
+
+    protected override void Configure(IContainerBuilder builder)
+    {
+        // Register the game scenes references, the curtain behaviour and the cinemachine target to be injected
+        builder.RegisterInstance(gameScenesReferences);
+        builder.RegisterInstance(curtainBehaviour);
+        builder.RegisterInstance(cinemachineTarget);
+
+
+        // Register the game's main router (global messages)
+        builder.RegisterVitalRouter(routingBuilder =>
+        {
+            routingBuilder.Isolated = true;
+
+            routingBuilder.Filters
+                .Add<ExceptionHandling>()
+                .Add<LoggingInterceptor>();
+
+            routingBuilder.Map<GlobalRouter>();
+        });
+
+
+        builder.RegisterBuildCallback(container =>
+        {
+            // Upon build, we want to start the game in the main menu
+            var publisher = container.Resolve<ICommandPublisher>();
+            publisher.PublishAsync(new MainMenuStateCommand());
+        });
+    }
+}
+```
+
+`GlobalRouter`'s role is simple : it handles only the 2 main states commands (`MainMenuStateCommand` and `PlayStateCommand`) and loads and unloads the scenes accordingly.
+
+When the container is built, the game will start, the `MainMenuStateCommand` will be published and the `GlobalRouter` will load the main menu scene with its `MainMenuLifetimeScope` as a child scope.

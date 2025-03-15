@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
+using Survivors.BootStrap;
 using Survivors.Setup.MonoBehaviours;
 using Survivors.Setup.Scope.Messages.GlobalMessages;
 using Survivors.Setup.ScriptableObjects;
+using Unity.Entities;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
@@ -23,10 +25,17 @@ namespace Survivors.Setup.Scope
 		[Inject] ICommandPublisher _publisher;
 		[Inject] CurtainBehaviour _curtainBehaviour;
 		[Inject] GameScenesReferences _gameScenesReferences;
-
+		[Inject] CinemachineBehaviour _cinemachine;
+		
 
 		readonly Dictionary<string, AsyncOperationHandle<SceneInstance>> _handles = new();
 
+
+		[Route]
+		void On(CameraZoomCommand command)
+		{
+			_cinemachine.SetZoom(command.ZoomValue);
+		}
 
 		async UniTask DisposeScene(string assetGuid)
 		{
@@ -49,6 +58,9 @@ namespace Survivors.Setup.Scope
 		{
 
 			await _curtainBehaviour.FadeAlpha(0f, 1f, 1f);
+			
+
+			
 			await DisposeScene(_gameScenesReferences.playScene.AssetGUID);
 
 			if (_handles.ContainsKey(_gameScenesReferences.mainMenuScene.AssetGUID))
@@ -59,10 +71,12 @@ namespace Survivors.Setup.Scope
 
 			{
 
+				World.DefaultGameObjectInjectionWorld?.Dispose();
+				
 				var handle = Addressables.LoadSceneAsync(_gameScenesReferences.mainMenuScene, LoadSceneMode.Additive);
 				_handles.Add(_gameScenesReferences.mainMenuScene.AssetGUID, handle);
 
-				await handle;
+				await handle.ToUniTask();
 				await _curtainBehaviour.FadeAlpha(1f, 0f, 1f);
 			}
 		}
@@ -75,6 +89,8 @@ namespace Survivors.Setup.Scope
 
 			await DisposeScene(_gameScenesReferences.mainMenuScene.AssetGUID);
 
+
+			
 			if (_handles.ContainsKey(_gameScenesReferences.playScene.AssetGUID))
 			{
 				Debug.LogWarning("PlayScene is already loaded");
@@ -82,10 +98,21 @@ namespace Survivors.Setup.Scope
 			}
 
 			{
+
+				if (new LatiosBootstrap().Initialize("LatiosWorld"))
+				{
+					Debug.Log("Latios initialized");
+				}
+				else
+				{
+					Debug.LogException( new System.Exception("Latios failed to initialize :'("));
+					return;
+				}
+				
 				var handle = Addressables.LoadSceneAsync(_gameScenesReferences.playScene, LoadSceneMode.Additive);
 				_handles.Add(_gameScenesReferences.playScene.AssetGUID, handle);
 
-				await handle;
+				await handle.ToUniTask();
 				await _curtainBehaviour.FadeAlpha(1f, 0f, 1f);
 
 			}

@@ -1,6 +1,8 @@
+using Survivors.BootStrap;
 using Survivors.Play.MonoBehaviours;
 using Survivors.Play.Systems;
 using Survivors.Play.Systems.Debug;
+using Unity.Entities;
 using UnityEngine;
 using UnityEngine.UI;
 using VContainer;
@@ -20,6 +22,8 @@ namespace Survivors.Play.Scope
 		protected override void Configure(IContainerBuilder builder)
 		{
 
+			
+			
 			builder.RegisterInstance(_playStateMenu);
 			builder.RegisterInstance(_debugPanel);
 			builder.RegisterInstance(corsshair);
@@ -34,9 +38,13 @@ namespace Survivors.Play.Scope
 			{
 				routingBuilder.Map<PlayStateRouter>();
 			});
+			
 
+			builder.RegisterSystemFromDefaultWorld<GlobalInputReadSystem>();
+			
+			
 			builder.RegisterSystemFromDefaultWorld<CinemachineTargetUpdater>();
-			builder.RegisterSystemFromDefaultWorld<MotionDebugSystem>();
+			builder.RegisterSystemFromDefaultWorld<DebugSystem>();
 			builder.RegisterSystemFromDefaultWorld<PlayerInputReadSystem>();
 			
 			builder.RegisterBuildCallback(container =>
@@ -46,8 +54,15 @@ namespace Survivors.Play.Scope
 				playStateRouter.ParentPublisher = publisher;
 
 			});
+			
+		}
 
 
+		protected override void OnDestroy()
+		{
+			
+			
+			base.OnDestroy();
 		}
 	}
 }

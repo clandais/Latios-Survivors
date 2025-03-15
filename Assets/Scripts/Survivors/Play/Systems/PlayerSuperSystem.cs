@@ -1,9 +1,6 @@
 using Latios;
-using Survivors.Play.Authoring.Enemies;
 using Survivors.Play.Components;
-using Survivors.Play.Systems;
 using Survivors.Play.Systems.Debug;
-using Survivors.Play.Systems.Enemies;
 using Survivors.Play.Systems.Player;
 using Survivors.Play.Systems.SFX;
 using Survivors.Play.Systems.Weapons;
@@ -13,7 +10,7 @@ using PlayerInputReadSystem = Survivors.Play.Systems.Player.PlayerInputReadSyste
 using VFXPositionRotationEventSpawnerSystem = Survivors.Play.Systems.VFX.VFXPositionRotationEventSpawnerSystem;
 
 
-namespace Survivors.Setup.Systems
+namespace Survivors.Play.Systems
 {
 
 
@@ -47,7 +44,7 @@ namespace Survivors.Setup.Systems
 
 			GetOrCreateAndAddManagedSystem<CinemachineTargetUpdater>();
 			GetOrCreateAndAddManagedSystem<PlayerInputReadSystem>();
-			GetOrCreateAndAddManagedSystem<MotionDebugSystem>();
+			GetOrCreateAndAddManagedSystem<DebugSystem>();
 			
 			GetOrCreateAndAddUnmanagedSystem<PlayerDesiredMotionSystem>();
 			GetOrCreateAndAddUnmanagedSystem<PlayerActionsSystem>();

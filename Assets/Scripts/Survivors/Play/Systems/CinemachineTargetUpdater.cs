@@ -3,6 +3,7 @@ using Latios.Transforms;
 using Survivors.Play.Authoring;
 using Survivors.Play.Authoring.Weapons;
 using Survivors.Play.Components;
+using Survivors.Setup.MonoBehaviours;
 using Unity.Entities;
 using UnityEngine;
 using VContainer;
@@ -13,12 +14,12 @@ namespace Survivors.Play.Systems
 	public partial class CinemachineTargetUpdater : SubSystem
 	{
 
-		private Transform _cinemachineTarget;
+		private CinemachineBehaviour _cinemachine;
 		
 		[Inject]
-		public void Construct(Transform cinemachineTarget)
+		public void Construct(CinemachineBehaviour cinemachine)
 		{
-			_cinemachineTarget = cinemachineTarget;
+			_cinemachine = cinemachine;
 		}
 
 		protected override void OnCreate()
@@ -32,13 +33,7 @@ namespace Survivors.Play.Systems
 
 
 			var playerPosition = sceneBlackboardEntity.GetComponentData<PlayerPosition>();
-			_cinemachineTarget.position = playerPosition.Position;
-			//
-			// foreach (var worldTransform in SystemAPI.Query<RefRO<WorldTransform>>()
-			// 	         .WithPresent<PlayerTag>())
-			// {
-			// 	_cinemachineTarget.position = worldTransform.ValueRO.worldTransform.position;
-			// }
+			_cinemachine.SetPosition( playerPosition.Position );
 		}
 	}
 }

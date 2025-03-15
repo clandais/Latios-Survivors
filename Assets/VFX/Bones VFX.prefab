@@ -62,7 +62,10 @@ VisualEffect:
     m_Uint:
       m_Array: []
     m_Int:
-      m_Array: []
+      m_Array:
+      - m_Value: 128
+        m_Name: Particle Count
+        m_Overridden: 1
     m_Matrix4x4f:
       m_Array: []
     m_AnimationCurve:
@@ -128,7 +131,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27a9b3f81d41dc745911804fc69c6bbd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tunnel: {fileID: 11400000, guid: d83866af3ce431c4c805420ce52225de, type: 2}
+  tunnel: {fileID: 11400000, guid: e8a1c03a4fb47f941b7c1ea0dcd9a779, type: 2}
   OnGraphicsEventPublishedSerialized:
     m_PersistentCalls:
       m_Calls: []

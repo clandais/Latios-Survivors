@@ -2,12 +2,14 @@ using Latios;
 using Survivors.Play.Authoring.Weapons;
 using Survivors.Play.Components;
 using Survivors.Play.Input;
+using Survivors.Play.Scope.Messages;
 using Unity.Entities;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using VContainer;
+using VitalRouter;
 
 namespace Survivors.Play.Systems.Player
 {
@@ -16,11 +18,13 @@ namespace Survivors.Play.Systems.Player
 	{
 
 		private Image _crosshair;
+		private ICommandPublisher _commandPublisher;
 
 		[Inject]
-		public void Construct(Image crosshair)
+		public void Construct(Image crosshair, ICommandPublisher commandPublisher)
 		{
 			_crosshair = crosshair;
+			_commandPublisher = commandPublisher;
 		}
 		
 
@@ -57,7 +61,15 @@ namespace Survivors.Play.Systems.Player
 			float2 movement      = actions.Move.ReadValue<Vector2>();
 			bool   isSprinting   = actions.Sprint.ReadValue<float>() > 0.1f;
 			float2 mousePosition = actions.MouseMoved.ReadValue<Vector2>();
+			float scrollValue   = actions.Zoom.ReadValue<float>();
 
+			if (math.abs(scrollValue) > math.EPSILON)
+				_commandPublisher.PublishAsync(new PlayerScrollCommand
+				{
+					ScrollValue = scrollValue,
+				});
+			
+			
 			_crosshair.rectTransform.position = new float3(mousePosition.x, mousePosition.y, 0);
 
 			var mousePositionComponent = sceneBlackboardEntity.GetComponentData<SceneMouse>();

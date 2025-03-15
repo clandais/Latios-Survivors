@@ -1769,7 +1769,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   blackboardScope: 1
-  mergeMethod: 0
+  mergeMethod: 1
 --- !u!4 &1256458115
 Transform:
   m_ObjectHideFlags: 0
@@ -1797,8 +1797,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee071ef5a345429fbbdecd302e3d1c30, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 10
-  rotationSpeed: 15
   wooshSfxPrefabs:
   - {fileID: 1693291223603685899, guid: 499fe13c3899be949968b691a26a247c, type: 3}
   - {fileID: 8674080395964618867, guid: 5cd7eebef0cc11743ace1acb4edc4125, type: 3}

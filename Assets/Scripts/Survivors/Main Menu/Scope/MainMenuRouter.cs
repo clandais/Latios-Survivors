@@ -15,13 +15,12 @@ namespace Survivors.Main_Menu.Scope
 	public partial class MainMenuRouter : IDisposable
 	{
 		[Inject]
-		private ICommandPublisher _parentPublisher; 
+		ICommandPublisher _parentPublisher; 
 
 		[Route]
-		private async UniTask On(StartButtonClickedCommand _)
+		async UniTask On(StartButtonClickedCommand _)
 		{
 			await UniTask.CompletedTask;
-		//	await _parentPublisher.PublishAsync(new TriggerCurtainFade { FromAlpha = 0f, ToAlpha = 1f, Duration = 1f });
 			_parentPublisher.PublishAsync(new PlayStateCommand()).AsUniTask().Forget();
 		}
 

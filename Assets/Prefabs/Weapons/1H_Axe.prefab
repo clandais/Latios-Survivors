@@ -69,6 +69,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e258741dd1d481eabc5075cf7e040f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  speed: 10
+  rotationSpeed: 20
   DestroyVfxPrefab: {fileID: 2229245405988477944, guid: 66a32ede761253141ba3cc53ef8682f9, type: 3}
 --- !u!1 &2410740127139945969
 GameObject:

@@ -1,4 +1,4 @@
-using Latios;
+
 using Survivors.Setup.MonoBehaviours;
 using Survivors.Setup.Scope.Interceptors;
 using Survivors.Setup.Scope.Messages.GlobalMessages;
@@ -17,7 +17,7 @@ namespace Survivors.Setup.Scope
 	{
 		[SerializeField] GameScenesReferences gameScenesReferences;
 		[SerializeField] CurtainBehaviour curtainBehaviour;
-		[SerializeField] Transform cinemachineTarget;
+		[SerializeField] CinemachineBehaviour cinemachineBehaviour;
 
 #if UNITY_EDITOR
 
@@ -40,7 +40,7 @@ namespace Survivors.Setup.Scope
 		{
 			builder.RegisterInstance(gameScenesReferences);
 			builder.RegisterInstance(curtainBehaviour);
-			builder.RegisterInstance(cinemachineTarget);
+			builder.RegisterInstance(cinemachineBehaviour);
 
 
 			builder.RegisterVitalRouter(routingBuilder =>

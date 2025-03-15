@@ -10,9 +10,7 @@ namespace Survivors.Play.Authoring.Weapons
 {
 	public class SceneBlackboardAuthoring : MonoBehaviour
 	{
-		[Header("Axe Config")]
-		[SerializeField] float speed;
-		[SerializeField] float rotationSpeed;
+
 		[FormerlySerializedAs("sfxPrefabs")] [SerializeField] List<GameObject> wooshSfxPrefabs;
 		[SerializeField] List<GameObject> hitSfxPrefabs;
 		[SerializeField] List<GameObject> clashSfxPrefabs;
@@ -22,11 +20,7 @@ namespace Survivors.Play.Authoring.Weapons
 			public override void Bake(SceneBlackboardAuthoring authoring)
 			{
 				var entity = GetEntity(TransformUsageFlags.Dynamic);
-				AddComponent(entity, new AxeConfigComponent
-				{
-					Speed         = authoring.speed,
-					RotationSpeed = authoring.rotationSpeed
-				});
+
 				
 				AddComponent<SceneMouse>(entity);
 				AddComponent<PlayerPosition>(entity);

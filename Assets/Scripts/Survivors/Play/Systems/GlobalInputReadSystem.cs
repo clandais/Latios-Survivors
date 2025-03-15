@@ -1,13 +1,14 @@
 using Latios;
 using R3;
 using Survivors.Play.Components;
+using Survivors.Setup;
 using Survivors.Setup.Components;
 using Survivors.Setup.Scope.Messages.GlobalMessages;
 using Unity.Entities;
 using VContainer;
 using VitalRouter;
 
-namespace Survivors.Setup.Systems
+namespace Survivors.Play.Systems
 {
 	public partial class GlobalInputReadSystem : SubSystem
 	{

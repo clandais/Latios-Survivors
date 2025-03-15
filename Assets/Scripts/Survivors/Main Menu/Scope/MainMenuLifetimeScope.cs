@@ -1,7 +1,5 @@
-using Survivors.BootStrap;
+
 using Survivors.Setup.MonoBehaviours;
-using Survivors.Setup.Systems;
-using Unity.Entities;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
@@ -18,19 +16,7 @@ namespace Survivors.Main_Menu.Scope
 		{
 			builder.RegisterInstance(mainMenuBehaviour);
 
-			World.DefaultGameObjectInjectionWorld?.Dispose();
 
-			if (new LatiosBootstrap().Initialize("LatiosWorld"))
-			{
-				Debug.Log("Latios initialized");
-			}
-			else
-			{
-				Debug.LogException( new System.Exception("Latios failed to initialize :'("));
-				return;
-			}
-
-			builder.RegisterSystemFromDefaultWorld<GlobalInputReadSystem>();
 
 			builder.UseEntryPoints(cfg =>
 			{
