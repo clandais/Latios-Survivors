@@ -29,19 +29,7 @@ namespace Survivors.Play.Systems.Debug
 		{
 
 			string message = "";
-
-			// Entities.ForEach((Entity entity,  AgentMotionAspect motion, in PlayerTag _) =>
-			// {
-			// 	message += $"[{entity.Index}]\n" +
-			// 	           $"Velocity: {motion.Velocity.xz}\n" +
-			// 	           $"Normalized Speed {motion.NormalizedSpeed}\n" +
-			// 	           $"Desired Velocity {motion.DesiredVelocity.xz}\n" +
-			// 	           $"Rotated Velocity {math.normalizesafe( math.mul(motion.Rotation, motion.Velocity).xz)}\n";
-			//
-			// 	
-			// }).WithoutBurst().Run();
-
-
+			
 			var aliveEnemyCount = SystemAPI.QueryBuilder().WithAll<EnemyTag>().WithNone<DeadTag>().Build().CalculateEntityCount();
 			message += $"Alive Enemies: {aliveEnemyCount}\n";
 			

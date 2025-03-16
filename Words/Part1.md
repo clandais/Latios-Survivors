@@ -25,9 +25,6 @@ The first project is called "Ant Phereomones". Quick pitch from the Readme:
 
 ### The *CLICK*
 
-![](https://file.notion.so/f/f/c29ce22d-4673-4469-97c4-dcd26d56a571/d6a59b5b-31f9-43b2-b983-461ac53e0889/giphy.gif?table=block&id=1b7dd5db-3ea3-807b-a3d7-cf1c8b7fb61b&spaceId=c29ce22d-4673-4469-97c4-dcd26d56a571&expirationTimestamp=1742097600000&signature=ILUiAfogF-t6VVaaCiReNGTGA1Sfb6O6dL_-45nk5d4)
-
-
 Mission accomplished! It made DOTS click in my head. I understood the basics of how to implement a DOTS project. I was able to reimplement the project in a few days (plus some more because I tend to be quite self-demanding). I was quite impressed with the results. Without really knowing what I was doing, I was able to make a project that was running at 60fps with 100k ants on screen. I've found that the DOTS way of thinking is quite refreshing and that it encourages some good practices (sepation of concerns, data-oriented design, etc).
 
 <video width="800" height="600" controls>
@@ -56,8 +53,6 @@ Latios has a good number of modules and some interesting addons. It does not for
 - And more!
 
 ## Let's Make a Game!
-
-![text](https://img.notionusercontent.com/s3/prod-files-secure%2Fc29ce22d-4673-4469-97c4-dcd26d56a571%2F3ea9a03b-5c95-4183-adb6-e52cab4778d5%2Fbill-gates-doom-2.webp/size/w=400?exp=1742156119&sig=xkPdAeh89pxMK1rEXi5YLXuvYxlJgM582_GB6hS9eYU)
 
 Like I said, I'm more of a "learn by doing" kind of guy. So I'll be making a game using Latios Framework. I'll be documenting the process here. I may say complete inaccuracies, so please take everything with a grain of salt. I'm still learning.
 

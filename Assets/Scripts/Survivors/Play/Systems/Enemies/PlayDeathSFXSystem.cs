@@ -69,7 +69,7 @@ namespace Survivors.Play.Systems.Enemies
         public SystemRng Rng;
         public InstantiateCommandBuffer<WorldTransform>.ParallelWriter CommandBuffer;
 
-        public void Execute( [EntityIndexInQuery] int idx,  in WorldTransform transform, in DynamicBuffer<DeathClipsBufferElement> buffer)
+        void Execute( [EntityIndexInQuery] int idx,  in WorldTransform transform, in DynamicBuffer<DeathClipsBufferElement> buffer)
         {
             
             CommandBuffer.Add(buffer[Rng.NextInt(0, buffer.Length)].AudioPrefab, transform, idx);

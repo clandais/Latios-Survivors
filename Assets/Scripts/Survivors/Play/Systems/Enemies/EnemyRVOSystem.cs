@@ -150,9 +150,6 @@ namespace Survivors.Play.Systems.Enemies
             #endregion
 
 
-            //   UnityEngine.Debug.DrawLine(TransformLookup[entity].position, TransformLookup[entity].position + motion.AvoidanceVelocity, UnityEngine.Color.red);
-
-
             motion.DesiredVelocity += motion.AvoidanceVelocity;
             motion.DesiredVelocity =  math.normalizesafe(motion.DesiredVelocity) * desiredSpeed;
 
@@ -165,7 +162,7 @@ namespace Survivors.Play.Systems.Enemies
             if (math.lengthsq(motion.Velocity) > 0f)
             {
                 var lookRotation =
-                    quaternion.LookRotation(new float3(PlayerPosition.x, 0f, PlayerPosition.z) - transform.position, math.up());
+                    quaternion.LookRotation( new float3( desiredVelocity.x, 0f, desiredVelocity.y), math.up());
                 motion.DesiredRotation = lookRotation;
                 motion.Rotation = transform.rotation
                     .RotateTowards(motion.DesiredRotation, 90f * DeltaTime);

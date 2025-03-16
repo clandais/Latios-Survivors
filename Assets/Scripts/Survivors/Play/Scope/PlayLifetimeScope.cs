@@ -1,8 +1,6 @@
-using Survivors.BootStrap;
 using Survivors.Play.MonoBehaviours;
 using Survivors.Play.Systems;
 using Survivors.Play.Systems.Debug;
-using Unity.Entities;
 using UnityEngine;
 using UnityEngine.UI;
 using VContainer;
@@ -13,56 +11,38 @@ using PlayerInputReadSystem = Survivors.Play.Systems.Player.PlayerInputReadSyste
 
 namespace Survivors.Play.Scope
 {
-	public class PlayLifetimeScope : LifetimeScope
-	{
-		[SerializeField] private PlayStateMenu _playStateMenu;
-		[SerializeField] private DebugPanel _debugPanel;
-		[SerializeField] private Image corsshair;
-		
-		protected override void Configure(IContainerBuilder builder)
-		{
+    public class PlayLifetimeScope : LifetimeScope
+    {
+        [SerializeField] PlayStateMenu _playStateMenu;
+        [SerializeField] DebugPanel _debugPanel;
+        [SerializeField] Image corsshair;
 
-			
-			
-			builder.RegisterInstance(_playStateMenu);
-			builder.RegisterInstance(_debugPanel);
-			builder.RegisterInstance(corsshair);
+        protected override void Configure(IContainerBuilder builder)
+        {
+            builder.RegisterInstance(_playStateMenu);
+            builder.RegisterInstance(_debugPanel);
+            builder.RegisterInstance(corsshair);
 
-			builder.UseEntryPoints(cfg =>
-			{
-				cfg.Add<PlayLifetimeContoller>();
-				cfg.OnException(Debug.LogException);
-			});
+            builder.UseEntryPoints(cfg =>
+            {
+                cfg.Add<PlayLifetimeContoller>();
+                cfg.OnException(Debug.LogException);
+            });
 
-			builder.RegisterVitalRouter(routingBuilder =>
-			{
-				routingBuilder.Map<PlayStateRouter>();
-			});
-			
-
-			builder.RegisterSystemFromDefaultWorld<GlobalInputReadSystem>();
-			
-			
-			builder.RegisterSystemFromDefaultWorld<CinemachineTargetUpdater>();
-			builder.RegisterSystemFromDefaultWorld<DebugSystem>();
-			builder.RegisterSystemFromDefaultWorld<PlayerInputReadSystem>();
-			
-			builder.RegisterBuildCallback(container =>
-			{
-				var publisher       = Parent.Container.Resolve<ICommandPublisher>();
-				var playStateRouter = container.Resolve<PlayStateRouter>();
-				playStateRouter.ParentPublisher = publisher;
-
-			});
-			
-		}
+            builder.RegisterVitalRouter(routingBuilder => { routingBuilder.Map<PlayStateRouter>(); });
 
 
-		protected override void OnDestroy()
-		{
-			
-			
-			base.OnDestroy();
-		}
-	}
+            builder.RegisterSystemFromDefaultWorld<GlobalInputReadSystem>();
+            builder.RegisterSystemFromDefaultWorld<CinemachineTargetUpdater>();
+            builder.RegisterSystemFromDefaultWorld<DebugSystem>();
+            builder.RegisterSystemFromDefaultWorld<PlayerInputReadSystem>();
+
+            builder.RegisterBuildCallback(container =>
+            {
+                var publisher = Parent.Container.Resolve<ICommandPublisher>();
+                var playStateRouter = container.Resolve<PlayStateRouter>();
+                playStateRouter.ParentPublisher = publisher;
+            });
+        }
+    }
 }

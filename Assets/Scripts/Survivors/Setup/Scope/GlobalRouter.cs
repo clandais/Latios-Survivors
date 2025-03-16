@@ -23,6 +23,8 @@ namespace Survivors.Setup.Scope
 
 
 		[Inject] ICommandPublisher _publisher;
+		
+		[Inject] CoroutineRunner _coroutineRunner;
 		[Inject] CurtainBehaviour _curtainBehaviour;
 		[Inject] GameScenesReferences _gameScenesReferences;
 		[Inject] CinemachineBehaviour _cinemachine;
@@ -47,7 +49,7 @@ namespace Survivors.Setup.Scope
 					Addressables.Release(h);
 
 				var handle = Addressables.UnloadSceneAsync(_handles[assetGuid]);
-				await handle.Task;
+				await handle.ToUniTask(_coroutineRunner);
 				_handles.Remove(assetGuid);
 			}
 		}
@@ -76,7 +78,7 @@ namespace Survivors.Setup.Scope
 				var handle = Addressables.LoadSceneAsync(_gameScenesReferences.mainMenuScene, LoadSceneMode.Additive);
 				_handles.Add(_gameScenesReferences.mainMenuScene.AssetGUID, handle);
 
-				await handle.ToUniTask();
+				await handle.ToUniTask(_coroutineRunner);
 				await _curtainBehaviour.FadeAlpha(1f, 0f, 1f);
 			}
 		}
@@ -112,7 +114,7 @@ namespace Survivors.Setup.Scope
 				var handle = Addressables.LoadSceneAsync(_gameScenesReferences.playScene, LoadSceneMode.Additive);
 				_handles.Add(_gameScenesReferences.playScene.AssetGUID, handle);
 
-				await handle.ToUniTask();
+				await handle.ToUniTask(_coroutineRunner);
 				await _curtainBehaviour.FadeAlpha(1f, 0f, 1f);
 
 			}

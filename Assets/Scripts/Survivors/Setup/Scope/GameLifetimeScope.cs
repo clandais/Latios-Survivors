@@ -15,10 +15,11 @@ namespace Survivors.Setup.Scope
 {
 	public class GameLifetimeScope : LifetimeScope
 	{
+		[SerializeField] CoroutineRunner coroutineRunner;
 		[SerializeField] GameScenesReferences gameScenesReferences;
 		[SerializeField] CurtainBehaviour curtainBehaviour;
 		[SerializeField] CinemachineBehaviour cinemachineBehaviour;
-
+		
 #if UNITY_EDITOR
 
 		protected override void Awake()
@@ -38,6 +39,7 @@ namespace Survivors.Setup.Scope
 
 		protected override void Configure(IContainerBuilder builder)
 		{
+			builder.RegisterInstance(coroutineRunner);
 			builder.RegisterInstance(gameScenesReferences);
 			builder.RegisterInstance(curtainBehaviour);
 			builder.RegisterInstance(cinemachineBehaviour);
