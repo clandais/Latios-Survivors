@@ -1,3 +1,4 @@
+using Eflatun.SceneReference;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 
@@ -7,7 +8,7 @@ namespace Survivors.Setup.ScriptableObjects
 	public class GameScenesReferences : ScriptableObject
 	{
 		[SerializeField] public AssetReference mainMenuScene;
-		[SerializeField] public AssetReference playScene;
+		[SerializeField] public SceneReference playScene;
 		
 	}
 }

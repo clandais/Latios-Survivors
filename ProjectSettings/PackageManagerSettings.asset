@@ -33,6 +33,7 @@ MonoBehaviour:
     m_Scopes:
     - com.cysharp.r3
     - com.cysharp.unitask
+    - com.eflatun.scenereference
     - com.github-glitchenzo.nugetforunity
     - com.latios.latiosframework
     - jp.hadashikick.vcontainer
@@ -40,11 +41,11 @@ MonoBehaviour:
     m_IsDefault: 0
     m_Capabilities: 0
     m_ConfigSource: 4
-  m_UserSelectedRegistryName: 
+  m_UserSelectedRegistryName: package.openupm.com
   m_UserAddingNewScopedRegistry: 0
   m_RegistryInfoDraft:
     m_Modified: 0
     m_ErrorMessage: 
-    m_UserModificationsInstanceId: -868
+    m_UserModificationsInstanceId: -866
     m_OriginalInstanceId: -870
   m_LoadAssets: 0

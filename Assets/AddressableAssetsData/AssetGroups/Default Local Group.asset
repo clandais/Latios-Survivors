@@ -18,12 +18,8 @@ MonoBehaviour:
   - m_GUID: 302f28d90b34c984890f0868bd07e48d
     m_Address: Assets/Scenes/MenuScene.unity
     m_ReadOnly: 0
-    m_SerializedLabels: []
-    FlaggedDuringContentUpdateRestriction: 0
-  - m_GUID: f79df93e94e5660419e9d74b691dc6fb
-    m_Address: Assets/Scenes/PlayScene.unity
-    m_ReadOnly: 0
-    m_SerializedLabels: []
+    m_SerializedLabels:
+    - default
     FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: dbbf7a5254dc048478ee5305d32e3bab, type: 2}

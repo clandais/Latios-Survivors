@@ -19,8 +19,5 @@ MonoBehaviour:
     m_SubObjectType: 
     m_EditorAssetChanged: 0
   playScene:
-    m_AssetGUID: f79df93e94e5660419e9d74b691dc6fb
-    m_SubObjectName: 
-    m_SubObjectGUID: 
-    m_SubObjectType: 
-    m_EditorAssetChanged: 0
+    asset: {fileID: 102900000, guid: f79df93e94e5660419e9d74b691dc6fb, type: 3}
+    guid: f79df93e94e5660419e9d74b691dc6fb

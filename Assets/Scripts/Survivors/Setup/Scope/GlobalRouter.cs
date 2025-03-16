@@ -60,11 +60,19 @@ namespace Survivors.Setup.Scope
 		{
 
 			await _curtainBehaviour.FadeAlpha(0f, 1f, 1f);
-			
 
-			
-			await DisposeScene(_gameScenesReferences.playScene.AssetGUID);
 
+			var sceneCount = SceneManager.sceneCount;
+			
+			for (var i = 0; i < sceneCount; i++)
+			{
+				var scene = SceneManager.GetSceneAt(i);
+				if (scene.buildIndex == _gameScenesReferences.playScene.BuildIndex)
+				{
+					await SceneManager.UnloadSceneAsync(scene, UnloadSceneOptions.UnloadAllEmbeddedSceneObjects);
+				}
+			}
+			
 			if (_handles.ContainsKey(_gameScenesReferences.mainMenuScene.AssetGUID))
 			{
 				Debug.LogWarning("MainMenuScene is already loaded");
@@ -90,15 +98,8 @@ namespace Survivors.Setup.Scope
 			await _curtainBehaviour.FadeAlpha(0f, 1f, 1f);
 
 			await DisposeScene(_gameScenesReferences.mainMenuScene.AssetGUID);
-
-
 			
-			if (_handles.ContainsKey(_gameScenesReferences.playScene.AssetGUID))
-			{
-				Debug.LogWarning("PlayScene is already loaded");
-				return;
-			}
-
+	
 			{
 
 				if (new LatiosBootstrap().Initialize("LatiosWorld"))
@@ -110,11 +111,8 @@ namespace Survivors.Setup.Scope
 					Debug.LogException( new System.Exception("Latios failed to initialize :'("));
 					return;
 				}
-				
-				var handle = Addressables.LoadSceneAsync(_gameScenesReferences.playScene, LoadSceneMode.Additive);
-				_handles.Add(_gameScenesReferences.playScene.AssetGUID, handle);
 
-				await handle.ToUniTask(_coroutineRunner);
+				await SceneManager.LoadSceneAsync(_gameScenesReferences.playScene.BuildIndex, LoadSceneMode.Additive);
 				await _curtainBehaviour.FadeAlpha(1f, 0f, 1f);
 
 			}

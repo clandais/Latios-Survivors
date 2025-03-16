@@ -3,7 +3,12 @@ using R3;
 using Survivors.Play.MonoBehaviours;
 using Survivors.Play.Scope.Messages;
 using Survivors.Setup.Scope.Messages.GlobalMessages;
+
+#if UNITY_EDITOR
 using UnityEditor;
+#else
+using UnityEngine;
+#endif
 using VContainer;
 using VContainer.Unity;
 using VitalRouter;
@@ -67,11 +72,12 @@ namespace Survivors.Play.Scope
 		private void OnQuitButtonClicked(Unit _)
 		{
 
-
+;
 #if UNITY_EDITOR
 			EditorApplication.ExitPlaymode();
 #else
-			Application.Quit();
+
+			Application.Quit(0)	;
 #endif
 		}
 
